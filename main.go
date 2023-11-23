@@ -42,7 +42,7 @@ type User struct {
 	ProVIDEO map[string]bool      `json:"ProVIDEO"`
 	ProAUDIO map[string]bool      `json:"ProAUDIO"`
 	ProIMAGE map[string]bool      `json:"ProIMAGE"`
-	ProKillMsg    map[string][]string  `json:"ProKillMsg"`
+	ProKillMsg  map[string][]bool  `json:"ProKillMsg"`
 	StayGroup   map[string][]string  `json:"staygroup"`
 	StayPending map[string][]string  `json:"staypending"`
 }
@@ -1435,7 +1435,7 @@ func perBots(cl *oop.Account) {
 					op1,op2,op3,ctime := op.Param1,op.Param2,strings.Split(op.Param3, "\x1e") ,op.CreatedTime
 					if getAccessForCancel(cl ,op2 ,op3 ) {
 						CclList(cl, op1, op3)
-						go cl.CancelChatInvitation(cl, op1, op2)
+						//go cl.CancelChatInvitation(cl, op1, op2)
 					} else if oop.Contains(op3, cl.Mid) && !oop.Contains(data.StayPending[op1], cl.Mid) {
 						var wg sync.WaitGroup
 						wg.Add(1)
@@ -3542,6 +3542,7 @@ func main() {
 		fmt.Println("Read Data", err)
 	}
 	json.Unmarshal(dataRead, &data)
+	fmt.Println(data)
 	for num, auth := range Token {
 		xcl := oop.Connect(num, auth)
 		err := xcl.LoginWithAuthToken()
