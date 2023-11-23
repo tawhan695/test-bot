@@ -2139,7 +2139,7 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							}
-						} else if txt == "ป้องกัน" {
+						} else if txt == "เชคป้องกัน" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "┏━━ข้อมูลบอท━━━━━━━━\n"
 								tx += "┃-นักพัฒนา : tanongsak695\n"
