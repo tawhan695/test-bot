@@ -42,7 +42,7 @@ type User struct {
 	ProVIDEO map[string]bool      `json:"ProVIDEO"`
 	ProAUDIO map[string]bool      `json:"ProAUDIO"`
 	ProIMAGE map[string]bool      `json:"ProIMAGE"`
-	ProKillMsg  map[string][]bool  `json:"ProKillMsg"`
+	ProKillMsg  map[string]bool  `json:"ProKillMsg"`
 	StayGroup   map[string][]string  `json:"staygroup"`
 	StayPending map[string][]string  `json:"staypending"`
 }
