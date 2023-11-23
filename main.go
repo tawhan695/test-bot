@@ -42,6 +42,7 @@ type User struct {
 	ProVIDEO map[string]bool      `json:"ProVIDEO"`
 	ProAUDIO map[string]bool      `json:"ProAUDIO"`
 	ProIMAGE map[string]bool      `json:"ProIMAGE"`
+	ProKillMsg    map[string][]string  `json:"ProKillMsg"`
 	StayGroup   map[string][]string  `json:"staygroup"`
 	StayPending map[string][]string  `json:"staypending"`
 }
@@ -61,7 +62,7 @@ var (
 	data     User
 	dataPath = fmt.Sprintf("data.json")
 	Maker    = []string{
-		"u95b758477dd2df657190fea875e8f862",
+		"u53ab6fa03c2838678a07a10fd142eb81",
 	}
 	Freeze           = []string{}
 	KillMod          = false
@@ -134,23 +135,6 @@ func Action(cl *oop.Account, to string) bool {
 		}
 	} 
 	return true
-}
-func CheckExpired(){
-	loc, _ := time.LoadLocation("Asia/Jakarta")
-	batas := time.Date(2023, 1, 1, 0, 0, 0, 0, loc)
-	timeup := 6000
-	timePassed := time.Since(batas)
-	expired := timePassed.Hours() / 24
-	cnvrt := fmt.Sprintf("%.1f", expired)
-	splitter := strings.Split(cnvrt,".")
-	duedate, _ := strconv.Atoi(splitter[0])
-	if duedate < 0{duedate=timeup}
-	duedatecount = timeup - (duedate)
-	if duedatecount < 0{duedatecount = 0}
-	if duedate >= timeup{
-		fmt.Println("\033[33m\nอายุการใช้งานของคุณหมด\n\nกรุณาติดต่อที่ LineID : fluke168ff\n\n\033[39m")
-		os.Exit(1)
-	}
 }
 func getWarAccess(cl *oop.Account,ct int64, op1 string, op3 string, mid string, trobos bool) bool {
 	if op3 != "" {
@@ -830,6 +814,9 @@ func Promax(to string) {
 	if _, cek := data.ProCALL[to]; !cek{
 		data.ProCALL[to] = true
 	}
+	if _, cek := data.ProKillMsg[to]; !cek{
+		data.ProKillMsg[to] = true
+	}
 }
 
 func Pronull(to string) {
@@ -839,6 +826,7 @@ func Pronull(to string) {
 	delete(data.ProJoin, to)
 	delete(data.ProQr, to)
 	delete(data.ProLINK, to)
+	delete(data.ProKillMsg, to)
 }
 
 func ProkickOff(to string) {
@@ -925,10 +913,20 @@ func ProLINKOff(to string) {
 		delete(data.ProLINK, to)
 	}
 }
+func ProKillMsgOff(to string) {
+	if _, cek := data.ProKillMsg[to]; cek{
+		delete(data.ProKillMsg, to)
+	}
+}
+func ProKillMsgOn(to string) {
+	if _, cek := data.ProKillMsg[to]; !cek{
+		data.ProKillMsg[to] = true
+	}
+}
 
 func ProLINKOn(to string) {
-	if _, cek := data.ProLINK[to]; !cek{
-		data.ProLINK[to] = true
+	if _, cek := data.ProKillMsg[to]; !cek{
+		data.ProKillMsg[to] = true
 	}
 }
 func ProSTICKEROff(to string) {
@@ -1041,6 +1039,7 @@ func fullAccessd(to string, target string) bool {
 func fullManeger(target string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
+	Menej = append(Menej, data.Squad...)
 	Menej = append(Menej, data.Owner...)
 	Menej = append(Menej, data.Admin...)
 	Menej = append(Menej, data.Staff...)
@@ -1055,6 +1054,7 @@ func fullManeger(target string) bool {
 func fullMan(to string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
+	Menej = append(Menej, data.Squad...)
 	Menej = append(Menej, data.Owner...)
 	Menej = append(Menej, data.Admin...)
 	Menej = append(Menej, data.Staff...)
@@ -1069,6 +1069,7 @@ func fullMan(to string) bool {
 func Pangkat1(target string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
+	Menej = append(Menej, data.Squad...)
 	looper := len(Menej)
 	for i := 0; i < looper; i++ {
 		if target == Menej[i] {
@@ -1081,6 +1082,7 @@ func Pangkat1(target string) bool {
 func Pangkat2(target string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
+	Menej = append(Menej, data.Squad...)
 	Menej = append(Menej, data.Owner...)
 	looper := len(Menej)
 	for i := 0; i < looper; i++ {
@@ -1094,6 +1096,7 @@ func Pangkat2(target string) bool {
 func Pangkat3(target string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
+	Menej = append(Menej, data.Squad...)
 	Menej = append(Menej, data.Owner...)
 	Menej = append(Menej, data.Admin...)
 	looper := len(Menej)
@@ -1108,6 +1111,7 @@ func Pangkat3(target string) bool {
 func Pangkat4(target string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
+	Menej = append(Menej, data.Squad...)
 	Menej = append(Menej, data.Owner...)
 	Menej = append(Menej, data.Admin...)
 	Menej = append(Menej, data.Staff...)
@@ -1402,7 +1406,7 @@ func perBots(cl *oop.Account) {
 					op1,op2,op3,ctime := op.Param1,op.Param2,strings.Split(op.Param3, "\x1e") ,op.CreatedTime
 					if getAccessForCancel(cl ,op2 ,op3 ) {
 						CclList(cl, op1, op3)
-						//go cl.CancelChatInvitation(cl, op1, op2)
+						go cl.CancelChatInvitation(cl, op1, op2)
 					} else if oop.Contains(op3, cl.Mid) && !oop.Contains(data.StayPending[op1], cl.Mid) {
 						var wg sync.WaitGroup
 						wg.Add(1)
@@ -1656,7 +1660,19 @@ func perBots(cl *oop.Account) {
 							}
 						}
 					}
+					
+					
 					if msg.ContentType == 0 {
+						// kill คนส่งขอความ
+						if _, cek := data.ProKillMsg[to]; cek {
+							if getAccess(ctime,cl.Mid) {
+								if !Pangkat4(sender) {
+									cl.DeleteOtherFromChat(to, []string{sender})
+									appendBl(sender)
+									// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
+								}
+							}
+						}
 						Msg := string(msg.Text)
 						
 						if !Pangkat4(sender) {
@@ -1689,13 +1705,16 @@ func perBots(cl *oop.Account) {
 								tx += "┃-ลบสตาฟ\n"
 								tx += "┃-add staff\n"
 								tx += "┃-del staff\n"
+
 								tx += "┃━━Staffs━━━\n"
-								tx += "┃-sp\n"
-								tx += "┃-ping\n"
-								tx += "┃-count\n"
-								tx += "┃-เชคดำ\n"
-								tx += "┃-kick\n"
-								tx += "┃-kill\n"
+								tx += "┃-ค่ะ @เตะคน\n"
+								tx += "┃-ป้องกัน * ดูป้องกัน\n"
+								tx += "┃-ไรคะ @เตะคน\n"
+								tx += "┃-. *เชคบอท\n"
+								tx += "┃-เชคบอท *เชคบอท\n"
+								tx += "┃-นับบอท *นับบอท\n"
+								tx += "┃-count *นับบอท\n"
+								tx += "┃-เชคดำ\n" 
 								tx += "┃-ล้างดำ\n"
 								tx += "┃-ยัดดำ เปิด/ปิด\n"
 								tx += "┃-ลบดำ เปิด/ปิด\n"
@@ -1705,15 +1724,15 @@ func perBots(cl *oop.Account) {
 								tx += "┃-กันหมด ปิด\n"
 								tx += "┃-เปิดลิ้ง\n"
 								tx += "┃-ปิดลิ้ง\n"
-								tx += "┃-set\n"
-								tx += "┃-add blacklist\n"
-								tx += "┃-add done\n"
-								tx += "┃-del done\n"
+								tx += "┃-แอดเพื่อนบอท\n"
+								tx += "┃-เชคบัค\n"
+								tx += "┃-เช็คแอดมิน\n"
+								tx += "┃-ยึด\n"
 								tx += "┃━━Owners━━\n"
 								tx += "┃-ดึง @\n"
-								tx += "┃-บัคออก\n"
-								tx += "┃-forceall\n"
+								tx += "┃-บัคออก\n" 
 								tx += "┃-join\n"
+								tx += "┃-join2\n"
 								tx += "┃-here\n"
 								tx += "┃-stay\n"
 								tx += "┃-setanti\n"
@@ -1725,7 +1744,7 @@ func perBots(cl *oop.Account) {
 								tx += "┃-เชิญห้อง @\n"
 								tx += "┃-เพิ่มแอดมิน\n"
 								tx += "┃-ลบแอดมิน\n"
-								tx += "┃-groups\n"
+								tx += "┃-กลุ่ม\n"
 								tx += "┃-อัพรูป\n"
 								tx += "┃-อัพรูปวีดีโอ\n"
 								tx += "┃-อัพชื่อ\n"
@@ -1735,6 +1754,7 @@ func perBots(cl *oop.Account) {
 								tx += "┃-ac\n"
 								tx += "┃-add admin\n"
 								tx += "┃-del admin\n"
+
 								tx += "┃━━Makers━━\n"
 								tx += "┃-promote owner\n"
 								tx += "┃-demote owner\n"
@@ -1749,13 +1769,13 @@ func perBots(cl *oop.Account) {
 								tx += "┃-ออกทุกกลุ่ม\n"
 								tx += "┃-limiter kick/join\n"
 								tx += "┃-fix\n"
-								tx += "┖━━Fluke(ฟลุ๊ค)━━━━"
 								cl.SendMessage(msg.To, tx)
 							}
 						} else if txt == "help2" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "┏คำสั่งป้องกันกลุ่ม\n"
 								tx += "┃-กันแอด เปิด/ปิด\n"
+								tx += "┃-กันส่งข้อความ เปิด/ปิด\n"
 								tx += "┃-เตะดำ เปิด/ปิด\n"
 								tx += "┃-กันวางลิ้ง เปิด/ปิด\n"
 								tx += "┃-กันเฟค เปิด/ปิด\n"
@@ -1884,25 +1904,7 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							}
-						} else if strings.HasPrefix(txt, "ssp") {
-							result := strings.Split((text), " ")
-							if len(result) != 1{
-								call, _ := strconv.Atoi(result[1])
-								for i := 0; i < call; i++ {
-									start := time.Now()
-									cl.GetProfile()
-									cl.SendMessage(msg.To, "TEAM 🦅"+(time.Since(start)).String()[:1]+"fluke😎")
-									println(i)
-								}
-							} else {
-								start := time.Now()
-								cl.GetProfile()
-								cl.SendMessage(msg.To, "TEAM 🦅"+(time.Since(start)).String()[:1]+"fluke😎")
-							}
-							if getAccess(ctime,cl.Mid) {
-								putSquad(cl, to)
-							}
-						} else if txt == "sp" {
+						}else if txt == "." {
 							cl.SendMention(to, "แจ๋วๆ @!", []string{sender})
 						} else if txt == "count" {
 							if getAccess(ctime,cl.Mid) {
@@ -1920,7 +1922,7 @@ func perBots(cl *oop.Account) {
 									putSquad(cl, to)
 								}
 							}
-						} else if txt == "banlist" {
+						} else if txt == "เชคดำ" {
 							if getAccess(ctime,cl.Mid) {
 								if len(data.Ban) != 0 {
 									tx := "• Banlist\n\n"
@@ -2013,7 +2015,7 @@ func perBots(cl *oop.Account) {
 									cl.SendMessage(to, res)
 								}
 							}
-						} else if strings.HasPrefix(txt, "xxkick ") {
+						} else if strings.HasPrefix(txt, "ค่ะ ") {
 							if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
 								go func() { BanWithList(dataMention) }()
 								var wg sync.WaitGroup
@@ -2026,7 +2028,7 @@ func perBots(cl *oop.Account) {
 								}
 								wg.Wait()
 							}
-						} else if strings.HasPrefix(txt, "xxkill ") {
+						} else if strings.HasPrefix(txt, "ไรคะ ") {
 							if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
 								go func() { BanWithList(dataMention) }()
 								var wg sync.WaitGroup
@@ -2041,10 +2043,8 @@ func perBots(cl *oop.Account) {
 								}
 								wg.Wait()
 							}
-						} else if txt == "ccb" {
-							if getAccess(ctime,cl.Mid) {
-								
-								
+						} else if txt == "ล้างดำ" {
+							if getAccess(ctime,cl.Mid) { 
 								oop.Clearcache()
 								ModTicket = ""
 								lock = ""
@@ -2074,21 +2074,21 @@ func perBots(cl *oop.Account) {
 								SaveData()
 								putSquad(cl, to)
 							}
-						} else if txt == "pro max" {
+						} else if txt == "promax" {
 							if getAccess(ctime,cl.Mid) {
 								Promax(to)
 								SaveData()
 								putSquad(cl, to)
 								cl.SendMessage(to, "🆗")
 							}
-						} else if txt == "pro null" {
+						} else if txt == "pronull" {
 							if getAccess(ctime,cl.Mid) {
 								Pronull(to)
 								SaveData()
 								putSquad(cl, to)
 								cl.SendMessage(to, "All Protect off")
 							}
-						} else if txt == "xxเปิดลิ้งxx" {
+						} else if txt == "เปิดลิ้ง" {
 							if getAccess(ctime,cl.Mid) {
 								chat, _ := cl.GetChats([]string{to}, false, false)
 								if chat != nil {
@@ -2101,7 +2101,7 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							}
-						} else if txt == "xxปิดลิ้งxx" {
+						} else if txt == "ปิดลิ้ง" {
 							if getAccess(ctime,cl.Mid) {
 								chat, _ := cl.GetChats([]string{to}, false, false)
 								if chat != nil {
@@ -2110,15 +2110,18 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							}
-						} else if txt == "set" {
+						} else if txt == "ป้องกัน" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "┏━━ข้อมูลบอท━━━━━━━━\n"
 								tx += "┃-นักพัฒนา : @!\n"
-								tx += "┃-ᴄᴘᴜ: 9999ล้าน คอล\n"
-								tx += "┃-🇧🇱ฟุกสุดหล่อไง👽🚩\n"
-								tx += "┃-ติดต่อไอดีไลน์: teamfluke\n"
 								tx += fmt.Sprintf("┃-กลุ่มทั้งหมด : %v\n", len(data.StayGroup))
 								tx += "┃━━การตั้งค่าการป้องกัน━━\n"
+								tx += "┃-ป้องส่งข้อความ : "
+								if _, cek := data.ProKillMsg[to]; cek {
+									tx += "	🟢\n"
+								} else {
+									tx += "	🔴\n"
+								}
 								tx += "┃-ป้องกันวางลิ้ง : "
 								if _, cek := data.ProLINK[to]; cek {
 									tx += "	🟢\n"
@@ -2248,14 +2251,13 @@ func perBots(cl *oop.Account) {
 								}
 								tx += fmt.Sprintf("┃-ลิมิตการเตะ : %v\n", LimiterKick)
 								tx += fmt.Sprintf("┃-ลิมิตการเข้าร่วม : %v\n", LimiterJoin)
-								tx += "┖[ line://ti/p/~teamfluke ]━"
-								cl.SendMention(to, tx, []string{"ufd0cbd967eb1e43494816889490537c2"})
+								cl.SendMention(to, tx, []string{Maker[0]})
 							}
 						}
-						if !Pangkat3(sender) {
+						if !Pangkat3(sender) { //ผู้สร้าง แอดมิน เจ้าของ
 							continue
 						}
-						if txt == "ffforceall" {
+						if txt == "join2" {
 							if getAccess(ctime,cl.Mid) {
 								for c := range data.Squad {
 									data.StayGroup[to] = append(data.StayGroup[to],data.Squad[c])
@@ -2474,7 +2476,7 @@ func perBots(cl *oop.Account) {
 								}
 								cl.SendMessage(msg.To, tx)
 							}
-						} else if txt == "cekall" {
+						} else if txt == "เชคบัค" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "Statust\n\n"
 								for x := range Botlist {
@@ -2507,7 +2509,7 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							}
-						} else if txt == "ffออน" {
+						} else if txt == "ออน" {
 							if getAccess(ctime,cl.Mid) {
 								d := time.Since(timeStart)
 								d = d.Round(time.Second)
@@ -2518,7 +2520,7 @@ func perBots(cl *oop.Account) {
 								s := d / time.Second
 								cl.SendMessage(msg.To, fmt.Sprintf("เวลาออนบอท:\n%02d วัน %02d ชั่วโมง %02d นาที %02d วินาที", h/24, h%24, m, s))
 							}
-						} else if txt == "ffเช็คแอดมิน" {
+						} else if txt == "เช็คแอดมิน" {
 								if getAccess(ctime,cl.Mid) {
 									team := []string{}
 									tx := "• ทีมผู้ใช้\n\n"
@@ -2801,6 +2803,19 @@ func perBots(cl *oop.Account) {
 								}
 								SaveData()
 							}
+						} else if strings.HasPrefix(strings.ToLower(text), "กันส่งข้อความ ") {
+							if getAccess(ctime,cl.Mid) {
+								result := strings.Split((text), " ")
+								putSquad(cl, to)
+								if result[1] == "เปิด" {
+									ProKillMsgOn(to)
+									cl.SendMessage(to, "🟢 กันส่งข้อความ เปิดแล้ว")
+									} else if result[1] == "ปิด" {
+									ProKillMsgOff(to) 
+									cl.SendMessage(to, "🔴 กันส่งข้อความ ปิดแล้ว")
+								}
+								SaveData()
+							}
 						} else if strings.HasPrefix(txt, "เพิ่มสตาฟ ") {
 							if getAccess(ctime,cl.Mid) {
 								for m := range dataMention {
@@ -2853,7 +2868,7 @@ func perBots(cl *oop.Account) {
 									cl.SendMessage(to, "กรุณาตรวจสอบรายชื่อกลุ่ม..")
 								}
 							}
-						} else if strings.HasPrefix(strings.ToLower(text), "ffเชิญห้อง ") {
+						} else if strings.HasPrefix(strings.ToLower(text), "เชิญห้อง ") {
 							if getAccess(ctime,cl.Mid) {
 								result := strings.Split((text), " ")
 								num, _ := strconv.Atoi(result[1])
@@ -3022,7 +3037,7 @@ func perBots(cl *oop.Account) {
 								tx += fmt.Sprintf("Total : %v Group", len(data.StayGroup))
 								cl.SendMessage(to, tx)
 							}
-						} else if strings.HasPrefix(txt, "fffgoto ") {
+						} else if strings.HasPrefix(txt, "goto ") {
 							get := strings.Split((text), " ")
 							link := strings.Split((get[1]), "https://line.me/R/ti/g/")
 							ticket := link[1]
@@ -3060,9 +3075,14 @@ func perBots(cl *oop.Account) {
 							cl.SendMessage(to, "โปรดส่งรูปมา !.")
 						} else if strings.HasPrefix(txt, "อัพชื่อ ") {
 							get := strings.Split((text), " ")
-							name := fmt.Sprintf("%v %v ", get[1], cl.Count+1)
+							name := ""
+							for v := range get {
+								if v != 0 {
+									name += fmt.Sprintf("%v ", get[v])
+								}
+							}
 							cl.UpdateProfileAttributes(2, name)
-							cl.SendMessage(to, "อัพเดทชื่อเป็น "+get[1])
+							cl.SendMessage(to, "อัพเดทชื่อเป็น "+name)
 						} else if strings.HasPrefix(txt, fmt.Sprintf("%vอัพชื่อ ", cl.Count+1)) {
 							get := strings.Split((text), " ")
 							println("ok")
@@ -3109,7 +3129,7 @@ func perBots(cl *oop.Account) {
 									fmt.Println("Reboot", err)
 								}
 							}
-						} else if txt == "ffbots" {
+						} else if txt == "เชคบอท" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "• Squad Bots\n\n"
 								bots := []string{}
@@ -3121,7 +3141,7 @@ func perBots(cl *oop.Account) {
 								}
 								cl.SendMention(to, tx, bots)
 							}
-						} else if txt == "ffเช็คเพื่อน"{
+						} else if txt == "เช็คเพื่อน"{
 							nm := []string{}
 							teman,_ := cl.GetAllContactIds()
 							for c, v := range teman {
@@ -3134,7 +3154,7 @@ func perBots(cl *oop.Account) {
 							stf := "• 𝐟𝐫𝐢𝐞𝐧𝐝𝐥𝐢𝐬𝐭 •\n\n"
 							str := strings.Join(nm, "\n")
 							cl.SendMessage(to, stf+str)
-						} else if txt == "botcont" {
+						} else if txt == "นับบอท" {
 							res, _ := cl.GetAllContactIds()
 							tx := "Contact\n\n"
 							for x := range res {
@@ -3142,7 +3162,7 @@ func perBots(cl *oop.Account) {
 								tx += fmt.Sprintf("%v. "+get.DisplayName+" : %v\n", x, res[x])
 							}
 							cl.SendMessage(to, tx)
-						} else if txt == "ffเพิ่มบอท" {
+						} else if txt == "เพิ่มบอท" {
 							res, _ := cl.GetAllContactIds()
 							num := 1
 							for m := range data.Squad {
@@ -3185,7 +3205,7 @@ func perBots(cl *oop.Account) {
 									cl.SendMessage(to, dataMention[m])
 								}
 							}
-						} else if txt == "ffออกทุกกลุ่ม" {
+						} else if txt == "ออกทุกกลุ่ม" {
 							allgrup, _ := cl.GetAllChatMids(true, false)
 							proGroup := 0
 							leaveTo := 0

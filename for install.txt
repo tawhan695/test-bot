@@ -22,5 +22,6 @@ go get github.com/kardianos/osext
 go run main.go (token.txt)
 
 
-for clear chache : echo 3 > /proc/sys/vm/drop_caches
+for clear chache : 
+echo 3 > /proc/sys/vm/drop_caches
 free -m
