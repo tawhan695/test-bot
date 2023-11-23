@@ -1755,6 +1755,7 @@ func perBots(cl *oop.Account) {
 								tx += "┃-ปิดลิ้ง\n"
 								tx += "┃-แอดเพื่อนบอท\n"
 								tx += "┃-เชคบัค\n"
+								tx += "┃-เชคกัน\n"
 								tx += "┃-เช็คแอดมิน\n"
 								tx += "┃-ยึด\n"
 								tx += "┃━━Owners━━\n"
@@ -2139,10 +2140,10 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							}
-						} else if txt == "เชคป้องกัน" {
+						} else if txt == "เชคกัน" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "┏━━ข้อมูลบอท━━━━━━━━\n"
-								tx += "┃-นักพัฒนา : tanongsak695\n"
+								tx += "┃-นักพัฒนา : tanongsak695 @!\n"
 								tx += fmt.Sprintf("┃-กลุ่มทั้งหมด : %v\n", len(data.StayGroup))
 								tx += "┃━━การตั้งค่าการป้องกัน━━\n"
 								tx += "┃-ป้องส่งข้อความ : "
