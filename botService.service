@@ -3,7 +3,7 @@ Description=botline
 After=network.target
 
 [Service]
-ExecStart=/root/bot.sh
+ExecStart=/root/test-bot/bot.sh
 Restart=always
 User=root
 Group=root

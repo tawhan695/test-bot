@@ -788,20 +788,23 @@ func IsFriends(cl *oop.Account, from string) bool {
 		}
 	}
 	return false
-}
+} 
 func Promax(to string) {
+	if _, cek := data.ProKillMsg[to]; !cek{
+		data.ProKillMsg[to] = true
+	}
 	if _, cek := data.ProKick[to]; !cek {
 		data.ProKick[to] = true
 	}
 	if _, cek := data.ProInvite[to]; !cek {
 		data.ProInvite[to] = true
 	}
-	//if _, cek := data.ProCancel[to]; !cek {
-		//data.ProCancel[to] = true
-	//}
-	//if _, cek := data.ProJoin[to]; !cek {
-		//_data.ProJoin[to] = true
-	//}
+	if _, cek := data.ProCancel[to]; !cek {
+		data.ProCancel[to] = true
+	}
+	if _, cek := data.ProJoin[to]; !cek {
+		 data.ProJoin[to] = true
+	}
 	if _, cek := data.ProQr[to]; !cek {
 		data.ProQr[to] = true
 	}
@@ -814,8 +817,26 @@ func Promax(to string) {
 	if _, cek := data.ProCALL[to]; !cek{
 		data.ProCALL[to] = true
 	}
-	if _, cek := data.ProKillMsg[to]; !cek{
-		data.ProKillMsg[to] = true
+	if _, cek := data.ProVIDEO[to]; !cek{
+		data.ProVIDEO[to] = true
+	}
+	if _, cek := data.ProIMAGE[to]; !cek{
+		data.ProIMAGE[to] = true
+	}
+	if _, cek := data.ProAUDIO[to]; !cek{
+		data.ProAUDIO[to] = true
+	}
+	if _, cek := data.ProPOSTNOTIFICATION[to]; !cek{
+		data.ProPOSTNOTIFICATION[to] = true
+	}
+	if _, cek := data.ProFILE[to]; !cek{
+		data.ProFILE[to] = true
+	}
+	if _, cek := data.ProSTICKER[to]; !cek{
+		data.ProSTICKER[to] = true
+	}
+	if _, cek := data.ProLINK[to]; !cek{
+		data.ProLINK[to] = true
 	}
 }
 
@@ -826,6 +847,14 @@ func Pronull(to string) {
 	delete(data.ProJoin, to)
 	delete(data.ProQr, to)
 	delete(data.ProLINK, to)
+	delete(data.ProSTICKER, to)
+	delete(data.ProFILE, to)
+	delete(data.ProPOSTNOTIFICATION, to)
+	delete(data.ProAUDIO, to)
+	delete(data.ProIMAGE, to)
+	delete(data.ProVIDEO, to)
+	delete(data.ProCALL, to)
+	delete(data.ProDelAlbum, to)
 	delete(data.ProKillMsg, to)
 }
 
@@ -2113,7 +2142,7 @@ func perBots(cl *oop.Account) {
 						} else if txt == "ป้องกัน" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "┏━━ข้อมูลบอท━━━━━━━━\n"
-								tx += "┃-นักพัฒนา : @!\n"
+								tx += "┃-นักพัฒนา : tanongsak695\n"
 								tx += fmt.Sprintf("┃-กลุ่มทั้งหมด : %v\n", len(data.StayGroup))
 								tx += "┃━━การตั้งค่าการป้องกัน━━\n"
 								tx += "┃-ป้องส่งข้อความ : "
@@ -3507,7 +3536,7 @@ func main() {
 	}
 	LimiterJoin = 100
 	LimiterKick = 100
-	Token := strings.Split(string(fileBytes), "\r\n")
+	Token := strings.Split(string(fileBytes), ",")
 	dataRead, err := ioutil.ReadFile(dataPath)
 	if err != nil {
 		fmt.Println("Read Data", err)
