@@ -954,8 +954,8 @@ func ProKillMsgOn(to string) {
 }
 
 func ProLINKOn(to string) {
-	if _, cek := data.ProKillMsg[to]; !cek{
-		data.ProKillMsg[to] = true
+	if _, cek := data.ProLINK[to]; !cek{
+		data.ProLINK[to] = true
 	}
 }
 func ProSTICKEROff(to string) {
