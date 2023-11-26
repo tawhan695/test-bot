@@ -1065,93 +1065,93 @@ func fullAccessd(to string, target string) bool {
 	}
 	return false
 }
-func fullManeger(target string) bool {
-	Menej := []string{}
-	Menej = append(Menej, Maker...)
-	Menej = append(Menej, data.Squad...)
-	Menej = append(Menej, data.Owner...)
-	Menej = append(Menej, data.Admin...)
-	Menej = append(Menej, data.Staff...)
-	looper := len(Menej)
-	for i := 0; i < looper; i++ {
-		if target == Menej[i] {
-			return true
-		}
-	}
-	return false
-}
-func fullMan(to string) bool {
-	Menej := []string{}
-	Menej = append(Menej, Maker...)
-	Menej = append(Menej, data.Squad...)
-	Menej = append(Menej, data.Owner...)
-	Menej = append(Menej, data.Admin...)
-	Menej = append(Menej, data.Staff...)
-	looper := len(Menej)
-	for i := 0; i < looper; i++ {
-		if to == Menej[i] {
-			return true
-		}
-	}
-	return false
-}
-func Pangkat1(target string) bool {
-	Menej := []string{}
-	Menej = append(Menej, Maker...)
-	Menej = append(Menej, data.Squad...)
-	looper := len(Menej)
-	for i := 0; i < looper; i++ {
-		if target == Menej[i] {
-			return true
-		}
-	}
-	return false
-}
+// func fullAccess(target string) bool {
+// 	Menej := []string{}
+// 	Menej = append(Menej, Maker...)
+// 	Menej = append(Menej, data.Squad...)
+// 	Menej = append(Menej, data.Owner...)
+// 	Menej = append(Menej, data.Admin...)
+// 	Menej = append(Menej, data.Staff...)
+// 	looper := len(Menej)
+// 	for i := 0; i < looper; i++ {
+// 		if target == Menej[i] {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
+// func fullAccess(to string) bool {
+// 	Menej := []string{}
+// 	Menej = append(Menej, Maker...)
+// 	Menej = append(Menej, data.Squad...)
+// 	Menej = append(Menej, data.Owner...)
+// 	Menej = append(Menej, data.Admin...)
+// 	Menej = append(Menej, data.Staff...)
+// 	looper := len(Menej)
+// 	for i := 0; i < looper; i++ {
+// 		if to == Menej[i] {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
+// func fullAccess(target string) bool {
+// 	Menej := []string{}
+// 	Menej = append(Menej, Maker...)
+// 	Menej = append(Menej, data.Squad...)
+// 	looper := len(Menej)
+// 	for i := 0; i < looper; i++ {
+// 		if target == Menej[i] {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
-func Pangkat2(target string) bool {
-	Menej := []string{}
-	Menej = append(Menej, Maker...)
-	Menej = append(Menej, data.Squad...)
-	Menej = append(Menej, data.Owner...)
-	looper := len(Menej)
-	for i := 0; i < looper; i++ {
-		if target == Menej[i] {
-			return true
-		}
-	}
-	return false
-}
+// func fullAccess(target string) bool {
+// 	Menej := []string{}
+// 	Menej = append(Menej, Maker...)
+// 	Menej = append(Menej, data.Squad...)
+// 	Menej = append(Menej, data.Owner...)
+// 	looper := len(Menej)
+// 	for i := 0; i < looper; i++ {
+// 		if target == Menej[i] {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
-func Pangkat3(target string) bool {
-	Menej := []string{}
-	Menej = append(Menej, Maker...)
-	Menej = append(Menej, data.Squad...)
-	Menej = append(Menej, data.Owner...)
-	Menej = append(Menej, data.Admin...)
-	looper := len(Menej)
-	for i := 0; i < looper; i++ {
-		if target == Menej[i] {
-			return true
-		}
-	}
-	return false
-}
+// func fullAccess(target string) bool {
+// 	Menej := []string{}
+// 	Menej = append(Menej, Maker...)
+// 	Menej = append(Menej, data.Squad...)
+// 	Menej = append(Menej, data.Owner...)
+// 	Menej = append(Menej, data.Admin...)
+// 	looper := len(Menej)
+// 	for i := 0; i < looper; i++ {
+// 		if target == Menej[i] {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
-func Pangkat4(target string) bool {
-	Menej := []string{}
-	Menej = append(Menej, Maker...)
-	Menej = append(Menej, data.Squad...)
-	Menej = append(Menej, data.Owner...)
-	Menej = append(Menej, data.Admin...)
-	Menej = append(Menej, data.Staff...)
-	looper := len(Menej)
-	for i := 0; i < looper; i++ {
-		if target == Menej[i] {
-			return true
-		}
-	}
-	return false
-}
+// func fullAccess(target string) bool {
+// 	Menej := []string{}
+// 	Menej = append(Menej, Maker...)
+// 	Menej = append(Menej, data.Squad...)
+// 	Menej = append(Menej, data.Owner...)
+// 	Menej = append(Menej, data.Admin...)
+// 	Menej = append(Menej, data.Staff...)
+// 	looper := len(Menej)
+// 	for i := 0; i < looper; i++ {
+// 		if target == Menej[i] {
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }
 
 func SmartKick(cl *oop.Account, op1 string, op2 string) {
 	if _, ok := TimeJoin[op1]; ok && time.Since(TimeJoin[op1]) < 50*time.Millisecond {
@@ -1526,7 +1526,7 @@ func perBots(cl *oop.Account) {
 							go cl.InviteIntoChat(op1, []string{op3})
 							WarTime[op1] = time.Now()
 						}
-					} else if _, cek := data.ProKick[op1]; cek || fullManeger(op3) {
+					} else if _, cek := data.ProKick[op1]; cek || fullAccess(op3) {
 						if getWarAccess(cl, ctime, op1, op3, cl.Mid, false) {
 							res := KillMode(cl, op1, op2)
 							go KickAndCancelByList(cl, op1, res["targetMember"], res["targetInvitee"])
@@ -1569,7 +1569,7 @@ func perBots(cl *oop.Account) {
 						go Ban(op2)
 						go cl.DeleteOtherFromChat(op1, []string{op2})
 							WarTime[op1] = time.Now()
-					} else if oop.Contains(data.Ban, op2) || fullManeger(op3) {
+					} else if oop.Contains(data.Ban, op2) || fullAccess(op3) {
 						go cl.DeleteOtherFromChat(op1, []string{op2})
 						WarTime[op1] = time.Now()
 					}
@@ -1616,7 +1616,7 @@ func perBots(cl *oop.Account) {
 							go Ban(op2)
 							WarTime[op1] = time.Now()
 						}
-					} else if _, cek := data.ProCancel[op1]; cek || fullManeger(op3) {
+					} else if _, cek := data.ProCancel[op1]; cek || fullAccess(op3) {
 						if getWarAccess(cl, ctime, op1, op3, cl.Mid, false) {
 							go cl.DeleteOtherFromChat(op1, []string{op2})
 							go cl.FindAndAddContactsByMid(op3)
@@ -1681,7 +1681,7 @@ func perBots(cl *oop.Account) {
 					if (op.Message.ContentType).String() == "NONE" {
 						if _, cek := data.ProLINK[to]; cek && strings.Contains(pesan, "http") || strings.Contains(pesan, "lin"){
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
@@ -1695,7 +1695,7 @@ func perBots(cl *oop.Account) {
 						// kill คนส่งขอความ
 						if _, cek := data.ProKillMsg[to]; cek {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
@@ -1704,9 +1704,11 @@ func perBots(cl *oop.Account) {
 						}
 						Msg := string(msg.Text)
 						
-						if !Pangkat4(sender) {
+						if !fullAccess(sender) {
 							continue
 						}
+
+
 						box := strings.Split((Msg), ",")
 						for TX:= range box {
 						if TX != 0{time.Sleep(1 * time.Second)}
@@ -1722,6 +1724,42 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						}
+
+						 if txt == "กันหมด เปิด" {
+							if getAccess(ctime,cl.Mid) {
+								Promax(to)
+								SaveData()
+								putSquad(cl, to)
+								cl.SendMessage(to, "กันหมด เปิดสำเร็จ")
+								continue
+							}
+						} else if txt == "กันหมด ปิด" {
+							if getAccess(ctime,cl.Mid) {
+								Pronull(to)
+								SaveData()
+								putSquad(cl, to)
+								cl.SendMessage(to, "กันหมด ปิดสำเร็จ")
+								continue
+							}
+						} else if strings.HasPrefix(txt, "แอดเบอร์ ") {
+				
+								result := strings.Split((text), " ")
+								for _, v := range result {
+									_, err := cl.FindAndAddContactsByPhone(result[v])
+										if err != nil {
+											fmt.Println(err)
+											if getAccess(ctime, cl.Mid) {
+												putSquad(cl, to)
+												cl.SendMessage(to, "มีบอทเป็นเพื่อนแล้ว")
+												break
+											}
+										}
+								}
+								cl.SendMessage(to, "ok ..")
+								continue
+							 
+						}
+
 						if txt == "help" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "┏เมนูคำสั่งบอท━━\n"
@@ -1734,7 +1772,6 @@ func perBots(cl *oop.Account) {
 								tx += "┃-ลบสตาฟ\n"
 								tx += "┃-add staff\n"
 								tx += "┃-del staff\n"
-
 								tx += "┃━━Staffs━━━\n"
 								tx += "┃-ค่ะ @เตะคน\n"
 								tx += "┃-ป้องกัน * ดูป้องกัน\n"
@@ -1757,8 +1794,7 @@ func perBots(cl *oop.Account) {
 								tx += "┃-เชคบัค\n"
 								tx += "┃-เชคกัน\n"
 								tx += "┃-เช็คแอดมิน\n"
-								tx += "┃-ยึด\n"
-								tx += "┃━━Owners━━\n"
+								tx += "┃-ยึด\n" 
 								tx += "┃-ดึง @\n"
 								tx += "┃-บัคออก\n" 
 								tx += "┃-join\n"
@@ -1775,6 +1811,7 @@ func perBots(cl *oop.Account) {
 								tx += "┃-เพิ่มแอดมิน\n"
 								tx += "┃-ลบแอดมิน\n"
 								tx += "┃-กลุ่ม\n"
+								tx += "┃-ลิ้งกลุ่ม (เลขห้อง)\n"
 								tx += "┃-อัพรูป\n"
 								tx += "┃-อัพรูปวีดีโอ\n"
 								tx += "┃-อัพชื่อ\n"
@@ -1783,14 +1820,12 @@ func perBots(cl *oop.Account) {
 								tx += "┃-bypass\n"
 								tx += "┃-ac\n"
 								tx += "┃-add admin\n"
-								tx += "┃-del admin\n"
-
-								tx += "┃━━Makers━━\n"
+								tx += "┃-del admin\n" 
 								tx += "┃-promote owner\n"
 								tx += "┃-demote owner\n"
 								tx += "┃-เพิ่มแอดใหญ่\n"
 								tx += "┃-ลบแอดใหญ่\n"
-								tx += "┃-แอดเพื่อน เปิด/ปิด\n"
+								tx += "┃-แอดเบอร์\n"
 								tx += "┃-app\n"
 								tx += "┃-rest\n"
 								tx += "┃-bots\n"
@@ -1804,6 +1839,7 @@ func perBots(cl *oop.Account) {
 						} else if txt == "help2" {
 							if getAccess(ctime,cl.Mid) {
 								tx := "┏คำสั่งป้องกันกลุ่ม\n"
+								tx += "┃-กันหมด เปิด/ปิด\n"
 								tx += "┃-กันแอด เปิด/ปิด\n"
 								tx += "┃-กันส่งข้อความ เปิด/ปิด\n"
 								tx += "┃-เตะดำ เปิด/ปิด\n"
@@ -1832,7 +1868,7 @@ func perBots(cl *oop.Account) {
 							if getAccess(ctime,cl.Mid) {
 								result := strings.Split((text), " ")
 								if result[1] == "staff" {
-									if Pangkat3(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = true
 										PromoteAdmin = false
 										PromoteOwner = false
@@ -1844,7 +1880,7 @@ func perBots(cl *oop.Account) {
 										cl.SendMessage(msg.To, "Please Send contact of prospective Staff !..")
 									}
 								} else if result[1] == "owner" {
-									if Pangkat1(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = false
 										PromoteAdmin = false
 										PromoteOwner = true
@@ -1856,7 +1892,7 @@ func perBots(cl *oop.Account) {
 										cl.SendMessage(msg.To, "Please Send contact of prospective Owner !..")
 									}
 								} else if result[1] == "admin" {
-									if Pangkat2(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = false
 										PromoteAdmin = true
 										PromoteOwner = false
@@ -1868,7 +1904,7 @@ func perBots(cl *oop.Account) {
 										cl.SendMessage(msg.To, "Please Send contact of prospective Admin !..")
 									}
 								} else if result[1] == "done" {
-									if Pangkat4(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = false
 										PromoteAdmin = false
 										PromoteOwner = false
@@ -1885,7 +1921,7 @@ func perBots(cl *oop.Account) {
 							if getAccess(ctime,cl.Mid) {
 								result := strings.Split((text), " ")
 								if result[1] == "staff" {
-									if Pangkat3(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = false
 										PromoteAdmin = false
 										PromoteOwner = false
@@ -1897,7 +1933,7 @@ func perBots(cl *oop.Account) {
 										cl.SendMessage(msg.To, "Please Send contact for delete Staff !..")
 									}
 								} else if result[1] == "owner" {
-									if Pangkat1(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = false
 										PromoteAdmin = false
 										PromoteOwner = false
@@ -1909,7 +1945,7 @@ func perBots(cl *oop.Account) {
 										cl.SendMessage(msg.To, "Please Send contact for delete Owner !..")
 									}
 								} else if result[1] == "admin" {
-									if Pangkat2(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = false
 										PromoteAdmin = false
 										PromoteOwner = false
@@ -1921,7 +1957,7 @@ func perBots(cl *oop.Account) {
 										cl.SendMessage(msg.To, "Please Send contact for delete Admin !..")
 									}
 								} else if result[1] == "done" {
-									if Pangkat4(sender) {
+									if fullAccess(sender) {
 										PromoteStaff = false
 										PromoteAdmin = false
 										PromoteOwner = false
@@ -1935,7 +1971,7 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						}else if txt == "." {
-							cl.SendMention(to, "แจ๋วๆ @!", []string{sender})
+							cl.SendMention(to, "ok @!", []string{sender})
 						} else if txt == "count" {
 							if getAccess(ctime,cl.Mid) {
 								chat, _ := cl.GetChats([]string{to}, true, false)
@@ -2284,7 +2320,7 @@ func perBots(cl *oop.Account) {
 								cl.SendMention(to, tx, []string{Maker[0]})
 							}
 						}
-						if !Pangkat3(sender) { //ผู้สร้าง แอดมิน เจ้าของ
+						if !fullAccess(sender) { //ผู้สร้าง แอดมิน เจ้าของ
 							continue
 						}
 						if txt == "join2" {
@@ -2470,29 +2506,29 @@ func perBots(cl *oop.Account) {
 								cl.DeleteSelfFromChat(msg.To)
 							}
 						} else if txt == "แอดเพื่อนบอท" {
-										cl.SendMessage(to, "รอแปป")
-										time.Sleep(time.Duration(cl.Count) * time.Second)
-									    time.Sleep(1000 * time.Second)
-										if len(data.Squad) != 0 {
-											for _, ve := range data.Squad {
-												if IsFriends(cl, ve) == false {
-													time.Sleep(time.Second * 1)
-													_, err := cl.FindAndAddContactsByMid(ve)
-													if err != nil {
-														fmt.Println(err)
-														if getAccess(ctime, cl.Mid) {
-															putSquad(cl, to)
-															cl.SendMessage(to, "มีบอทเป็นเพื่อนแล้ว")
-															break
-														}
-													}
-												}
-											}
+							cl.SendMessage(to, "รอแปป")
+							time.Sleep(time.Duration(cl.Count) * time.Second)
+							time.Sleep(1000 * time.Second)
+							if len(data.Squad) != 0 {
+								for _, ve := range data.Squad {
+									if IsFriends(cl, ve) == false {
+										time.Sleep(time.Second * 1)
+										_, err := cl.FindAndAddContactsByMid(ve)
+										if err != nil {
+											fmt.Println(err)
 											if getAccess(ctime, cl.Mid) {
 												putSquad(cl, to)
-												cl.SendMessage(to, "เพิ่มเพื่อนสำเร็จ")
+												cl.SendMessage(to, "มีบอทเป็นเพื่อนแล้ว")
+												break
 											}
 										}
+									}
+								}
+								if getAccess(ctime, cl.Mid) {
+									putSquad(cl, to)
+									cl.SendMessage(to, "เพิ่มเพื่อนสำเร็จ")
+								}
+							}
 						} else if txt == "here" {
 							if getAccess(ctime,cl.Mid) {
 								putSquad(cl, to)
@@ -2867,10 +2903,10 @@ func perBots(cl *oop.Account) {
 						}
 
 						//Owner
-						if !Pangkat2(sender) {
+						if !fullAccess(sender) {
 							continue
 						}
-						if strings.HasPrefix(strings.ToLower(text), "gurl ") {
+						if strings.HasPrefix(strings.ToLower(text), "ลิ้งกลุ่ม ") {
 							if getAccess(ctime,cl.Mid) {
 								result := strings.Split((text), " ")
 								num, _ := strconv.Atoi(result[1])
@@ -3124,10 +3160,6 @@ func perBots(cl *oop.Account) {
 							cl.UpdateProfile(get[1]," ")
 							cl.SendMessage(to, "อัพเดทสเตตัสเป็น "+get[1])
 						}
-						/// for creator
-						if !Pangkat1(sender) {
-							continue
-						}
 						if txt == "bot" {
 							cl.SendMessage(to, cl.Mid)
 						} else if txt == "get" {
@@ -3300,7 +3332,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "FLEX" {
 						if _, cek := data.ProFLEX[to]; cek {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "❌💫ห้าม💫โฆษณาflex❌")
@@ -3310,7 +3342,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "CHATEVENT" {
 						if _, cek := data.ProDelAlbum[to]; cek && op.Message.ContentMetadata["LOC_KEY"] == "BD" {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "🪶💫ห้าม💫ลบอัลบั้ม🪶")
@@ -3320,7 +3352,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "STICKER" {
 						if _, cek := data.ProSTICKER[to]; cek {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "🪶💫ห้าม💫ส่งสติ้กเกอร์🪶")
@@ -3330,7 +3362,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "CALL" {
 						if _, cek := data.ProCALL[to]; cek && op.Message.ContentMetadata["GC_MEDIA_TYPE"] == "AUDIO" {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "🪶💫ห้าม💫โทรกลุ่ม🪶")
@@ -3340,7 +3372,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "FILE" {
 						if _, cek := data.ProFILE[to]; cek {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "🪶💫ห้าม💫ส่งไฟล์🪶")
@@ -3350,7 +3382,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "POSTNOTIFICATION" {
 						if _, cek := data.ProPOSTNOTIFICATION[to]; cek {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "🪶💫ห้าม💫สมาชิกโน้ต&&แชร์โพส🪶")
@@ -3360,7 +3392,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "AUDIO" {
 						if _, cek := data.ProAUDIO[to]; cek {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "🪶💫ห้าม💫ส่งคลิปเสียง🪶")
@@ -3371,7 +3403,7 @@ func perBots(cl *oop.Account) {
 						name := op.Message.ContentMetadata["displayName"]
 						mid := op.Message.ContentMetadata["mid"]
 						if Scont == true && PromoteStaff == true {
-							if Pangkat3(sender) {
+							if fullAccess(sender) {
 								if !oop.Contains(data.Staff, mid) {
 									data.Staff = append(data.Staff, mid)
 									cl.SendMessage(to, "Contact Added to list Staff success !..")
@@ -3380,7 +3412,7 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						} else if Scont == true && PromoteAdmin == true {
-							if Pangkat2(sender) {
+							if fullAccess(sender) {
 								if !oop.Contains(data.Admin, mid) {
 									data.Admin = append(data.Admin, mid)
 									cl.SendMessage(to, "Contact Added to list Admin success !..")
@@ -3389,7 +3421,7 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						} else if Scont == true && PromoteOwner == true {
-							if Pangkat1(sender) {
+							if fullAccess(sender) {
 								if !oop.Contains(data.Owner, mid) {
 									data.Owner = append(data.Owner, mid)
 									cl.SendMessage(to, "Contact Added to list Owner success !..")
@@ -3398,7 +3430,7 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						} else if Scont == true && DemoteStaff == true {
-							if Pangkat3(sender) {
+							if fullAccess(sender) {
 								if oop.Contains(data.Staff, mid) {
 									data.Staff = oop.Remove(data.Staff, mid)
 									cl.SendMessage(to, "Contact Remove from list  Staff success !..")
@@ -3407,7 +3439,7 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						} else if Scont == true && DemoteAdmin == true {
-							if Pangkat2(sender) {
+							if fullAccess(sender) {
 								if oop.Contains(data.Admin, mid) {
 									data.Admin = oop.Remove(data.Admin, mid)
 									cl.SendMessage(to, "Contact Remove from list  Admin success !..")
@@ -3416,7 +3448,7 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						} else if Scont == true && DemoteOwner == true {
-							if Pangkat1(sender) {
+							if fullAccess(sender) {
 								if oop.Contains(data.Owner, mid) {
 									data.Owner = oop.Remove(data.Owner, mid)
 									cl.SendMessage(to, "Contact Remove from list Owner success !..")
@@ -3426,7 +3458,7 @@ func perBots(cl *oop.Account) {
 							}
 						} else if PromoteBlacklist == true {
 							if getAccess(ctime,cl.Mid) {
-								if Pangkat4(sender) {
+								if fullAccess(sender) {
 									if !oop.Contains(data.Ban, mid) {
 										data.Ban = append(data.Ban, mid)
 										cl.SendMessage(to, "เพิ่ม "+name+" เข้าบัญชีดำเรียบร้อย")
@@ -3435,7 +3467,7 @@ func perBots(cl *oop.Account) {
 								}						
 						} else if delBlacklist == true {
 							if getAccess(ctime,cl.Mid) {
-								if Pangkat4(sender) {
+								if fullAccess(sender) {
 									if getAccess(ctime,cl.Mid) {
 										data.Ban = oop.Remove(data.Ban, mid)
 										cl.SendMessage(to, "ลบ "+name+" ออกจากบัญชีดำเรียบร้อย")
@@ -3444,7 +3476,7 @@ func perBots(cl *oop.Account) {
 							}
 						}
 					} else if (op.Message.ContentType).String() == "IMAGE" {
-						if Pangkat2(sender) {
+						if fullAccess(sender) {
 							if _, cek := data.ProIMAGE[to]; cek {
 								if getAccess(ctime,cl.Mid) {
 									cl.DeleteOtherFromChat(to, []string{sender})
@@ -3490,7 +3522,7 @@ func perBots(cl *oop.Account) {
 					} else if (op.Message.ContentType).String() == "VIDEO" {
 						if _, cek := data.ProVIDEO[to]; cek {
 							if getAccess(ctime,cl.Mid) {
-								if !Pangkat4(sender) {
+								if !fullAccess(sender) {
 									cl.DeleteOtherFromChat(to, []string{sender})
 									appendBl(sender)
 									cl.SendMessage(to, "🪶💫ห้าม💫ส่งวีดีโอ🪶")
