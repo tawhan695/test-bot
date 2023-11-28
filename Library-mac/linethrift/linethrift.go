@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"time"
 
-	"../thrift"
+	"botline/Library-mac/thrift"
 )
 
 // (needed to ensure safety because of naive import list construction.)

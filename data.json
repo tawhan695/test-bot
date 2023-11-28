@@ -1,26 +1,88 @@
 {
-    "squad": [],
+    "squad": [
+        "uec66950c84b4977c84f47153dc1b4066",
+        "u9bac368505b96e79de8d4ea85ddfd7f9",
+        "u3d2c9f7687cb69abf801345f0d01f32e",
+        "udbcc636d01a585d90674daeba5a8ab48",
+        "ub9aab6255badb5fa6ef1aa02688d395a"
+    ],
     "owner": [],
     "admin": [],
+    "staff": null,
+    "osquad": null,
+    "ban": [],
     "targetspam": [],
-    "limitstatus": {},
-    "limittime": {},
-    "prokick": {},
-    "proinvite": {},
-    "procancel": {},
-    "projoin": {},
-    "proqr": {},
+    "limitstatus": {
+        "u3d2c9f7687cb69abf801345f0d01f32e": false,
+        "u9bac368505b96e79de8d4ea85ddfd7f9": false,
+        "ub9aab6255badb5fa6ef1aa02688d395a": false,
+        "udbcc636d01a585d90674daeba5a8ab48": false,
+        "uec66950c84b4977c84f47153dc1b4066": false
+    },
+    "limittime": {
+        "u3d2c9f7687cb69abf801345f0d01f32e": "2023-11-28T14:12:33.010011+07:00",
+        "u9bac368505b96e79de8d4ea85ddfd7f9": "2023-11-28T14:12:31.486765+07:00",
+        "ub9aab6255badb5fa6ef1aa02688d395a": "2023-11-28T14:51:15.506066+07:00",
+        "udbcc636d01a585d90674daeba5a8ab48": "2023-11-28T14:51:13.953295+07:00",
+        "uec66950c84b4977c84f47153dc1b4066": "2023-11-28T14:12:30.63952+07:00"
+    },
+    "prokick": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "proinvite": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "procancel": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "projoin": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "proqr": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
     "ProLINK": {},
-    "ProFLEX": {},
-    "ProDelAlbum": {},
+    "ProFLEX": {
+        "c2e068c9bdf5c9009b02050fc3ce63f05": true,
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "ProDelAlbum": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
     "ProSTICKER": {},
-    "ProCALL": {},
-    "ProFILE": {},
-    "ProPOSTNOTIFICATION": {},
-    "ProVIDEO": {},
-    "ProAUDIO": {},
+    "ProCALL": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "ProFILE": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "ProPOSTNOTIFICATION": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "ProVIDEO": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
+    "ProAUDIO": {
+        "c2f5eb3be425ffbbcdbd0275aaa94d638": true
+    },
     "ProIMAGE": {},
     "ProKillMsg": {},
-    "staygroup":{},
+    "staygroup": {
+        "c2e068c9bdf5c9009b02050fc3ce63f05": [
+            "udbcc636d01a585d90674daeba5a8ab48",
+            "ub9aab6255badb5fa6ef1aa02688d395a"
+        ],
+        "c7517f2f957644f96369635eb450d16ce": [
+            "uec66950c84b4977c84f47153dc1b4066"
+        ],
+        "ce53c9c056b7c0c7ea27a85b785c975e0": [
+            "uec66950c84b4977c84f47153dc1b4066"
+        ],
+        "cfe88a3cf686ec59e830f5d1eb05623b9": [
+            "uec66950c84b4977c84f47153dc1b4066",
+            "u9bac368505b96e79de8d4ea85ddfd7f9",
+            "u3d2c9f7687cb69abf801345f0d01f32e"
+        ]
+    },
     "staypending": {}
 }
