@@ -2963,10 +2963,10 @@ func perBots(cl *oop.Account) {
 									putSquad(cl, to)
 									if result[1] == "on" {
 										sleepmode = true
-										cl.SendMessage(to, "sleepmode on")
+										cl.SendMessage(to, "🟢 เปิดโหดพักผ่อน")
 									} else if result[1] == "off" {
 										sleepmode = false
-										cl.SendMessage(to, "sleepmode off")
+										cl.SendMessage(to, "🔴 ปิดโหดพักผ่อน")
 									}
 									SaveData()
 								}
