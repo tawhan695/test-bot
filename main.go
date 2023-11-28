@@ -13,12 +13,12 @@ import (
 	"time"
 	"math/rand"
 
-	"./Library/oop"
+	// "./Library/oop"
 	"github.com/kardianos/osext"
-	"./Library/linethrift"
+	// "./Library/linethrift"
 
-	// "botline/Library-mac/oop"
-	// "botline/Library-mac/linethrift"
+	"botline/Library-mac/oop"
+	"botline/Library-mac/linethrift"
 
 )
 
@@ -73,6 +73,7 @@ var (
 	Freeze           = []string{}
 	KillMod          = false
 	GroupList        = []string{}
+	GroupMemberList        = []string{}
 	Botlist          []*oop.Account
 	WarTime          = make(map[string]time.Time)
 	TimeJoin         = make(map[string]time.Time)
@@ -1844,8 +1845,45 @@ func perBots(cl *oop.Account) {
 												if getAccess(ctime, cl.Mid) {
 													cl.SendMessage(to, " เพิ่มโทนเค่นสำเร็จ รีบูต  server ก่อนใช้งาน")
 												}
+
 										}
 									}
+							} else if strings.HasPrefix(txt, "สมาชิกกลุ่ม "){
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									index, _ := strconv.Atoi(result[1])
+									// cl.SendMention(to, tx, bots)
+									gc := GroupList[index-1]
+									chat, _ := cl.GetChats([]string{gc}, true, true)
+									GroupMemberList := []string{}
+									if chat != nil {
+										members := chat.Chats[0].Extra.GroupExtra.MemberMids
+										// name := chat.Chats[0].ChatName
+										tx := "รายชื่อ\n"
+										num := 1
+										for b := range members {
+											tx += fmt.Sprintf("%v. @!\n", num)
+											num += 1
+											GroupMemberList = append(GroupMemberList, b)
+										}
+										cl.SendMention(to, tx, GroupMemberList)
+									}
+								}
+							} else if strings.HasPrefix(txt, "addban ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									index, _ := strconv.Atoi(result[1])
+									for m := range GroupMemberList {
+										if m == index -1 {
+											if !oop.Contains(data.Ban, GroupMemberList[m]) {
+												data.Ban = append(data.Ban, GroupMemberList[m])
+											}
+											
+										}
+									} 
+									SaveData()
+									cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
+								}
 							}
 
 							if txt == "help" {
