@@ -1738,7 +1738,7 @@ func perBots(cl *oop.Account) {
 						}
 						if msg.ContentType == 0 {
 							// kill คนส่งขอความ
-							if _, cek := data.ProKillMsg[to]; cek {
+							if _, cek := data.ProKillMsg[to]; cek && !sleepmode {
 								if getAccess(ctime,cl.Mid) {
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
@@ -1895,7 +1895,7 @@ func perBots(cl *oop.Account) {
 							if txt == "help" {
 								if getAccess(ctime,cl.Mid) {
 									tx := "┏เมนูคำสั่งบอท━━\n"
-									tx += "┃-help( pro max2 )\n"
+									tx += "┃-help\n"
 									tx += "┃-help2(ดูคำสั่งป้องกัน)\n"
 									tx += "┃━━Admins━━\n"
 									tx += "┃-เชคบัค\n"
@@ -1928,7 +1928,7 @@ func perBots(cl *oop.Account) {
 									tx += "┃-ดึง @\n"
 									tx += "┃-บัคออก\n" 
 									tx += "┃-join (เชิญแบบ ลิ้งค์)\n"
-									tx += "┃-join2 (เชิญแบบ เพิ่มเข้ากลุ่ม บอทต้องเป็นเพื่อนกัน)\n"
+									tx += "┃-join2 (เชิญแบบ เพิ่มเข้ากลุ่ม )\n"
 									tx += "┃-here\n"
 									tx += "┃-stay\n"
 									tx += "┃-setanti\n"
@@ -1952,17 +1952,15 @@ func perBots(cl *oop.Account) {
 									tx += "┃-เพิ่มรายชื่อดำ (เพิ่มไอดีดำทั้งหมด)\n"
 									tx += "┃-bypass\n"
 									tx += "┃-ac\n"
-									tx += "┃-add admin\n"
-									tx += "┃-del admin\n" 
-									// tx += "┃-promote owner\n"
-									// tx += "┃-demote owner\n"
+									// tx += "┃-add admin\n"
+									// tx += "┃-del admin\n" 
 									tx += "┃-เพิ่มแอดใหญ่\n"
 									tx += "┃-ลบแอดใหญ่\n"
 									tx += "┃-แอดเบอร์\n"
 									tx += "┃-app\n"
 									tx += "┃-rest\n"
-									// tx += "┃-bots\n"
-									// tx += "┃-botcont\n"
+									tx += "┃-newtoken (ล้างโทเค่นออกจากไฟล์)\n"
+									tx += "┃-addbot (ใส่โทเค่น)\n"
 									tx += "┃-เพิ่มบอท (@)\n"
 									tx += "┃-ออกทุกกลุ่ม\n"
 									tx += "┃-limiter kick/join\n"
@@ -2232,6 +2230,7 @@ func perBots(cl *oop.Account) {
 								}
 							} else if strings.HasPrefix(txt, "ค่ะ ") {
 								if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
+									sleepmode = false
 									go func() { BanWithList(dataMention) }()
 									var wg sync.WaitGroup
 									wg.Add(len(dataMention))
@@ -2245,6 +2244,7 @@ func perBots(cl *oop.Account) {
 								}
 							} else if strings.HasPrefix(txt, "ไรคะ ") {
 								if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
+									sleepmode = false
 									go func() { BanWithList(dataMention) }()
 									var wg sync.WaitGroup
 									wg.Add(len(dataMention))
@@ -3517,6 +3517,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "FLEX" {
 							if _, cek := data.ProFLEX[to]; cek {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3527,6 +3530,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "CHATEVENT" {
 							if _, cek := data.ProDelAlbum[to]; cek && op.Message.ContentMetadata["LOC_KEY"] == "BD" {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3537,6 +3543,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "STICKER" {
 							if _, cek := data.ProSTICKER[to]; cek {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3547,6 +3556,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "CALL" {
 							if _, cek := data.ProCALL[to]; cek && op.Message.ContentMetadata["GC_MEDIA_TYPE"] == "AUDIO" {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3557,6 +3569,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "FILE" {
 							if _, cek := data.ProFILE[to]; cek {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3567,6 +3582,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "POSTNOTIFICATION" {
 							if _, cek := data.ProPOSTNOTIFICATION[to]; cek {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3577,6 +3595,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "AUDIO" {
 							if _, cek := data.ProAUDIO[to]; cek {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3663,6 +3684,9 @@ func perBots(cl *oop.Account) {
 						} else if (op.Message.ContentType).String() == "IMAGE" {
 							if fullAccess(sender) {
 								if _, cek := data.ProIMAGE[to]; cek {
+									if sleepmode {
+										continue
+									}
 									if getAccess(ctime,cl.Mid) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3705,8 +3729,12 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						} else if (op.Message.ContentType).String() == "VIDEO" {
+							
 							if _, cek := data.ProVIDEO[to]; cek {
 								if getAccess(ctime,cl.Mid) {
+									if sleepmode {
+										continue
+									}
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
@@ -3752,8 +3780,8 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	LimiterJoin = 100
-	LimiterKick = 100
+	LimiterJoin = 1000
+	LimiterKick = 1000
 	Token := strings.Split(string(fileBytes), ",")
 	dataRead, err := ioutil.ReadFile(dataPath)
 	if err != nil {
