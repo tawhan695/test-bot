@@ -1830,24 +1830,30 @@ func perBots(cl *oop.Account) {
 										}
 									}
 							} else if strings.HasPrefix(txt, "addbot ") {
-								result := strings.Split((text), " ")
-									fileName := fmt.Sprintf("%v.txt", os.Args[1])
+								if getAccess(ctime,cl.Mid) {
+								    result := strings.Split((text), " ")
+									fileName := fmt.Sprintf("token.txt")
 									fileBytes, err := ioutil.ReadFile(fileName)
 									if err != nil {
 										fmt.Println(err)
 										os.Exit(1)
 									}
 									 Token := ""+string(fileBytes) 
-									for v := range result {
-										if v == 1 {
-											Token += result[1] +","
-											ioutil.WriteFile(toeknPath, []byte(Token), 0644)
-												if getAccess(ctime, cl.Mid) {
-													cl.SendMessage(to, " เพิ่มโทนเค่นสำเร็จ รีบูต  server ก่อนใช้งาน")
-												}
-
-										}
+									//  index, _ := strconv.Atoi(result[1])
+									 Token += result[1] +","
+									 ioutil.WriteFile(toeknPath, []byte(Token), 0644)
+									if getAccess(ctime, cl.Mid) {
+										cl.SendMessage(to, " เพิ่มโทนเค่นสำเร็จ รีบูต  server ก่อนใช้งาน")
 									}
+									continue
+								}
+							} else if txt == "newtoken" {
+								if getAccess(ctime,cl.Mid) {
+									// fileName := fmt.Sprintf("token.txt")
+									ioutil.WriteFile(toeknPath, []byte(""), 0644)
+									cl.SendMessage(to, "set null token ok")
+									continue
+								}
 							} else if strings.HasPrefix(txt, "สมาชิกกลุ่ม "){
 								if getAccess(ctime,cl.Mid) {
 									result := strings.Split((text), " ")
@@ -1896,9 +1902,6 @@ func perBots(cl *oop.Account) {
 									tx += "┃-ออน\n"
 									tx += "┃-เพิ่มสตาฟ\n"
 									tx += "┃-ลบสตาฟ\n"
-									tx += "┃-add staff\n"
-									tx += "┃-del staff\n"
-									tx += "┃━━Staffs━━━\n"
 									tx += "┃-ค่ะ @เตะคน\n"
 									tx += "┃-ป้องกัน * ดูป้องกัน\n"
 									tx += "┃-ไรคะ @เตะคน\n"
@@ -1943,11 +1946,11 @@ func perBots(cl *oop.Account) {
 									tx += "┃-อัพรูปวีดีโอ\n"
 									tx += "┃-อัพชื่อ\n"
 									tx += "┃-อัพตัส\n"
-									tx += "┃-goto\n"
+									tx += "┃-goto (ตามด้วยลิ้ง)\n"
+									tx += "┃-มุดลิ้ง (ตามด้วยลิ้ง)\n"
 									tx += "┃-รายชื่อดำ (ดึงไอดีดำทั้งหมด)\n"
 									tx += "┃-เพิ่มรายชื่อดำ (เพิ่มไอดีดำทั้งหมด)\n"
 									tx += "┃-bypass\n"
-
 									tx += "┃-ac\n"
 									tx += "┃-add admin\n"
 									tx += "┃-del admin\n" 
@@ -3202,7 +3205,7 @@ func perBots(cl *oop.Account) {
 										cl.SendMessage(to, "Auto clear enabled")
 									}
 								}
-							} else if strings.HasPrefix(txt, "goto ") {
+							} else if strings.HasPrefix(txt, "มุดลิ้ง ") {
 								get := strings.Split((text), " ")
 								link := strings.Split((get[1]), "https://line.me/R/ti/g/")
 								ticket := link[1]

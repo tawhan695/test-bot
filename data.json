@@ -1,5 +1,9 @@
 {
-    "squad": [],
+    "squad": [
+        "udbcc636d01a585d90674daeba5a8ab48",
+        "ub9aab6255badb5fa6ef1aa02688d395a",
+        "uec66950c84b4977c84f47153dc1b4066"
+    ],
     "owner": [],
     "admin": [],
     "staff": null,
@@ -7,36 +11,43 @@
     "ban": [],
     "targetspam": [],
     "limitstatus": {
+        "ub9aab6255badb5fa6ef1aa02688d395a": false,
+        "udbcc636d01a585d90674daeba5a8ab48": false,
+        "uec66950c84b4977c84f47153dc1b4066": false
     },
-    "limittime": {},
-    "prokick": {
+    "limittime": {
+        "ub9aab6255badb5fa6ef1aa02688d395a": "2023-11-29T03:18:17.139721+07:00",
+        "udbcc636d01a585d90674daeba5a8ab48": "2023-11-29T03:18:15.632343+07:00",
+        "uec66950c84b4977c84f47153dc1b4066": "2023-11-29T03:18:18.545195+07:00"
     },
-    "proinvite": {
-    },
-    "procancel": {
-    },
-    "projoin": {
-    },
-    "proqr": {
-    },
+    "prokick": {},
+    "proinvite": {},
+    "procancel": {},
+    "projoin": {},
+    "proqr": {},
     "ProLINK": {},
-    "ProFLEX": {
-    },
-    "ProDelAlbum": {
-    },
+    "ProFLEX": {},
+    "ProDelAlbum": {},
     "ProSTICKER": {},
-    "ProCALL": {
-    },
-    "ProFILE": {
-    },
-    "ProPOSTNOTIFICATION": {
-    },
-    "ProVIDEO": {
-    },
-    "ProAUDIO": {
-    },
+    "ProCALL": {},
+    "ProFILE": {},
+    "ProPOSTNOTIFICATION": {},
+    "ProVIDEO": {},
+    "ProAUDIO": {},
     "ProIMAGE": {},
     "ProKillMsg": {},
-    "staygroup": {},
+    "staygroup": {
+        "c2e068c9bdf5c9009b02050fc3ce63f05": [
+            "udbcc636d01a585d90674daeba5a8ab48",
+            "ub9aab6255badb5fa6ef1aa02688d395a",
+            "uec66950c84b4977c84f47153dc1b4066"
+        ],
+        "c72b3a2ac73dee8ba3321eee4e0d73631": [
+            "ub9aab6255badb5fa6ef1aa02688d395a"
+        ],
+        "cb51e93df33fe24a5a07625339461229d": [
+            "udbcc636d01a585d90674daeba5a8ab48"
+        ]
+    },
     "staypending": {}
 }
