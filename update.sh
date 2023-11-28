@@ -10,6 +10,8 @@ cp token.txt.backup test-bot/token.txt
 cd test-bot
 go build main.go
 cd ~
+cp test-bot/update.sh update.sh
+chmod +x update.sh
 cp test-bot/bot.sh bot.sh
 cp botService.service /etc/systemd/system/botService.service
 chmod +x bot.sh
