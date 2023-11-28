@@ -13,12 +13,12 @@ import (
 	"time"
 	"math/rand"
 
-	// "./Library/oop"
+	"./Library/oop"
 	"github.com/kardianos/osext"
-	// "./Library/linethrift"
+	"./Library/linethrift"
 
-	"botline/Library-mac/oop"
-	"botline/Library-mac/linethrift"
+	// "botline/Library-mac/oop"
+	// "botline/Library-mac/linethrift"
 
 )
 
