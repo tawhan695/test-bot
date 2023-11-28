@@ -9,4 +9,6 @@ cp data.json.backup test-bot/data.json
 cp token.txt.backup test-bot/token.txt
 cd test-bot
 go build main.go
-./main token
+cd ~
+cp test-bot/bot.sh bot.sh
+reboot
