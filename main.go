@@ -66,6 +66,7 @@ var duedatecount int = 0
 var (
 	data     User
 	dataPath = fmt.Sprintf("data.json")
+	toeknPath = fmt.Sprintf("token.txt")
 	Maker    = []string{
 		"u53ab6fa03c2838678a07a10fd142eb81",
 	}
@@ -106,6 +107,7 @@ var (
 	DemoteOwner      = false
 	notiFadd 		 = false
 	kickban 		 = false
+	sleepmode 		 = true
 	Spamlimit        int
 	LimiterJoin      int
 	LimiterKick      int
@@ -1440,6 +1442,9 @@ func perBots(cl *oop.Account) {
 					
 			        switch op.Type {
 				case 124:
+					if sleepmode {
+						continue
+					}
 					fmt.Println("เชิญเข้าสู่การแชท 124")
 					op1,op2,op3,ctime := op.Param1,op.Param2,strings.Split(op.Param3, "\x1e") ,op.CreatedTime
 					if getAccessForCancel(cl ,op2 ,op3 ) {
@@ -1473,6 +1478,9 @@ func perBots(cl *oop.Account) {
 						WarTime[op1] = time.Now()
 					}
 				case 123:
+					if sleepmode {
+						continue
+					}
 					op1 := op.Param1
 					op3 := op.Param3
 					if AccessWarTime(op1) {
@@ -1481,6 +1489,9 @@ func perBots(cl *oop.Account) {
 					}
 					//Kicked
 				case 133:
+					if sleepmode {
+						continue
+					}
 					op1,op2,op3,ctime := op.Param1,op.Param2,op.Param3 ,op.CreatedTime
 					if fullAccess(op2) {
 						continue
@@ -1546,6 +1557,9 @@ func perBots(cl *oop.Account) {
 					}				
 			//    client kicked
 				case 132:
+					if sleepmode {
+						continue
+					}
 					op1 := op.Param1
 					if invtd {
 						invtd = false
@@ -1560,6 +1574,9 @@ func perBots(cl *oop.Account) {
 						}(op1)
 					}
 				case 55 : 
+					if sleepmode {
+						continue
+					}
 					op1,op2 := op.Param1,op.Param2
 					if oop.Contains(data.Ban, op2) {
 						go cl.DeleteOtherFromChat(op1, []string{op2})
@@ -1568,6 +1585,9 @@ func perBots(cl *oop.Account) {
 					}
 					//Join
 				case 130:
+					if sleepmode {
+						continue
+					}
 					op1,op2,op3 := op.Param1,op.Param2,op.Param3
 					if fullAccess(op2) {
 						continue
@@ -1584,6 +1604,9 @@ func perBots(cl *oop.Account) {
 					}
 					//Cancel
 				case 126:
+					if sleepmode {
+						continue
+					}
 					op1,op2,op3,ctime := op.Param1,op.Param2,op.Param3 ,op.CreatedTime
 
 					if fullAccess(op2) {
@@ -1636,6 +1659,9 @@ func perBots(cl *oop.Account) {
 
 					//Qr
 				case 122:
+					if sleepmode {
+						continue
+					}
 					op1,op2,ctime := op.Param1,op.Param2,op.CreatedTime
 					if fullAccess(op2) {
 						continue
@@ -1658,1972 +1684,2014 @@ func perBots(cl *oop.Account) {
 					}
 
 				case 129:
-				op1 := op.Param1
-				if AccessWarTime(op1) && !Multy{
-					go inviteSquad(cl, op1)
-				}
+					if sleepmode {
+						continue
+					}
+					op1 := op.Param1
+					if AccessWarTime(op1) && !Multy{
+						go inviteSquad(cl, op1)
+					}
 
 				//Notif Add
-			case 5: 
-				adders  := op.Param1
-				if IsBanned(adders) {return}
-					allgrup, _ := cl.GetGroupIdsJoined()
-					CanAdd := false
-					for _, v := range allgrup {
-						if AutoTimeSets(v,adders) && !fullAccessd(v,adders) && notiFadd == true {
-							CanAdd = true
-								anu := cl.DeleteOtherFromChat(v, []string{adders})
-								if anu != nil {break}
-							}
-						if CanAdd{
-							appendBl(adders)
-						}
+				case 5: 
+					if sleepmode {
+						continue
 					}
+					adders  := op.Param1
+					if IsBanned(adders) {return}
+						allgrup, _ := cl.GetGroupIdsJoined()
+						CanAdd := false
+						for _, v := range allgrup {
+							if AutoTimeSets(v,adders) && !fullAccessd(v,adders) && notiFadd == true {
+								CanAdd = true
+									anu := cl.DeleteOtherFromChat(v, []string{adders})
+									if anu != nil {break}
+								}
+							if CanAdd{
+								appendBl(adders)
+							}
+						}
 				case 26:
-					cl.Rev = -1
-					ctime := op.CreatedTime
-					msg := op.Message
-					text := op.Message.Text
-					sender := msg.From_
-					var to = msg.To
-					// fmt.Println([]*.GetChunks)
-					// fmt.Println(cl.chu)
-					// fmt.Println("++++++++++++++++")
-					var pesan = strings.ToLower(text)
-					if (op.Message.ContentType).String() == "NONE" {
-						if _, cek := data.ProLINK[to]; cek {
-							if strings.Contains(pesan, "http") || strings.Contains(pesan, "lin"){
+						cl.Rev = -1
+						ctime := op.CreatedTime
+						msg := op.Message
+						text := op.Message.Text
+						sender := msg.From_
+						var to = msg.To
+						// fmt.Println([]*.GetChunks)
+						// fmt.Println(cl.chu)
+						// fmt.Println("++++++++++++++++")
+						var pesan = strings.ToLower(text)
+						if (op.Message.ContentType).String() == "NONE" {
+							if _, cek := data.ProLINK[to]; cek {
+								if strings.Contains(pesan, "http") || strings.Contains(pesan, "lin"){
+									if getAccess(ctime,cl.Mid) {
+										if !fullAccess(sender) {
+											cl.DeleteOtherFromChat(to, []string{sender})
+											appendBl(sender)
+											cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
+										}
+									}
+								}
+							}
+						}
+						if msg.ContentType == 0 {
+							// kill คนส่งขอความ
+							if _, cek := data.ProKillMsg[to]; cek {
 								if getAccess(ctime,cl.Mid) {
 									if !fullAccess(sender) {
 										cl.DeleteOtherFromChat(to, []string{sender})
 										appendBl(sender)
-										cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
+										// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
 									}
 								}
 							}
-						}
-					}
-					if msg.ContentType == 0 {
-						// kill คนส่งขอความ
-						if _, cek := data.ProKillMsg[to]; cek {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
-								}
-							}
-						}
-						Msg := string(msg.Text)
-						
-						if !fullAccess(sender) {
-							continue
-						}
-
-
-						box := strings.Split((Msg), ",")
-						for TX:= range box {
-						if TX != 0{time.Sleep(1 * time.Second)}
-						text := string(box[TX])
-						txt := strings.ToLower(text)
-						var dataMention = []string{}
-						if _, cek := msg.ContentMetadata["MENTION"]; cek {
-							mentions := oop.Mentions{}
-							json.Unmarshal([]byte(msg.ContentMetadata["MENTION"]), &mentions)
-							for _, v := range mentions.MENTIONEES {
-								if !oop.Contains(dataMention, v.M) {
-									dataMention = append(dataMention, v.M)
-								}
-							}
-						}
-
-						 if txt == "กันหมด เปิด" {
-							if getAccess(ctime,cl.Mid) {
-								Promax(to)
-								SaveData()
-								putSquad(cl, to)
-								cl.SendMessage(to, "กันหมด เปิดสำเร็จ")
-								continue
-							}
-						} else if txt == "กันหมด ปิด" {
-							if getAccess(ctime,cl.Mid) {
-								Pronull(to)
-								SaveData()
-								putSquad(cl, to)
-								cl.SendMessage(to, "กันหมด ปิดสำเร็จ")
-								continue
-							}
-						} else if strings.HasPrefix(txt, "เพิ่มเพื่อน ") {
-				
-								result := strings.Split((text), " ")
-								// fmt.Println(result)
-								for v := range result {
-									if v > 0 {
-										_, err := cl.FindAndAddContactsByMid(result[v])
-										if err != nil {
-											// fmt.Println(err)​​
-											if getAccess(ctime, cl.Mid) {
-												putSquad(cl, to)
-												cl.SendMessage(to, "มีเป็นเพื่อนแล้ว")
-												// break
-											}
-										}
-									}
-								}
-								cl.SendMessage(to, "ok ..")
-								continue
-							 
-						} else if txt == "mymid" {
-							if getAccess(ctime,cl.Mid) {
+							Msg := string(msg.Text)
 							
-								cl.SendMessage(to, sender)
+							if !fullAccess(sender) {
 								continue
 							}
-						} else if strings.HasPrefix(txt, "ออกกลุ่ม ") {
-							result := strings.Split((text), " ")
-								// fmt.Println(result)
-								for v := range result {
-									if v == 1 {
-										gc := GroupList[v-1]
-										if len(gc) > 5 {
-											cl.SendMessage(gc, " bye bye....")
-											cl.DeleteSelfFromChat(gc)
-											if getAccess(ctime, cl.Mid) {
-												cl.SendMessage(to, " ออกกลุ่ม ok")
-											}
-												
-										}
-										continue
-									}
-								}
 
-							
-						}
 
-						if txt == "help" {
-							if getAccess(ctime,cl.Mid) {
-								tx := "┏เมนูคำสั่งบอท━━\n"
-								tx += "┃-help( pro max2 )\n"
-								tx += "┃-help2(ดูคำสั่งป้องกัน)\n"
-								tx += "┃━━Admins━━\n"
-								tx += "┃-เชคบัค\n"
-								tx += "┃-ออน\n"
-								tx += "┃-เพิ่มสตาฟ\n"
-								tx += "┃-ลบสตาฟ\n"
-								tx += "┃-add staff\n"
-								tx += "┃-del staff\n"
-								tx += "┃━━Staffs━━━\n"
-								tx += "┃-ค่ะ @เตะคน\n"
-								tx += "┃-ป้องกัน * ดูป้องกัน\n"
-								tx += "┃-ไรคะ @เตะคน\n"
-								tx += "┃-. *เชคบอท\n"
-								tx += "┃-เชคบอท *เชคบอท\n"
-								tx += "┃-นับบอท *นับบอท\n"
-								tx += "┃-count *นับบอท\n"
-								tx += "┃-เชคดำ\n" 
-								tx += "┃-ล้างดำ\n"
-								tx += "┃-ยัดดำ เปิด/ปิด\n"
-								tx += "┃-ลบดำ เปิด/ปิด\n"
-								tx += "┃-เพิ่มดำ @\n"
-								tx += "┃-ลบดำ @\n"
-								tx += "┃-กันหมด เปิด\n"
-								tx += "┃-กันหมด ปิด\n"
-								tx += "┃-เปิดลิ้ง\n"
-								tx += "┃-ปิดลิ้ง\n"
-								tx += "┃-แอดเพื่อนบอท\n"
-								tx += "┃-เชคบัค\n"
-								tx += "┃-เชคกัน\n"
-								tx += "┃-เชคแอดมิน\n"
-								tx += "┃-เชคเพื่อน\n"
-								tx += "┃-ยึด\n" 
-								tx += "┃-ดึง @\n"
-								tx += "┃-บัคออก\n" 
-								tx += "┃-join (เชิญแบบ ลิ้งค์)\n"
-								tx += "┃-join2 (เชิญแบบ เพิ่มเข้ากลุ่ม บอทต้องเป็นเพื่อนกัน)\n"
-								tx += "┃-here\n"
-								tx += "┃-stay\n"
-								tx += "┃-setanti\n"
-								tx += "┃-bye\n"
-								tx += "┃-rot\n"
-								tx += "┃-bm\n"
-								tx += "┃-บัญชีแอดมิน\n"
-								tx += "┃-gurl\n"
-								tx += "┃-เชิญห้อง @\n"
-								tx += "┃-เพิ่มแอดมิน\n"
-								tx += "┃-ลบแอดมิน\n"
-								tx += "┃-กลุ่ม\n"
-								tx += "┃-ลิ้งกลุ่ม (เลขห้อง)\n"
-								tx += "┃-อัพรูป\n"
-								tx += "┃-อัพรูปวีดีโอ\n"
-								tx += "┃-อัพชื่อ\n"
-								tx += "┃-อัพตัส\n"
-								tx += "┃-goto\n"
-								tx += "┃-รายชื่อดำ (ดึงไอดีดำทั้งหมด)\n"
-								tx += "┃-เพิ่มรายชื่อดำ (เพิ่มไอดีดำทั้งหมด)\n"
-								tx += "┃-bypass\n"
-
-								tx += "┃-ac\n"
-								tx += "┃-add admin\n"
-								tx += "┃-del admin\n" 
-								// tx += "┃-promote owner\n"
-								// tx += "┃-demote owner\n"
-								tx += "┃-เพิ่มแอดใหญ่\n"
-								tx += "┃-ลบแอดใหญ่\n"
-								tx += "┃-แอดเบอร์\n"
-								tx += "┃-app\n"
-								tx += "┃-rest\n"
-								// tx += "┃-bots\n"
-								// tx += "┃-botcont\n"
-								tx += "┃-เพิ่มบอท (@)\n"
-								tx += "┃-ออกทุกกลุ่ม\n"
-								tx += "┃-limiter kick/join\n"
-								tx += "┃-fix\n"
-								cl.SendMessage(msg.To, tx)
-							}
-						} else if txt == "help2" {
-							if getAccess(ctime,cl.Mid) {
-								tx := "┏คำสั่งป้องกันกลุ่ม\n"
-								tx += "┃-กันหมด เปิด/ปิด\n"
-								tx += "┃-กันแอด เปิด/ปิด\n"
-								tx += "┃-กันส่งข้อความ เปิด/ปิด\n"
-								tx += "┃-เตะดำ เปิด/ปิด\n"
-								tx += "┃-กันวางลิ้ง เปิด/ปิด\n"
-								tx += "┃-กันเฟค เปิด/ปิด\n"
-								tx += "┃-กันอัลบั้ม เปิด/ปิด\n"
-								tx += "┃-กันสติ๊กเกอร์ เปิด/ปิด\n"
-								tx += "┃-กันโทรกลุ่ม เปิด/ปิด\n"
-								tx += "┃-กันส่งไฟล์ เปิด/ปิด\n"
-								tx += "┃-กันโพส เปิด/ปิด\n"
-								tx += "┃-กันส่งวีดีโอ เปิด/ปิด\n"
-								tx += "┃-กันส่งคลิปเสียง เปิด/ปิด\n"
-								tx += "┃-กันส่งรูป เปิด/ปิด\n"
-								tx += "┃-กันเตะ เปิด/ปิด\n"
-								tx += "┃-กันเชิญ เปิด/ปิด\n"
-								tx += "┃-กันคนเข้า เปิด/ปิด\n"
-								tx += "┃-กันลิ้ง เปิด/ปิด\n"
-								tx += "┃-killmode on/off\n"
-								tx += "┃-ajs\n"
-								tx += "┃-fix\n"
-								tx += "┖━━🖤━━━━"
-								cl.SendMessage(msg.To, tx)
-							}
-						} else if strings.HasPrefix(txt, "add ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								if result[1] == "staff" {
-									if fullAccess(sender) {
-										PromoteStaff = true
-										PromoteAdmin = false
-										PromoteOwner = false
-										PromoteStaff = false
-										DemoteStaff = false
-										DemoteAdmin = false
-										DemoteOwner = false
-										Scont = true
-										cl.SendMessage(msg.To, "Please Send contact of prospective Staff !..")
-									}
-								} else if result[1] == "owner" {
-									if fullAccess(sender) {
-										PromoteStaff = false
-										PromoteAdmin = false
-										PromoteOwner = true
-										PromoteStaff = false
-										DemoteStaff = false
-										DemoteAdmin = false
-										DemoteOwner = false
-										Scont = true
-										cl.SendMessage(msg.To, "Please Send contact of prospective Owner !..")
-									}
-								} else if result[1] == "admin" {
-									if fullAccess(sender) {
-										PromoteStaff = false
-										PromoteAdmin = true
-										PromoteOwner = false
-										PromoteStaff = false
-										DemoteStaff = false
-										DemoteAdmin = false
-										DemoteOwner = false
-										Scont = true
-										cl.SendMessage(msg.To, "Please Send contact of prospective Admin !..")
-									}
-								} else if result[1] == "done" {
-									if fullAccess(sender) {
-										PromoteStaff = false
-										PromoteAdmin = false
-										PromoteOwner = false
-										PromoteStaff = false
-										DemoteStaff = false
-										DemoteAdmin = false
-										DemoteOwner = false
-										Scont = false
-										cl.SendMessage(msg.To, "Promote with contact mute !...")
+							box := strings.Split((Msg), ",")
+							for TX:= range box {
+							if TX != 0{time.Sleep(1 * time.Second)}
+							text := string(box[TX])
+							txt := strings.ToLower(text)
+							var dataMention = []string{}
+							if _, cek := msg.ContentMetadata["MENTION"]; cek {
+								mentions := oop.Mentions{}
+								json.Unmarshal([]byte(msg.ContentMetadata["MENTION"]), &mentions)
+								for _, v := range mentions.MENTIONEES {
+									if !oop.Contains(dataMention, v.M) {
+										dataMention = append(dataMention, v.M)
 									}
 								}
 							}
-						} else if strings.HasPrefix(txt, "del ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								if result[1] == "staff" {
-									if fullAccess(sender) {
-										PromoteStaff = false
-										PromoteAdmin = false
-										PromoteOwner = false
-										PromoteStaff = false
-										DemoteStaff = true
-										DemoteAdmin = false
-										DemoteOwner = false
-										Scont = true
-										cl.SendMessage(msg.To, "Please Send contact for delete Staff !..")
-									}
-								} else if result[1] == "owner" {
-									if fullAccess(sender) {
-										PromoteStaff = false
-										PromoteAdmin = false
-										PromoteOwner = false
-										PromoteStaff = false
-										DemoteStaff = false
-										DemoteAdmin = false
-										DemoteOwner = true
-										Scont = true
-										cl.SendMessage(msg.To, "Please Send contact for delete Owner !..")
-									}
-								} else if result[1] == "admin" {
-									if fullAccess(sender) {
-										PromoteStaff = false
-										PromoteAdmin = false
-										PromoteOwner = false
-										PromoteStaff = false
-										DemoteStaff = false
-										DemoteAdmin = true
-										DemoteOwner = false
-										Scont = true
-										cl.SendMessage(msg.To, "Please Send contact for delete Admin !..")
-									}
-								} else if result[1] == "done" {
-									if fullAccess(sender) {
-										PromoteStaff = false
-										PromoteAdmin = false
-										PromoteOwner = false
-										PromoteStaff = false
-										DemoteStaff = false
-										DemoteAdmin = false
-										DemoteOwner = false
-										Scont = false
-										cl.SendMessage(msg.To, "Demote with contact mute !...")
-									}
-								}
-							}
-						}else if txt == "." {
-							cl.SendMention(to, "ok @!", []string{sender})
-						} else if txt == "count" {
-							if getAccess(ctime,cl.Mid) {
-								chat, _ := cl.GetChats([]string{to}, true, false)
-								if chat != nil {
-									members := chat.Chats[0].Extra.GroupExtra.MemberMids
-									num := 1
-									for x := range Botlist {
-										if _, cek := members[data.Squad[x]]; cek && oop.Uncontains(Freeze, Botlist[x].Mid) {
-											Botlist[x].SendMessage(to, strconv.Itoa(num))
-											num += 1
-										}
-									}
+
+							if txt == "กันหมด เปิด" {
+								if getAccess(ctime,cl.Mid) {
+									Promax(to)
 									SaveData()
 									putSquad(cl, to)
-								}
-							}
-						} else if txt == "เชคดำ" {
-							if getAccess(ctime,cl.Mid) {
-								if len(data.Ban) != 0 {
-									tx := "• Banlist\n\n"
-									target := []string{}
-									for x := range data.Ban {
-										if data.Ban[x] != "" {
-											tx += fmt.Sprintf("	%v. @!\n", x+1)
-											target = append(target, data.Ban[x])
-										}
-									}
-									cl.SendMention(to, tx, target)
-								} else {
-									cl.SendMessage(to, "Not have banlist")
-								}
-							}
-						} else if txt == "รายชื่อดำ" {
-							if getAccess(ctime,cl.Mid) {
-								if len(data.Ban) != 0 {
-									tx := ""
-									for x := range data.Ban {
-										if data.Ban[x] != "" {
-											tx += fmt.Sprintf("%v,",data.Ban[x])
-										}
-									}
-									cl.SendMessage(to, tx)
-										continue
-								} else {
-									cl.SendMessage(to, "Not have banlist")
+									cl.SendMessage(to, "กันหมด เปิดสำเร็จ")
 									continue
 								}
-							}
-						} else if txt == "bans" {
-							if getAccess(ctime,cl.Mid) {
-								limitQR := []string{}
-								for x := range Botlist {
-									if oop.Contains(Freeze, Botlist[x].Mid) {
-										continue
-									}
-									res := Botlist[x].DeleteOtherFromChat(Botlist[x].Mid, []string{Botlist[x].Mid})
-									if res != nil {
-										if strings.Contains(res.Error(), "request blocked") {
-											SetLimit(Botlist[x].Mid)
-											continue
-										}
-									}
-									SetNormal(Botlist[x].Mid)
-									rev := Botlist[x].AcceptChatInvitationByTicket(to, "kntl")
-									if strings.Contains(rev.Error(), "request blocked") {
-										limitQR = append(limitQR, Botlist[x].Mid)
-									}
+							} else if txt == "กันหมด ปิด" {
+								if getAccess(ctime,cl.Mid) {
+									Pronull(to)
+									SaveData()
+									putSquad(cl, to)
+									cl.SendMessage(to, "กันหมด ปิดสำเร็จ")
+									continue
 								}
-								limit := []string{}
-								for k := range data.LimitStatus {
-									if data.LimitStatus[k] {
-										limit = append(limit, k)
-									}
-								}
-								if len(limit) != 0 {
-									var no = 1
-									res := fmt.Sprintf("Bots get Bans %v/%v\n", len(limit), len(data.Squad))
-									for _, v := range limit {
-										now := time.Now()
-										timeDate := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second(), 100, time.Local)
-										wkt := data.LimitTime[v]
-										wktt := wkt.Sub(timeDate)
-										con, _ := cl.GetContact(v)
-										cl.SendContact(to, v)
-										if oop.Contains(limitQR, v) {
-											limitQR = oop.Remove(limitQR, v)
-										}
-										res += fmt.Sprintf("\n%v. %s", no, con.DisplayName)
-										res += fmt.Sprintf("\n	เหลือเวลาบัค: %s", limitDuration(wktt))
-										no++
-									}
-
-									if len(limitQR) != 0 {
-										res += fmt.Sprintf("\n\n\nBlock AcceptTicket")
-										num := 1
-										for l := range limitQR {
-											con, _ := cl.GetContact(limitQR[l])
-											res += fmt.Sprintf("\n%v. %s", num, con.DisplayName)
-											num++
-										}
-									}
-									cl.SendMessage(to, res)
-								} else {
-									res := fmt.Sprintf("All bots normal.")
-									if len(limitQR) != 0 {
-										res += fmt.Sprintf("\n\nBlock Accept Ticket")
-										num := 1
-										for l := range limitQR {
-											con, _ := cl.GetContact(limitQR[l])
-											res += fmt.Sprintf("\n	%v. %s", num, con.DisplayName)
-											num++
-										}
-									}
-									if len(Freeze) != 0 {
-										res += fmt.Sprintf("\n\nAccount Freeze")
-										numm := 1
-										for l := range Freeze {
-											con, _ := cl.GetContact(Freeze[l])
-											res += fmt.Sprintf("\n	%v. %s", numm, con.DisplayName)
-											numm++
-										}
-									}
-									cl.SendMessage(to, res)
-								}
-							}
-						} else if strings.HasPrefix(txt, "ค่ะ ") {
-							if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
-								go func() { BanWithList(dataMention) }()
-								var wg sync.WaitGroup
-								wg.Add(len(dataMention))
-								for i := 0; i < len(dataMention); i++ {
-									go func(i int) {
-										defer wg.Done()
-										cl.DeleteOtherFromChat(to, []string{dataMention[i]})
-									}(i)
-								}
-								wg.Wait()
-							}
-						} else if strings.HasPrefix(txt, "ไรคะ ") {
-							if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
-								go func() { BanWithList(dataMention) }()
-								var wg sync.WaitGroup
-								wg.Add(len(dataMention))
-								for i := 0; i < len(dataMention); i++ {
-									res := KillMode(cl, to, dataMention[i])
-									
-									go func(i int) {
-										defer wg.Done()
-										go KickAndCancelByList(cl, to, res["targetMember"], res["targetInvitee"])
-									}(i)
-								}
-								wg.Wait()
-							}
-						} else if txt == "ล้างดำ" {
-							if getAccess(ctime,cl.Mid) { 
-								oop.Clearcache()
-								ModTicket = ""
-								lock = ""
-								BotKor = make(map[string]bool)
-								TempJoin = "0"
-								pala = ""
-								lockMod = ""
-								if AutoMulty {Multy = true}
-								WarTime = make(map[string]time.Time)
-								for b := range Botlist {
-									Botlist[b].SpamJoin = 0
-								}
-								if len(data.Ban) != 0 {
-									tx := "• ClearBan\n\n"
-									target := []string{}
-									for x := range data.Ban {
-										if data.Ban[x] != "" {
-											tx += fmt.Sprintf("	%v. @!\n", x+1)
-											target = append(target, data.Ban[x])
-										}
-									}
-									cl.SendMention(to, tx, target)
-								} else {
-									cl.SendMessage(to, "Not have banlist")
-								}
-								data.Ban = []string{}
-								SaveData()
-								putSquad(cl, to)
-							}
-						} else if txt == "promax" {
-							if getAccess(ctime,cl.Mid) {
-								Promax(to)
-								SaveData()
-								putSquad(cl, to)
-								cl.SendMessage(to, "🆗")
-							}
-						} else if txt == "pronull" {
-							if getAccess(ctime,cl.Mid) {
-								Pronull(to)
-								SaveData()
-								putSquad(cl, to)
-								cl.SendMessage(to, "All Protect off")
-							}
-						} else if txt == "เปิดลิ้ง" {
-							if getAccess(ctime,cl.Mid) {
-								chat, _ := cl.GetChats([]string{to}, false, false)
-								if chat != nil {
-									if chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
-										cl.UpdateChatQr(to, false)
-									}
-									ticket, _ := cl.ReissueChatTicket(to)
-									if ticket != nil {
-										cl.SendMessage(to, fmt.Sprintf("https://line.me/R/ti/g/%v", ticket.TicketId))
-									}
-								}
-							}
-						} else if txt == "ปิดลิ้ง" {
-							if getAccess(ctime,cl.Mid) {
-								chat, _ := cl.GetChats([]string{to}, false, false)
-								if chat != nil {
-									if !chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
-										cl.UpdateChatQr(to, true)
-									}
-								}
-							}
-						} else if txt == "เชคกัน" {
-							if getAccess(ctime,cl.Mid) {
-								tx := "┏━━ข้อมูลบอท━━━━━━━━\n"
-								tx += "┃-นักพัฒนา : tanongsak695 @!\n"
-								tx += fmt.Sprintf("┃-กลุ่มทั้งหมด : %v\n", len(data.StayGroup))
-								tx += "┃━━การตั้งค่าการป้องกัน━━\n"
-								tx += "┃-ป้องส่งข้อความ : "
-								if _, cek := data.ProKillMsg[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันวางลิ้ง : "
-								if _, cek := data.ProLINK[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันโฆษณาflex : "
-								if _, cek := data.ProFLEX[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันลบอัลบั้ม : "
-								if _, cek := data.ProDelAlbum[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันส่งสติ๊กเกอร์ : "
-								if _, cek := data.ProSTICKER[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันโทรกลุ่ม : "
-								if _, cek := data.ProCALL[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันส่งไฟล์ : "
-								if _, cek := data.ProFILE[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันแชร์โพส : "
-								if _, cek := data.ProPOSTNOTIFICATION[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันส่งวีดีโอ : "
-								if _, cek := data.ProVIDEO[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันส่งคลิปเสียง : "
-								if _, cek := data.ProAUDIO[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันส่งรูปภาพ : "
-								if _, cek := data.ProIMAGE[to]; cek {
-									tx += "	??\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันเตะ :  "
-								if _, cek := data.ProKick[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันยกเลิก : "
-								if _, cek := data.ProCancel[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันเชิญ :  "
-								if _, cek := data.ProInvite[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันเปิดลิ้ง : "
-								if _, cek := data.ProQr[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ป้องกันคนเข้า : "
-								if _, cek := data.ProJoin[to]; cek {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃━━โหมดการตั้งค่า━━━\n"
-								tx += "┃-ป้องกันคนแอดบอท : "
-								if notiFadd == true {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ᴋɪᴄᴋʙᴀɴ : "
-								if kickban == true {
-									tx += "	🟢\n"
-								} else {
-									tx += "	🔴\n"
-								}
-								tx += "┃-ᴋɪʟʟᴍᴏᴅᴇ : "
-								if KillMod {
-									tx += "	ᴇɴᴀʙʟᴇ\n"
-								} else {
-									tx += "	ᴅɪsᴀʙʟᴇ\n"
-								}
-								tx += "┃-ʀᴏᴛᴀᴛɪᴏɴs : "
-								if Loop {
-									tx += "	ᴘʀᴇᴠᴇɴᴛᴇᴅᴊᴏɪɴ\n"
-								} else {
-									tx += "	ᴘᴀʀᴇɴᴛ\n"
-								}
-								tx += "┃-ʙᴀᴄᴋᴜᴘ : "
-								if Multy {
-									tx += "	ᴍᴜʟᴛʏ\n"
-								} else {
-									tx += "	sᴇᴍɪ\n"
-								}
-								tx += "┃-ᴀᴜᴛᴏᴄʟᴇᴀʀʙᴀɴ : "
-								if AutoClearban {
-									tx += "	⭕\n"
-								} else {
-									tx += "	❌\n"
-								}
-								tx += fmt.Sprintf("┃-ลิมิตการเตะ : %v\n", LimiterKick)
-								tx += fmt.Sprintf("┃-ลิมิตการเข้าร่วม : %v\n", LimiterJoin)
-								cl.SendMention(to, tx, []string{Maker[0]})
-							}
-						}
-						if !fullAccess(sender) { //ผู้สร้าง แอดมิน เจ้าของ
-							continue
-						}
-						if txt == "join2" {
-							if getAccess(ctime,cl.Mid) {
-								for c := range data.Squad {
-									data.StayGroup[to] = append(data.StayGroup[to],data.Squad[c])
-								}
-								go inviteAllBots2(cl, to)
-							}
-						} else if txt == "join" {
-							if getAccess(ctime,cl.Mid) {
-								chat, _ := cl.GetChats([]string{to}, true, false)
-								if chat != nil {
-									/*if chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
-										cl.UpdateChatQr(to, false)
-									}*/
-									cl.UpdateChatQr(to, false)
-									members := chat.Chats[0].Extra.GroupExtra.MemberMids
-									ticket, _ := cl.ReissueChatTicket(to)
-									if ticket != nil {
-										link := fmt.Sprintf("%v", ticket.TicketId)
-										for x := range Botlist {
-											if cl.Mid != data.Squad[x] {
-												if _, cek := members[data.Squad[x]]; !cek && oop.Uncontains(Freeze, Botlist[x].Mid) {
-													err := Botlist[x].AcceptChatInvitationByTicket(to, link)
-													if err != nil {
-														fmt.Println("error", err)
-													}
+							} else if strings.HasPrefix(txt, "เพิ่มเพื่อน ") {
+					
+									result := strings.Split((text), " ")
+									// fmt.Println(result)
+									for v := range result {
+										if v > 0 {
+											_, err := cl.FindAndAddContactsByMid(result[v])
+											if err != nil {
+												// fmt.Println(err)​​
+												if getAccess(ctime, cl.Mid) {
+													putSquad(cl, to)
+													cl.SendMessage(to, "มีเป็นเพื่อนแล้ว")
+													// break
 												}
 											}
 										}
 									}
-								}
-								putSquad(cl, to)
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "stay ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								BotStay := data.StayGroup[to]
-								Ajs := data.StayPending[to]
-								call, _ := strconv.Atoi(result[1])
-								grup, _ := cl.GetChats([]string{to}, false, false)
-								ticket, err := cl.ReissueChatTicket(to)
-
-								if err != nil {
+									cl.SendMessage(to, "ok ..")
+									continue
+								
+							} else if txt == "mymid" {
+								if getAccess(ctime,cl.Mid) {
+								
+									cl.SendMessage(to, sender)
 									continue
 								}
-								link := fmt.Sprintf("%v", ticket.TicketId)
-								if len(data.Squad)-len(Ajs) >= call {
-									if len(BotStay) <= call {
-										if grup.Chats[0].Extra.GroupExtra.PreventedJoinByTicket == true {
-											errup := cl.UpdateChatQr(to, false)
-											if errup != nil {
-												cl.SendMessage(msg.To, "ขออภัยไม่สามารถนำบอทได้.")
+							} else if strings.HasPrefix(txt, "ออกกลุ่ม ") {
+								result := strings.Split((text), " ")
+									// fmt.Println(result)
+									for v := range result {
+										if v == 1 {
+											gc := GroupList[v-1]
+											if len(gc) > 5 {
+												cl.SendMessage(gc, " bye bye....")
+												cl.DeleteSelfFromChat(gc)
+												if getAccess(ctime, cl.Mid) {
+													cl.SendMessage(to, " ออกกลุ่ม ok")
+												}
+													
+											}
+											continue
+										}
+									}
+							} else if strings.HasPrefix(txt, "addbot ") {
+								result := strings.Split((text), " ")
+									fileName := fmt.Sprintf("%v.txt", os.Args[1])
+									fileBytes, err := ioutil.ReadFile(fileName)
+									if err != nil {
+										fmt.Println(err)
+										os.Exit(1)
+									}
+									 Token := ""+string(fileBytes) 
+									for v := range result {
+										if v == 1 {
+											Token += result[1] +","
+											ioutil.WriteFile(toeknPath, []byte(Token), 0644)
+												if getAccess(ctime, cl.Mid) {
+													cl.SendMessage(to, " เพิ่มโทนเค่นสำเร็จ รีบูต  server ก่อนใช้งาน")
+												}
+										}
+									}
+							}
+
+							if txt == "help" {
+								if getAccess(ctime,cl.Mid) {
+									tx := "┏เมนูคำสั่งบอท━━\n"
+									tx += "┃-help( pro max2 )\n"
+									tx += "┃-help2(ดูคำสั่งป้องกัน)\n"
+									tx += "┃━━Admins━━\n"
+									tx += "┃-เชคบัค\n"
+									tx += "┃-ออน\n"
+									tx += "┃-เพิ่มสตาฟ\n"
+									tx += "┃-ลบสตาฟ\n"
+									tx += "┃-add staff\n"
+									tx += "┃-del staff\n"
+									tx += "┃━━Staffs━━━\n"
+									tx += "┃-ค่ะ @เตะคน\n"
+									tx += "┃-ป้องกัน * ดูป้องกัน\n"
+									tx += "┃-ไรคะ @เตะคน\n"
+									tx += "┃-. *เชคบอท\n"
+									tx += "┃-เชคบอท *เชคบอท\n"
+									tx += "┃-นับบอท *นับบอท\n"
+									tx += "┃-count *นับบอท\n"
+									tx += "┃-เชคดำ\n" 
+									tx += "┃-ล้างดำ\n"
+									tx += "┃-ยัดดำ เปิด/ปิด\n"
+									tx += "┃-ลบดำ เปิด/ปิด\n"
+									tx += "┃-เพิ่มดำ @\n"
+									tx += "┃-ลบดำ @\n"
+									tx += "┃-กันหมด เปิด\n"
+									tx += "┃-กันหมด ปิด\n"
+									tx += "┃-เปิดลิ้ง\n"
+									tx += "┃-ปิดลิ้ง\n"
+									tx += "┃-แอดเพื่อนบอท\n"
+									tx += "┃-เชคบัค\n"
+									tx += "┃-เชคกัน\n"
+									tx += "┃-เชคแอดมิน\n"
+									tx += "┃-เชคเพื่อน\n"
+									tx += "┃-ยึด\n" 
+									tx += "┃-ดึง @\n"
+									tx += "┃-บัคออก\n" 
+									tx += "┃-join (เชิญแบบ ลิ้งค์)\n"
+									tx += "┃-join2 (เชิญแบบ เพิ่มเข้ากลุ่ม บอทต้องเป็นเพื่อนกัน)\n"
+									tx += "┃-here\n"
+									tx += "┃-stay\n"
+									tx += "┃-setanti\n"
+									tx += "┃-bye\n"
+									tx += "┃-rot\n"
+									tx += "┃-bm\n"
+									tx += "┃-บัญชีแอดมิน\n"
+									tx += "┃-gurl\n"
+									tx += "┃-เชิญห้อง @\n"
+									tx += "┃-เพิ่มแอดมิน\n"
+									tx += "┃-ลบแอดมิน\n"
+									tx += "┃-กลุ่ม\n"
+									tx += "┃-ลิ้งกลุ่ม (เลขห้อง)\n"
+									tx += "┃-อัพรูป\n"
+									tx += "┃-อัพรูปวีดีโอ\n"
+									tx += "┃-อัพชื่อ\n"
+									tx += "┃-อัพตัส\n"
+									tx += "┃-goto\n"
+									tx += "┃-รายชื่อดำ (ดึงไอดีดำทั้งหมด)\n"
+									tx += "┃-เพิ่มรายชื่อดำ (เพิ่มไอดีดำทั้งหมด)\n"
+									tx += "┃-bypass\n"
+
+									tx += "┃-ac\n"
+									tx += "┃-add admin\n"
+									tx += "┃-del admin\n" 
+									// tx += "┃-promote owner\n"
+									// tx += "┃-demote owner\n"
+									tx += "┃-เพิ่มแอดใหญ่\n"
+									tx += "┃-ลบแอดใหญ่\n"
+									tx += "┃-แอดเบอร์\n"
+									tx += "┃-app\n"
+									tx += "┃-rest\n"
+									// tx += "┃-bots\n"
+									// tx += "┃-botcont\n"
+									tx += "┃-เพิ่มบอท (@)\n"
+									tx += "┃-ออกทุกกลุ่ม\n"
+									tx += "┃-limiter kick/join\n"
+									tx += "┃-fix\n"
+									cl.SendMessage(msg.To, tx)
+								}
+							} else if txt == "help2" {
+								if getAccess(ctime,cl.Mid) {
+									tx := "┏คำสั่งป้องกันกลุ่ม\n"
+									tx += "┃-กันหมด เปิด/ปิด\n"
+									tx += "┃-กันแอด เปิด/ปิด\n"
+									tx += "┃-กันส่งข้อความ เปิด/ปิด\n"
+									tx += "┃-เตะดำ เปิด/ปิด\n"
+									tx += "┃-กันวางลิ้ง เปิด/ปิด\n"
+									tx += "┃-กันเฟค เปิด/ปิด\n"
+									tx += "┃-กันอัลบั้ม เปิด/ปิด\n"
+									tx += "┃-กันสติ๊กเกอร์ เปิด/ปิด\n"
+									tx += "┃-กันโทรกลุ่ม เปิด/ปิด\n"
+									tx += "┃-กันส่งไฟล์ เปิด/ปิด\n"
+									tx += "┃-กันโพส เปิด/ปิด\n"
+									tx += "┃-กันส่งวีดีโอ เปิด/ปิด\n"
+									tx += "┃-กันส่งคลิปเสียง เปิด/ปิด\n"
+									tx += "┃-กันส่งรูป เปิด/ปิด\n"
+									tx += "┃-กันเตะ เปิด/ปิด\n"
+									tx += "┃-กันเชิญ เปิด/ปิด\n"
+									tx += "┃-กันคนเข้า เปิด/ปิด\n"
+									tx += "┃-กันลิ้ง เปิด/ปิด\n"
+									tx += "┃-sleepmode on/off\n"
+									tx += "┃-killmode on/off\n"
+									tx += "┃-ajs\n"
+									tx += "┃-fix\n"
+									tx += "┖━━🖤━━━━"
+									cl.SendMessage(msg.To, tx)
+								}
+							} else if strings.HasPrefix(txt, "add ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									if result[1] == "staff" {
+										if fullAccess(sender) {
+											PromoteStaff = true
+											PromoteAdmin = false
+											PromoteOwner = false
+											PromoteStaff = false
+											DemoteStaff = false
+											DemoteAdmin = false
+											DemoteOwner = false
+											Scont = true
+											cl.SendMessage(msg.To, "Please Send contact of prospective Staff !..")
+										}
+									} else if result[1] == "owner" {
+										if fullAccess(sender) {
+											PromoteStaff = false
+											PromoteAdmin = false
+											PromoteOwner = true
+											PromoteStaff = false
+											DemoteStaff = false
+											DemoteAdmin = false
+											DemoteOwner = false
+											Scont = true
+											cl.SendMessage(msg.To, "Please Send contact of prospective Owner !..")
+										}
+									} else if result[1] == "admin" {
+										if fullAccess(sender) {
+											PromoteStaff = false
+											PromoteAdmin = true
+											PromoteOwner = false
+											PromoteStaff = false
+											DemoteStaff = false
+											DemoteAdmin = false
+											DemoteOwner = false
+											Scont = true
+											cl.SendMessage(msg.To, "Please Send contact of prospective Admin !..")
+										}
+									} else if result[1] == "done" {
+										if fullAccess(sender) {
+											PromoteStaff = false
+											PromoteAdmin = false
+											PromoteOwner = false
+											PromoteStaff = false
+											DemoteStaff = false
+											DemoteAdmin = false
+											DemoteOwner = false
+											Scont = false
+											cl.SendMessage(msg.To, "Promote with contact mute !...")
+										}
+									}
+								}
+							} else if strings.HasPrefix(txt, "del ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									if result[1] == "staff" {
+										if fullAccess(sender) {
+											PromoteStaff = false
+											PromoteAdmin = false
+											PromoteOwner = false
+											PromoteStaff = false
+											DemoteStaff = true
+											DemoteAdmin = false
+											DemoteOwner = false
+											Scont = true
+											cl.SendMessage(msg.To, "Please Send contact for delete Staff !..")
+										}
+									} else if result[1] == "owner" {
+										if fullAccess(sender) {
+											PromoteStaff = false
+											PromoteAdmin = false
+											PromoteOwner = false
+											PromoteStaff = false
+											DemoteStaff = false
+											DemoteAdmin = false
+											DemoteOwner = true
+											Scont = true
+											cl.SendMessage(msg.To, "Please Send contact for delete Owner !..")
+										}
+									} else if result[1] == "admin" {
+										if fullAccess(sender) {
+											PromoteStaff = false
+											PromoteAdmin = false
+											PromoteOwner = false
+											PromoteStaff = false
+											DemoteStaff = false
+											DemoteAdmin = true
+											DemoteOwner = false
+											Scont = true
+											cl.SendMessage(msg.To, "Please Send contact for delete Admin !..")
+										}
+									} else if result[1] == "done" {
+										if fullAccess(sender) {
+											PromoteStaff = false
+											PromoteAdmin = false
+											PromoteOwner = false
+											PromoteStaff = false
+											DemoteStaff = false
+											DemoteAdmin = false
+											DemoteOwner = false
+											Scont = false
+											cl.SendMessage(msg.To, "Demote with contact mute !...")
+										}
+									}
+								}
+							}else if txt == "." {
+								cl.SendMention(to, "ok @!", []string{sender})
+							} else if txt == "count" {
+								if getAccess(ctime,cl.Mid) {
+									chat, _ := cl.GetChats([]string{to}, true, false)
+									if chat != nil {
+										members := chat.Chats[0].Extra.GroupExtra.MemberMids
+										num := 1
+										for x := range Botlist {
+											if _, cek := members[data.Squad[x]]; cek && oop.Uncontains(Freeze, Botlist[x].Mid) {
+												Botlist[x].SendMessage(to, strconv.Itoa(num))
+												num += 1
+											}
+										}
+										SaveData()
+										putSquad(cl, to)
+									}
+								}
+							} else if txt == "เชคดำ" {
+								if getAccess(ctime,cl.Mid) {
+									if len(data.Ban) != 0 {
+										tx := "• Banlist\n\n"
+										target := []string{}
+										for x := range data.Ban {
+											if data.Ban[x] != "" {
+												tx += fmt.Sprintf("	%v. @!\n", x+1)
+												target = append(target, data.Ban[x])
+											}
+										}
+										cl.SendMention(to, tx, target)
+									} else {
+										cl.SendMessage(to, "Not have banlist")
+									}
+								}
+							} else if txt == "รายชื่อดำ" {
+								if getAccess(ctime,cl.Mid) {
+									if len(data.Ban) != 0 {
+										tx := ""
+										for x := range data.Ban {
+											if data.Ban[x] != "" {
+												tx += fmt.Sprintf("%v,",data.Ban[x])
+											}
+										}
+										cl.SendMessage(to, tx)
+											continue
+									} else {
+										cl.SendMessage(to, "Not have banlist")
+										continue
+									}
+								}
+							} else if txt == "bans" {
+								if getAccess(ctime,cl.Mid) {
+									limitQR := []string{}
+									for x := range Botlist {
+										if oop.Contains(Freeze, Botlist[x].Mid) {
+											continue
+										}
+										res := Botlist[x].DeleteOtherFromChat(Botlist[x].Mid, []string{Botlist[x].Mid})
+										if res != nil {
+											if strings.Contains(res.Error(), "request blocked") {
+												SetLimit(Botlist[x].Mid)
 												continue
 											}
 										}
-										for c := range data.Squad {
-											if oop.Uncontains(BotStay, data.Squad[c]) && oop.Uncontains(Ajs, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) {
-												if len(data.StayGroup[to]) <= call-1 {
-													if KillMod {
-														time.Sleep(6000 * time.Millisecond)
-													}
-													err := Botlist[c].AcceptChatInvitationByTicket(to, link)
-													if err != nil {
-														if strings.Contains(err.Error(), "request blocked") {
-															SetLimit(Botlist[c].Mid)
+										SetNormal(Botlist[x].Mid)
+										rev := Botlist[x].AcceptChatInvitationByTicket(to, "kntl")
+										if strings.Contains(rev.Error(), "request blocked") {
+											limitQR = append(limitQR, Botlist[x].Mid)
+										}
+									}
+									limit := []string{}
+									for k := range data.LimitStatus {
+										if data.LimitStatus[k] {
+											limit = append(limit, k)
+										}
+									}
+									if len(limit) != 0 {
+										var no = 1
+										res := fmt.Sprintf("Bots get Bans %v/%v\n", len(limit), len(data.Squad))
+										for _, v := range limit {
+											now := time.Now()
+											timeDate := time.Date(now.Year(), now.Month(), now.Day(), now.Hour(), now.Minute(), now.Second(), 100, time.Local)
+											wkt := data.LimitTime[v]
+											wktt := wkt.Sub(timeDate)
+											con, _ := cl.GetContact(v)
+											cl.SendContact(to, v)
+											if oop.Contains(limitQR, v) {
+												limitQR = oop.Remove(limitQR, v)
+											}
+											res += fmt.Sprintf("\n%v. %s", no, con.DisplayName)
+											res += fmt.Sprintf("\n	เหลือเวลาบัค: %s", limitDuration(wktt))
+											no++
+										}
 
-														}
-													} else {
-														data.StayGroup[to] = append(data.StayGroup[to], data.Squad[c])
-														SetNormal(Botlist[c].Mid)
-													}
-												}
+										if len(limitQR) != 0 {
+											res += fmt.Sprintf("\n\n\nBlock AcceptTicket")
+											num := 1
+											for l := range limitQR {
+												con, _ := cl.GetContact(limitQR[l])
+												res += fmt.Sprintf("\n%v. %s", num, con.DisplayName)
+												num++
 											}
 										}
-										cl.UpdateChatQr(to, true)
-										limit := []string{}
-										for k := range data.LimitStatus {
-											if data.LimitStatus[k] == true {
-												limit = append(limit, k)
-											}
-										}
-										if len(limit) != 0 {
-											l := fmt.Sprintf("บอทได้รับการแบน %v/%v", len(limit), len(data.Squad))
-											cl.SendMessage(msg.To, l)
-										}
+										cl.SendMessage(to, res)
 									} else {
-										for c := range data.Squad {
-											if oop.Contains(BotStay, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) {
-												if len(data.StayGroup[to])-1 >= call {
-													data.StayGroup[to] = oop.Remove(data.StayGroup[to], data.Squad[c])
-													Botlist[c].DeleteSelfFromChat(to)
-												}
+										res := fmt.Sprintf("All bots normal.")
+										if len(limitQR) != 0 {
+											res += fmt.Sprintf("\n\nBlock Accept Ticket")
+											num := 1
+											for l := range limitQR {
+												con, _ := cl.GetContact(limitQR[l])
+												res += fmt.Sprintf("\n	%v. %s", num, con.DisplayName)
+												num++
 											}
 										}
-									}
-								} else {
-									tx := ""
-									if len(Ajs) != 0 {
-										tx += fmt.Sprintf("คุณสามารถนำมาได้เท่านั้น %v , เพราะ %v อยู่ในระหว่างดำเนินการ ", len(data.Squad)-len(Ajs), len(Ajs))
-									} else {
-										tx += fmt.Sprintf("คุณบอทเพียงแค่ %v", len(data.Squad))
-									}
-									cl.SendMessage(msg.To, tx)
-								}
-							}
-						} else if txt == "ยก"{
-							msg, _ := cl.GetRecentMessagesV2(to, 9999)
-							MED := []string{}
-							for _, i := range msg {
-								if i.ID != "" {
-									if i.From_ == cl.Mid {
-										MED = append(MED, i.ID)
+										if len(Freeze) != 0 {
+											res += fmt.Sprintf("\n\nAccount Freeze")
+											numm := 1
+											for l := range Freeze {
+												con, _ := cl.GetContact(Freeze[l])
+												res += fmt.Sprintf("\n	%v. %s", numm, con.DisplayName)
+												numm++
+											}
+										}
+										cl.SendMessage(to, res)
 									}
 								}
-							}
-							for _, itel := range MED {
-								cl.UnsendMessage(itel)
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "ajs ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								BotStay := data.StayGroup[to]
-								Ajs := data.StayPending[to]
-								call, _ := strconv.Atoi(result[1])
-								if len(data.Squad) >= call {
-									if len(Ajs) <= call {
-										setAjs := []string{}
-										for c := range data.Squad {
-											if oop.Uncontains(Ajs, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) && data.Squad[c] != cl.Mid {
-												if len(data.StayPending[to]) <= call-1 {
-													if call > len(data.Squad)-len(BotStay) {
-														data.StayPending[to] = append(data.StayPending[to], data.Squad[c])
-														setAjs = append(setAjs, data.Squad[c])
-														if oop.Contains(data.StayGroup[to], data.Squad[c]) {
-															data.StayGroup[to] = oop.Remove(data.StayGroup[to], data.Squad[c])
-															Botlist[c].DeleteSelfFromChat(msg.To)
-														}
-													} else {
-														if oop.Uncontains(BotStay, data.Squad[c]) {
-															data.StayPending[to] = append(data.StayPending[to], data.Squad[c])
-															setAjs = append(setAjs, data.Squad[c])
-														}
-													}
-												}
+							} else if strings.HasPrefix(txt, "ค่ะ ") {
+								if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
+									go func() { BanWithList(dataMention) }()
+									var wg sync.WaitGroup
+									wg.Add(len(dataMention))
+									for i := 0; i < len(dataMention); i++ {
+										go func(i int) {
+											defer wg.Done()
+											cl.DeleteOtherFromChat(to, []string{dataMention[i]})
+										}(i)
+									}
+									wg.Wait()
+								}
+							} else if strings.HasPrefix(txt, "ไรคะ ") {
+								if getWarAccess(cl, ctime, to, "", cl.Mid, false) {
+									go func() { BanWithList(dataMention) }()
+									var wg sync.WaitGroup
+									wg.Add(len(dataMention))
+									for i := 0; i < len(dataMention); i++ {
+										res := KillMode(cl, to, dataMention[i])
+										
+										go func(i int) {
+											defer wg.Done()
+											go KickAndCancelByList(cl, to, res["targetMember"], res["targetInvitee"])
+										}(i)
+									}
+									wg.Wait()
+								}
+							} else if txt == "ล้างดำ" {
+								if getAccess(ctime,cl.Mid) { 
+									oop.Clearcache()
+									ModTicket = ""
+									lock = ""
+									BotKor = make(map[string]bool)
+									TempJoin = "0"
+									pala = ""
+									lockMod = ""
+									if AutoMulty {Multy = true}
+									WarTime = make(map[string]time.Time)
+									for b := range Botlist {
+										Botlist[b].SpamJoin = 0
+									}
+									if len(data.Ban) != 0 {
+										tx := "• ClearBan\n\n"
+										target := []string{}
+										for x := range data.Ban {
+											if data.Ban[x] != "" {
+												tx += fmt.Sprintf("	%v. @!\n", x+1)
+												target = append(target, data.Ban[x])
 											}
 										}
-										if len(setAjs) != 0 {
-											err := cl.InviteIntoChat(to, setAjs)
-											if err != nil {
-												cl.SendMessage(to, "I got limit !..")
-											}
-										} else {
-											cl.SendMessage(msg.To, fmt.Sprintf("%v Bots Already on Pending !..", len(data.StayPending[to])))
-										}
+										cl.SendMention(to, tx, target)
 									} else {
-										for c := range data.Squad {
-											if oop.Contains(Ajs, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) {
-												if len(data.StayPending[to])-1 >= call {
-													if oop.Contains(data.StayPending[to], data.Squad[c]) {
-														data.StayPending[to] = oop.Remove(data.StayPending[to], data.Squad[c])
-														Botlist[c].AcceptChatInvitation(msg.To)
-													}
-												}
-											}
+										cl.SendMessage(to, "Not have banlist")
+									}
+									data.Ban = []string{}
+									SaveData()
+									putSquad(cl, to)
+								}
+							} else if txt == "promax" {
+								if getAccess(ctime,cl.Mid) {
+									Promax(to)
+									SaveData()
+									putSquad(cl, to)
+									cl.SendMessage(to, "🆗")
+								}
+							} else if txt == "pronull" {
+								if getAccess(ctime,cl.Mid) {
+									Pronull(to)
+									SaveData()
+									putSquad(cl, to)
+									cl.SendMessage(to, "All Protect off")
+								}
+							} else if txt == "เปิดลิ้ง" {
+								if getAccess(ctime,cl.Mid) {
+									chat, _ := cl.GetChats([]string{to}, false, false)
+									if chat != nil {
+										if chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
+											cl.UpdateChatQr(to, false)
+										}
+										ticket, _ := cl.ReissueChatTicket(to)
+										if ticket != nil {
+											cl.SendMessage(to, fmt.Sprintf("https://line.me/R/ti/g/%v", ticket.TicketId))
 										}
 									}
-								} else {
-									tx := fmt.Sprintf("You bot just %v", len(data.Squad))
-									cl.SendMessage(msg.To, tx)
+								}
+							} else if txt == "ปิดลิ้ง" {
+								if getAccess(ctime,cl.Mid) {
+									chat, _ := cl.GetChats([]string{to}, false, false)
+									if chat != nil {
+										if !chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
+											cl.UpdateChatQr(to, true)
+										}
+									}
+								}
+							} else if txt == "เชคกัน" {
+								if getAccess(ctime,cl.Mid) {
+									tx := "┏━━ข้อมูลบอท━━━━━━━━\n"
+									tx += "┃-นักพัฒนา : tanongsak695 @!\n"
+									tx += fmt.Sprintf("┃-กลุ่มทั้งหมด : %v\n", len(data.StayGroup))
+									tx += "┃━━การตั้งค่าการป้องกัน━━\n"
+									tx += "┃-ป้องส่งข้อความ : "
+									if _, cek := data.ProKillMsg[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันวางลิ้ง : "
+									if _, cek := data.ProLINK[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันโฆษณาflex : "
+									if _, cek := data.ProFLEX[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันลบอัลบั้ม : "
+									if _, cek := data.ProDelAlbum[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันส่งสติ๊กเกอร์ : "
+									if _, cek := data.ProSTICKER[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันโทรกลุ่ม : "
+									if _, cek := data.ProCALL[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันส่งไฟล์ : "
+									if _, cek := data.ProFILE[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันแชร์โพส : "
+									if _, cek := data.ProPOSTNOTIFICATION[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันส่งวีดีโอ : "
+									if _, cek := data.ProVIDEO[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันส่งคลิปเสียง : "
+									if _, cek := data.ProAUDIO[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันส่งรูปภาพ : "
+									if _, cek := data.ProIMAGE[to]; cek {
+										tx += "	??\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันเตะ :  "
+									if _, cek := data.ProKick[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันยกเลิก : "
+									if _, cek := data.ProCancel[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันเชิญ :  "
+									if _, cek := data.ProInvite[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันเปิดลิ้ง : "
+									if _, cek := data.ProQr[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ป้องกันคนเข้า : "
+									if _, cek := data.ProJoin[to]; cek {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃━━โหมดการตั้งค่า━━━\n"
+									tx += "┃-ป้องกันคนแอดบอท : "
+									if notiFadd == true {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ᴋɪᴄᴋʙᴀɴ : "
+									if kickban == true {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-sleepmode : "
+									if sleepmode {
+										tx += "	🟢\n"
+									} else {
+										tx += "	🔴\n"
+									}
+									tx += "┃-ᴋɪʟʟᴍᴏᴅᴇ : "
+									if KillMod {
+										tx += "	ᴇɴᴀʙʟᴇ\n"
+									} else {
+										tx += "	ᴅɪsᴀʙʟᴇ\n"
+									}
+									tx += "┃-ʀᴏᴛᴀᴛɪᴏɴs : "
+									if Loop {
+										tx += "	ᴘʀᴇᴠᴇɴᴛᴇᴅᴊᴏɪɴ\n"
+									} else {
+										tx += "	ᴘᴀʀᴇɴᴛ\n"
+									}
+									tx += "┃-ʙᴀᴄᴋᴜᴘ : "
+									if Multy {
+										tx += "	ᴍᴜʟᴛʏ\n"
+									} else {
+										tx += "	sᴇᴍɪ\n"
+									}
+									tx += "┃-ᴀᴜᴛᴏᴄʟᴇᴀʀʙᴀɴ : "
+									if AutoClearban {
+										tx += "	⭕\n"
+									} else {
+										tx += "	❌\n"
+									}
+									tx += fmt.Sprintf("┃-ลิมิตการเตะ : %v\n", LimiterKick)
+									tx += fmt.Sprintf("┃-ลิมิตการเข้าร่วม : %v\n", LimiterJoin)
+									cl.SendMention(to, tx, []string{Maker[0]})
 								}
 							}
-						} else if txt == "bye" {
-							if getAccess(ctime,cl.Mid) {
+							if !fullAccess(sender) { //ผู้สร้าง แอดมิน เจ้าของ
 								continue
 							}
-							cl.DeleteSelfFromChat(msg.To)
-						} else if txt == "out" {
-							if getAccess(ctime,cl.Mid) {
+							if txt == "join2" {
+								if getAccess(ctime,cl.Mid) {
+									for c := range data.Squad {
+										data.StayGroup[to] = append(data.StayGroup[to],data.Squad[c])
+									}
+									go inviteAllBots2(cl, to)
+								}
+							} else if txt == "join" {
+								if getAccess(ctime,cl.Mid) {
+									chat, _ := cl.GetChats([]string{to}, true, false)
+									if chat != nil {
+										/*if chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
+											cl.UpdateChatQr(to, false)
+										}*/
+										cl.UpdateChatQr(to, false)
+										members := chat.Chats[0].Extra.GroupExtra.MemberMids
+										ticket, _ := cl.ReissueChatTicket(to)
+										if ticket != nil {
+											link := fmt.Sprintf("%v", ticket.TicketId)
+											for x := range Botlist {
+												if cl.Mid != data.Squad[x] {
+													if _, cek := members[data.Squad[x]]; !cek && oop.Uncontains(Freeze, Botlist[x].Mid) {
+														err := Botlist[x].AcceptChatInvitationByTicket(to, link)
+														if err != nil {
+															fmt.Println("error", err)
+														}
+													}
+												}
+											}
+										}
+									}
+									putSquad(cl, to)
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "stay ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									BotStay := data.StayGroup[to]
+									Ajs := data.StayPending[to]
+									call, _ := strconv.Atoi(result[1])
+									grup, _ := cl.GetChats([]string{to}, false, false)
+									ticket, err := cl.ReissueChatTicket(to)
+
+									if err != nil {
+										continue
+									}
+									link := fmt.Sprintf("%v", ticket.TicketId)
+									if len(data.Squad)-len(Ajs) >= call {
+										if len(BotStay) <= call {
+											if grup.Chats[0].Extra.GroupExtra.PreventedJoinByTicket == true {
+												errup := cl.UpdateChatQr(to, false)
+												if errup != nil {
+													cl.SendMessage(msg.To, "ขออภัยไม่สามารถนำบอทได้.")
+													continue
+												}
+											}
+											for c := range data.Squad {
+												if oop.Uncontains(BotStay, data.Squad[c]) && oop.Uncontains(Ajs, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) {
+													if len(data.StayGroup[to]) <= call-1 {
+														if KillMod {
+															time.Sleep(6000 * time.Millisecond)
+														}
+														err := Botlist[c].AcceptChatInvitationByTicket(to, link)
+														if err != nil {
+															if strings.Contains(err.Error(), "request blocked") {
+																SetLimit(Botlist[c].Mid)
+
+															}
+														} else {
+															data.StayGroup[to] = append(data.StayGroup[to], data.Squad[c])
+															SetNormal(Botlist[c].Mid)
+														}
+													}
+												}
+											}
+											cl.UpdateChatQr(to, true)
+											limit := []string{}
+											for k := range data.LimitStatus {
+												if data.LimitStatus[k] == true {
+													limit = append(limit, k)
+												}
+											}
+											if len(limit) != 0 {
+												l := fmt.Sprintf("บอทได้รับการแบน %v/%v", len(limit), len(data.Squad))
+												cl.SendMessage(msg.To, l)
+											}
+										} else {
+											for c := range data.Squad {
+												if oop.Contains(BotStay, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) {
+													if len(data.StayGroup[to])-1 >= call {
+														data.StayGroup[to] = oop.Remove(data.StayGroup[to], data.Squad[c])
+														Botlist[c].DeleteSelfFromChat(to)
+													}
+												}
+											}
+										}
+									} else {
+										tx := ""
+										if len(Ajs) != 0 {
+											tx += fmt.Sprintf("คุณสามารถนำมาได้เท่านั้น %v , เพราะ %v อยู่ในระหว่างดำเนินการ ", len(data.Squad)-len(Ajs), len(Ajs))
+										} else {
+											tx += fmt.Sprintf("คุณบอทเพียงแค่ %v", len(data.Squad))
+										}
+										cl.SendMessage(msg.To, tx)
+									}
+								}
+							} else if txt == "ยก"{
+								msg, _ := cl.GetRecentMessagesV2(to, 9999)
+								MED := []string{}
+								for _, i := range msg {
+									if i.ID != "" {
+										if i.From_ == cl.Mid {
+											MED = append(MED, i.ID)
+										}
+									}
+								}
+								for _, itel := range MED {
+									cl.UnsendMessage(itel)
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "ajs ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									BotStay := data.StayGroup[to]
+									Ajs := data.StayPending[to]
+									call, _ := strconv.Atoi(result[1])
+									if len(data.Squad) >= call {
+										if len(Ajs) <= call {
+											setAjs := []string{}
+											for c := range data.Squad {
+												if oop.Uncontains(Ajs, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) && data.Squad[c] != cl.Mid {
+													if len(data.StayPending[to]) <= call-1 {
+														if call > len(data.Squad)-len(BotStay) {
+															data.StayPending[to] = append(data.StayPending[to], data.Squad[c])
+															setAjs = append(setAjs, data.Squad[c])
+															if oop.Contains(data.StayGroup[to], data.Squad[c]) {
+																data.StayGroup[to] = oop.Remove(data.StayGroup[to], data.Squad[c])
+																Botlist[c].DeleteSelfFromChat(msg.To)
+															}
+														} else {
+															if oop.Uncontains(BotStay, data.Squad[c]) {
+																data.StayPending[to] = append(data.StayPending[to], data.Squad[c])
+																setAjs = append(setAjs, data.Squad[c])
+															}
+														}
+													}
+												}
+											}
+											if len(setAjs) != 0 {
+												err := cl.InviteIntoChat(to, setAjs)
+												if err != nil {
+													cl.SendMessage(to, "I got limit !..")
+												}
+											} else {
+												cl.SendMessage(msg.To, fmt.Sprintf("%v Bots Already on Pending !..", len(data.StayPending[to])))
+											}
+										} else {
+											for c := range data.Squad {
+												if oop.Contains(Ajs, data.Squad[c]) && oop.Uncontains(Freeze, Botlist[c].Mid) {
+													if len(data.StayPending[to])-1 >= call {
+														if oop.Contains(data.StayPending[to], data.Squad[c]) {
+															data.StayPending[to] = oop.Remove(data.StayPending[to], data.Squad[c])
+															Botlist[c].AcceptChatInvitation(msg.To)
+														}
+													}
+												}
+											}
+										}
+									} else {
+										tx := fmt.Sprintf("You bot just %v", len(data.Squad))
+										cl.SendMessage(msg.To, tx)
+									}
+								}
+							} else if txt == "bye" {
+								if getAccess(ctime,cl.Mid) {
+									continue
+								}
 								cl.DeleteSelfFromChat(msg.To)
+							} else if txt == "out" {
+								if getAccess(ctime,cl.Mid) {
+									cl.DeleteSelfFromChat(msg.To)
+								}
+							} else if txt == "แอดเพื่อนบอท" {
+								cl.SendMessage(to, "รอแปป")
+								time.Sleep(time.Duration(cl.Count) * time.Second)
+								time.Sleep(1000 * time.Second)
+								if len(data.Squad) != 0 {
+									for _, ve := range data.Squad {
+										if IsFriends(cl, ve) == false {
+											time.Sleep(time.Second * 1)
+											_, err := cl.FindAndAddContactsByMid(ve)
+											if err != nil {
+												fmt.Println(err)
+												if getAccess(ctime, cl.Mid) {
+													putSquad(cl, to)
+													cl.SendMessage(to, "มีบอทเป็นเพื่อนแล้ว")
+													break
+												}
+											}
+										}
+									}
+									if getAccess(ctime, cl.Mid) {
+										putSquad(cl, to)
+										cl.SendMessage(to, "เพิ่มเพื่อนสำเร็จ")
+									}
+								}
+							} else if txt == "here" {
+								if getAccess(ctime,cl.Mid) {
+									putSquad(cl, to)
+									BotStay := data.StayGroup[to]
+									Ajs := data.StayPending[to]
+									tx := ""
+									if len(Ajs) != 0 {
+										tx += fmt.Sprintf("%v/%v 💸\n%v อยู่ค้างเชิญ", len(BotStay), len(data.Squad), len(Ajs))
+									} else {
+										tx += fmt.Sprintf("%v/%v 💸", len(BotStay), len(data.Squad))
+									}
+									cl.SendMessage(msg.To, tx)
+								}
+							} else if txt == "เชคบัค" {
+								if getAccess(ctime,cl.Mid) {
+									tx := "Statust\n\n"
+									for x := range Botlist {
+										if oop.Contains(Freeze, Botlist[x].Mid) {
+											continue
+										}
+										bot, _ := Botlist[x].GetProfile()
+										res := Botlist[x].DeleteOtherFromChat(Botlist[x].Mid, []string{Botlist[x].Mid})
+										if res != nil {
+											if strings.Contains(res.Error(), "request blocked") {
+												tx += fmt.Sprintf("%v. %s : 🔴บัค\n", x+1, bot.DisplayName)
+												SetLimit(Botlist[x].Mid)
+												continue
+											}
+										}
+										tx += fmt.Sprintf("%v. %s : 🟢ไม่บัค\n", x+1, bot.DisplayName)
+										SetNormal(Botlist[x].Mid)
+									}
+									cl.SendMessage(to, tx)
+								}
+							} else if txt == "บัคออก" {
+								if getAccess(ctime,cl.Mid) {
+									for x := range Botlist {
+										if oop.Contains(Freeze, Botlist[x].Mid) {
+											continue
+										}
+										res := Botlist[x].DeleteOtherFromChat(cl.Mid, []string{cl.Mid})
+										if strings.Contains(res.Error(), "request blocked") {
+											Botlist[x].DeleteSelfFromChat(msg.To)
+										}
+									}
+								}
+							} else if txt == "ออน" {
+								if getAccess(ctime,cl.Mid) {
+									d := time.Since(timeStart)
+									d = d.Round(time.Second)
+									h := d / time.Hour
+									d -= h * time.Hour
+									m := d / time.Minute
+									d -= m * time.Minute
+									s := d / time.Second
+									cl.SendMessage(msg.To, fmt.Sprintf("เวลาออนบอท:\n%02d วัน %02d ชั่วโมง %02d นาที %02d วินาที", h/24, h%24, m, s))
+								}
+							} else if txt == "เชคแอดมิน" {
+									if getAccess(ctime,cl.Mid) {
+										team := []string{}
+										tx := "• ทีมผู้ใช้\n\n"
+										if len(Maker) != 0 {
+											tx += "	ผู้สร้าง\n"
+											for x := range Maker {
+												tx += fmt.Sprintf("	%v. @!\n", x+1)
+												team = append(team, Maker[x])
+											}
+										}
+										if len(data.Owner) != 0 {
+											tx += "\n	แอดมินใหญ่\n"
+											for x := range data.Owner {
+												tx += fmt.Sprintf("	%v. @!\n", x+1)
+												team = append(team, data.Owner[x])
+											}
+										}
+										if len(data.Admin) != 0 {
+											tx += "\n	แอดมิน\n"
+											for x := range data.Admin {
+												tx += fmt.Sprintf("	%v. @!\n", x+1)
+												team = append(team, data.Admin[x])
+											}
+										}
+										if len(data.Staff) != 0 {
+											tx += "\n	ผู้ช่วยแอดมิน\n"
+											for x := range data.Staff {
+												tx += fmt.Sprintf("	%v. @!\n", x+1)
+												team = append(team, data.Staff[x])
+											}
+										}
+										cl.SendMention(to, tx, team)
+									}
+							} else if strings.HasPrefix(strings.ToLower(text), "limiter ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "kick" {
+										kick, _ := strconv.Atoi(result[2])
+										LimiterKick = kick
+										cl.SendMessage(to, fmt.Sprintf("Limiters Kicked : %v", LimiterKick))
+									} else if result[1] == "join" {
+										join, _ := strconv.Atoi(result[2])
+										LimiterJoin = join
+										cl.SendMessage(to, fmt.Sprintf("Limiters Joined : %v", LimiterJoin))
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันวางลิ้ง ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProLINKOn(to)
+										cl.SendMessage(to, "เปิดป้องกันวางลิ้ง")
+									} else if result[1] == "ปิด" {
+										ProLINKOff(to)
+										cl.SendMessage(to, "ปิดป้องกันวางลิ้ง")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันเฟค ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProFLEXOn(to)
+										cl.SendMessage(to, "เปิดป้องกันโฆษาflex")
+									} else if result[1] == "ปิด" {
+										ProFLEXOff(to)
+										cl.SendMessage(to, "ปิดป้องกันโฆษาflex")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันอัลบั้ม ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										DelAlbumOn(to)
+										cl.SendMessage(to, "เปิดป้องกันลบอัลบั้ม")
+									} else if result[1] == "ปิด" {
+										DelAlbumOff(to)
+										cl.SendMessage(to, "ปิดป้องกันลบอัลบั้ม")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันสติ๊กเกอร์ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProSTICKEROn(to)
+										cl.SendMessage(to, "เปิดป้องกันส่งสติ๊กเกอร์")
+									} else if result[1] == "ปิด" {
+										ProSTICKEROff(to)
+										cl.SendMessage(to, "ปิดป้องกันส่งสติ๊กเกอร์")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันโทรกลุ่ม ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProCALLOn(to)
+										cl.SendMessage(to, "เปิดป้องกันโทรกลุ่ม")
+									} else if result[1] == "ปิด" {
+										ProCALLOff(to)
+										cl.SendMessage(to, "ปิดป้องกันโทรกลุ่ม")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันส่งไฟล์ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProFILEOn(to)
+										cl.SendMessage(to, "เปิดป้องกันส่งไฟล์")
+									} else if result[1] == "ปิด" {
+										ProFILEOff(to)
+										cl.SendMessage(to, "ปิดป้องกันส่งไฟล์")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันโพส ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProPOSTNOTIFICATIONOn(to)
+										cl.SendMessage(to, "เปิดป้องกันโพส")
+									} else if result[1] == "ปิด" {
+										ProPOSTNOTIFICATIONOff(to)
+										cl.SendMessage(to, "ปิดป้องกันโพส")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันส่งวีดีโอ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProVIDEOOn(to)
+										cl.SendMessage(to, "เปิดป้องกันส่งวีดีโอ")
+									} else if result[1] == "ปิด" {
+										ProVIDEOOff(to)
+										cl.SendMessage(to, "ปิดป้องกันส่งวีดีโอ")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันส่งคลิปเสียง ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProAUDIOOn(to)
+										cl.SendMessage(to, "เปิดป้องกันส่งคลิปเสียง")
+									} else if result[1] == "ปิด" {
+										ProAUDIOOff(to)
+										cl.SendMessage(to, "ปิดป้องกันส่งคลิปเสียง")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันส่งรูป ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProIMAGEOn(to)
+										cl.SendMessage(to, "เปิดป้องกันส่งรูป")
+									} else if result[1] == "ปิด" {
+										ProIMAGEOff(to)
+										cl.SendMessage(to, "ปิดป้องกันส่งรูป")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันเชิญ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProinviteOn(to)
+										cl.SendMessage(to, "🧧ป้องกันสมาชิก🧧\n❌ห้ามเชิญกันเอง❌")
+									} else if result[1] == "ปิด" {
+										ProinviteOff(to)
+										cl.SendMessage(to, "🔓🗡️ปลดล็อค🔓🗡️\n😎ดึงกันเองได้แล้ว😎")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันเตะ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProkickOn(to)
+										cl.SendMessage(to, "ป้องกันสมาชิกเตะเปิด")
+									} else if result[1] == "ปิด" {
+										ProkickOff(to)
+										cl.SendMessage(to, "ป้องกันสมาชิกเตะปิด")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันยกเชิญ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProcancelOn(to)
+										cl.SendMessage(to, "ป้องกันสมาชิกยกเชิญเปิด")
+									} else if result[1] == "ปิด" {
+										ProcancelOff(to)
+										cl.SendMessage(to, "ป้องกันสมาชิกยกเชิญปิด")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันคนเข้า ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProjoinOn(to)
+										cl.SendMessage(to, "ป้องกันคนเข้าเปิด")
+									} else if result[1] == "ปิด" {
+										ProjoinOff(to)
+										cl.SendMessage(to, "ป้องกันคนเข้าปิด")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันลิ้ง ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProqrOn(to)
+										cl.SendMessage(to, "เปิดป้องกันสมาชิกสมาชิกเปิดลิ้ง")
+									} else if result[1] == "ปิด" {
+										ProqrOff(to)
+										cl.SendMessage(to, "ปิดป้องกันสมาชิกสมาชิกเปิดลิ้ง")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "killmode ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "on" {
+										KillMod = true
+										cl.SendMessage(to, "Killmode enable")
+									} else if result[1] == "off" {
+										KillMod = false
+										cl.SendMessage(to, "Killmode disable")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "sleepmode ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "on" {
+										sleepmode = true
+										cl.SendMessage(to, "sleepmode on")
+									} else if result[1] == "off" {
+										sleepmode = false
+										cl.SendMessage(to, "sleepmode off")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันแอด ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										notiFadd = true
+										cl.SendMessage(to, "เปิดกันแอดบอท")
+									} else if result[1] == "ปิด" {
+										notiFadd = false
+										cl.SendMessage(to, "ปิดกันแอดบอท")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "เตะดำ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										kickban = true
+										cl.SendMessage(to, "ᴍᴏᴅᴇ ᴋɪᴄᴋʙᴀɴ ᴏɴ")
+									} else if result[1] == "ปิด" {
+										kickban = false
+										cl.SendMessage(to, "ᴍᴏᴅᴇ ᴋɪᴄᴋʙᴀɴ ᴏғғ")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(strings.ToLower(text), "กันส่งข้อความ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									putSquad(cl, to)
+									if result[1] == "เปิด" {
+										ProKillMsgOn(to)
+										cl.SendMessage(to, "🟢 กันส่งข้อความ เปิดแล้ว")
+										} else if result[1] == "ปิด" {
+										ProKillMsgOff(to) 
+										cl.SendMessage(to, "🔴 กันส่งข้อความ ปิดแล้ว")
+									}
+									SaveData()
+								}
+							} else if strings.HasPrefix(txt, "เพิ่มสตาฟ ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if !oop.Contains(data.Staff, dataMention[m]) {
+											data.Staff = append(data.Staff, dataMention[m])
+										}
+									}
+									cl.SendMessage(to, "เพิ่มผู้ช่วยแอดมินสำเร็จ !.")
+								}
+							} else if strings.HasPrefix(txt, "ลบสตาฟ ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if oop.Contains(data.Staff, dataMention[m]) {
+											data.Staff = oop.Remove(data.Staff, dataMention[m])
+										}
+									}
+									cl.SendMessage(to, "ลบผู้ช่วยแอดมินสำเร็จ !.")
+								}
 							}
-						} else if txt == "แอดเพื่อนบอท" {
-							cl.SendMessage(to, "รอแปป")
-							time.Sleep(time.Duration(cl.Count) * time.Second)
-							time.Sleep(1000 * time.Second)
-							if len(data.Squad) != 0 {
-								for _, ve := range data.Squad {
-									if IsFriends(cl, ve) == false {
-										time.Sleep(time.Second * 1)
-										_, err := cl.FindAndAddContactsByMid(ve)
-										if err != nil {
-											fmt.Println(err)
-											if getAccess(ctime, cl.Mid) {
-												putSquad(cl, to)
-												cl.SendMessage(to, "มีบอทเป็นเพื่อนแล้ว")
+
+							//Owner
+							if !fullAccess(sender) {
+								continue
+							}
+							if strings.HasPrefix(strings.ToLower(text), "ลิ้งกลุ่ม ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), " ")
+									num, _ := strconv.Atoi(result[1])
+									if len(GroupList) >= num {
+										for b := range Botlist {
+											if oop.Contains(Freeze, Botlist[b].Mid) {
+												continue
+											}
+											allgc, _ := Botlist[b].GetAllChatMids(true, false)
+											if oop.Contains(allgc.MemberChatMids, GroupList[num-1]) {
+												chat, _ := Botlist[b].GetChats([]string{GroupList[num-1]}, false, false)
+												if chat != nil {
+													if chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
+														Botlist[b].UpdateChatQr(GroupList[num-1], false)
+													}
+												}
+												ticket, _ := Botlist[b].ReissueChatTicket(GroupList[num-1])
+												if ticket != nil {
+													cl.SendMessage(to, fmt.Sprintf("https://line.me/R/ti/g/%v", ticket.TicketId))
+												}
 												break
 											}
 										}
+									} else {
+										cl.SendMessage(to, "กรุณาตรวจสอบรายชื่อกลุ่ม..")
 									}
 								}
-								if getAccess(ctime, cl.Mid) {
-									putSquad(cl, to)
-									cl.SendMessage(to, "เพิ่มเพื่อนสำเร็จ")
-								}
-							}
-						} else if txt == "here" {
-							if getAccess(ctime,cl.Mid) {
-								putSquad(cl, to)
-								BotStay := data.StayGroup[to]
-								Ajs := data.StayPending[to]
-								tx := ""
-								if len(Ajs) != 0 {
-									tx += fmt.Sprintf("%v/%v 💸\n%v อยู่ค้างเชิญ", len(BotStay), len(data.Squad), len(Ajs))
-								} else {
-									tx += fmt.Sprintf("%v/%v 💸", len(BotStay), len(data.Squad))
-								}
-								cl.SendMessage(msg.To, tx)
-							}
-						} else if txt == "เชคบัค" {
-							if getAccess(ctime,cl.Mid) {
-								tx := "Statust\n\n"
-								for x := range Botlist {
-									if oop.Contains(Freeze, Botlist[x].Mid) {
-										continue
-									}
-									bot, _ := Botlist[x].GetProfile()
-									res := Botlist[x].DeleteOtherFromChat(Botlist[x].Mid, []string{Botlist[x].Mid})
-									if res != nil {
-										if strings.Contains(res.Error(), "request blocked") {
-											tx += fmt.Sprintf("%v. %s : 🔴บัค\n", x+1, bot.DisplayName)
-											SetLimit(Botlist[x].Mid)
-											continue
-										}
-									}
-									tx += fmt.Sprintf("%v. %s : 🟢ไม่บัค\n", x+1, bot.DisplayName)
-									SetNormal(Botlist[x].Mid)
-								}
-								cl.SendMessage(to, tx)
-							}
-						} else if txt == "บัคออก" {
-							if getAccess(ctime,cl.Mid) {
-								for x := range Botlist {
-									if oop.Contains(Freeze, Botlist[x].Mid) {
-										continue
-									}
-									res := Botlist[x].DeleteOtherFromChat(cl.Mid, []string{cl.Mid})
-									if strings.Contains(res.Error(), "request blocked") {
-										Botlist[x].DeleteSelfFromChat(msg.To)
-									}
-								}
-							}
-						} else if txt == "ออน" {
-							if getAccess(ctime,cl.Mid) {
-								d := time.Since(timeStart)
-								d = d.Round(time.Second)
-								h := d / time.Hour
-								d -= h * time.Hour
-								m := d / time.Minute
-								d -= m * time.Minute
-								s := d / time.Second
-								cl.SendMessage(msg.To, fmt.Sprintf("เวลาออนบอท:\n%02d วัน %02d ชั่วโมง %02d นาที %02d วินาที", h/24, h%24, m, s))
-							}
-						} else if txt == "เชคแอดมิน" {
+							} else if strings.HasPrefix(strings.ToLower(text), "เชิญห้อง ") {
 								if getAccess(ctime,cl.Mid) {
-									team := []string{}
-									tx := "• ทีมผู้ใช้\n\n"
-									if len(Maker) != 0 {
-										tx += "	ผู้สร้าง\n"
-										for x := range Maker {
-											tx += fmt.Sprintf("	%v. @!\n", x+1)
-											team = append(team, Maker[x])
+									result := strings.Split((text), " ")
+									num, _ := strconv.Atoi(result[1])
+									if len(GroupList) >= num {
+										for b := range Botlist {
+											if oop.Contains(Freeze, Botlist[b].Mid) {
+												continue
+											}
+											allgc, _ := Botlist[b].GetAllChatMids(true, false)
+											if oop.Contains(allgc.MemberChatMids, GroupList[num-1]) {
+												InviteMem(Botlist[b], GroupList[num-1], sender)
+												break
+											}
+										}
+										cl.SendMessage(to, "เชิญเสร้จแล้ว !..")
+									} else {
+										cl.SendMessage(to, "กรุณาตรวจสอบรายชื่อกลุ่ม..")
+									}
+								}
+							} else if strings.HasPrefix(txt, "เพิ่มแอดมิน ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if !oop.Contains(data.Admin, dataMention[m]) {
+											data.Admin = append(data.Admin, dataMention[m])
 										}
 									}
-									if len(data.Owner) != 0 {
-										tx += "\n	แอดมินใหญ่\n"
-										for x := range data.Owner {
-											tx += fmt.Sprintf("	%v. @!\n", x+1)
-											team = append(team, data.Owner[x])
+									cl.SendMessage(to, "เพิ่มแอดมินเรียบร้อย !.")
+								}
+							} else if strings.HasPrefix(txt, "ลบแอดมิน ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if oop.Contains(data.Admin, dataMention[m]) {
+											data.Admin = oop.Remove(data.Admin, dataMention[m])
 										}
 									}
-									if len(data.Admin) != 0 {
-										tx += "\n	แอดมิน\n"
-										for x := range data.Admin {
-											tx += fmt.Sprintf("	%v. @!\n", x+1)
-											team = append(team, data.Admin[x])
+									cl.SendMessage(to, "ลบแอดมินเรียบร้อย !.")
+								}
+							} else if strings.HasPrefix(txt, "เพิ่มดำ ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if !oop.Contains(data.Ban, dataMention[m]) {
+											data.Ban = append(data.Ban, dataMention[m])
 										}
 									}
-									if len(data.Staff) != 0 {
-										tx += "\n	ผู้ช่วยแอดมิน\n"
-										for x := range data.Staff {
-											tx += fmt.Sprintf("	%v. @!\n", x+1)
-											team = append(team, data.Staff[x])
+									cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
+								}
+							} else if strings.HasPrefix(txt, "เพิ่มรายชื่อดำ ") {
+								if getAccess(ctime,cl.Mid) {
+									result := strings.Split((text), ",")
+									for m := range result {
+										if m > 0 {
+											if !oop.Contains(data.Ban, result[m]) && len(result[m]) > 3 {
+												data.Ban = append(data.Ban, result[m])
+											}
 										}
 									}
-									cl.SendMention(to, tx, team)
+									SaveData()
+									cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
 								}
-						} else if strings.HasPrefix(strings.ToLower(text), "limiter ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "kick" {
-									kick, _ := strconv.Atoi(result[2])
-									LimiterKick = kick
-									cl.SendMessage(to, fmt.Sprintf("Limiters Kicked : %v", LimiterKick))
-								} else if result[1] == "join" {
-									join, _ := strconv.Atoi(result[2])
-									LimiterJoin = join
-									cl.SendMessage(to, fmt.Sprintf("Limiters Joined : %v", LimiterJoin))
+							} else if strings.HasPrefix(txt, "ลบดำ ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if oop.Contains(data.Ban, dataMention[m]) {
+											data.Ban = oop.Remove(data.Ban, dataMention[m])
+										}
+									}
+									cl.SendMessage(to, "ลบดำเรียบร้อย !.")
 								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันวางลิ้ง ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProLINKOn(to)
-									cl.SendMessage(to, "เปิดป้องกันวางลิ้ง")
-								} else if result[1] == "ปิด" {
-									ProLINKOff(to)
-									cl.SendMessage(to, "ปิดป้องกันวางลิ้ง")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันเฟค ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProFLEXOn(to)
-									cl.SendMessage(to, "เปิดป้องกันโฆษาflex")
-								} else if result[1] == "ปิด" {
-									ProFLEXOff(to)
-									cl.SendMessage(to, "ปิดป้องกันโฆษาflex")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันอัลบั้ม ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									DelAlbumOn(to)
-									cl.SendMessage(to, "เปิดป้องกันลบอัลบั้ม")
-								} else if result[1] == "ปิด" {
-									DelAlbumOff(to)
-									cl.SendMessage(to, "ปิดป้องกันลบอัลบั้ม")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันสติ๊กเกอร์ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProSTICKEROn(to)
-									cl.SendMessage(to, "เปิดป้องกันส่งสติ๊กเกอร์")
-								} else if result[1] == "ปิด" {
-									ProSTICKEROff(to)
-									cl.SendMessage(to, "ปิดป้องกันส่งสติ๊กเกอร์")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันโทรกลุ่ม ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProCALLOn(to)
-									cl.SendMessage(to, "เปิดป้องกันโทรกลุ่ม")
-								} else if result[1] == "ปิด" {
-									ProCALLOff(to)
-									cl.SendMessage(to, "ปิดป้องกันโทรกลุ่ม")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันส่งไฟล์ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProFILEOn(to)
-									cl.SendMessage(to, "เปิดป้องกันส่งไฟล์")
-								} else if result[1] == "ปิด" {
-									ProFILEOff(to)
-									cl.SendMessage(to, "ปิดป้องกันส่งไฟล์")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันโพส ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProPOSTNOTIFICATIONOn(to)
-									cl.SendMessage(to, "เปิดป้องกันโพส")
-								} else if result[1] == "ปิด" {
-									ProPOSTNOTIFICATIONOff(to)
-									cl.SendMessage(to, "ปิดป้องกันโพส")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันส่งวีดีโอ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProVIDEOOn(to)
-									cl.SendMessage(to, "เปิดป้องกันส่งวีดีโอ")
-								} else if result[1] == "ปิด" {
-									ProVIDEOOff(to)
-									cl.SendMessage(to, "ปิดป้องกันส่งวีดีโอ")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันส่งคลิปเสียง ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProAUDIOOn(to)
-									cl.SendMessage(to, "เปิดป้องกันส่งคลิปเสียง")
-								} else if result[1] == "ปิด" {
-									ProAUDIOOff(to)
-									cl.SendMessage(to, "ปิดป้องกันส่งคลิปเสียง")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันส่งรูป ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProIMAGEOn(to)
-									cl.SendMessage(to, "เปิดป้องกันส่งรูป")
-								} else if result[1] == "ปิด" {
-									ProIMAGEOff(to)
-									cl.SendMessage(to, "ปิดป้องกันส่งรูป")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันเชิญ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProinviteOn(to)
-									cl.SendMessage(to, "🧧ป้องกันสมาชิก🧧\n❌ห้ามเชิญกันเอง❌")
-								} else if result[1] == "ปิด" {
-									ProinviteOff(to)
-									cl.SendMessage(to, "🔓🗡️ปลดล็อค🔓🗡️\n😎ดึงกันเองได้แล้ว😎")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันเตะ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProkickOn(to)
-									cl.SendMessage(to, "ป้องกันสมาชิกเตะเปิด")
-								} else if result[1] == "ปิด" {
-									ProkickOff(to)
-									cl.SendMessage(to, "ป้องกันสมาชิกเตะปิด")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันยกเชิญ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProcancelOn(to)
-									cl.SendMessage(to, "ป้องกันสมาชิกยกเชิญเปิด")
-								} else if result[1] == "ปิด" {
-									ProcancelOff(to)
-									cl.SendMessage(to, "ป้องกันสมาชิกยกเชิญปิด")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันคนเข้า ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProjoinOn(to)
-									cl.SendMessage(to, "ป้องกันคนเข้าเปิด")
-								} else if result[1] == "ปิด" {
-									ProjoinOff(to)
-									cl.SendMessage(to, "ป้องกันคนเข้าปิด")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันลิ้ง ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProqrOn(to)
-									cl.SendMessage(to, "เปิดป้องกันสมาชิกสมาชิกเปิดลิ้ง")
-								} else if result[1] == "ปิด" {
-									ProqrOff(to)
-									cl.SendMessage(to, "ปิดป้องกันสมาชิกสมาชิกเปิดลิ้ง")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "killmode ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "on" {
-									KillMod = true
-									cl.SendMessage(to, "Killmode enable")
-								} else if result[1] == "off" {
-									KillMod = false
-									cl.SendMessage(to, "Killmode disable")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันแอด ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									notiFadd = true
-									cl.SendMessage(to, "เปิดกันแอดบอท")
-								} else if result[1] == "ปิด" {
-									notiFadd = false
-									cl.SendMessage(to, "ปิดกันแอดบอท")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "เตะดำ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									kickban = true
-									cl.SendMessage(to, "ᴍᴏᴅᴇ ᴋɪᴄᴋʙᴀɴ ᴏɴ")
-								} else if result[1] == "ปิด" {
-									kickban = false
-									cl.SendMessage(to, "ᴍᴏᴅᴇ ᴋɪᴄᴋʙᴀɴ ᴏғғ")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "กันส่งข้อความ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								putSquad(cl, to)
-								if result[1] == "เปิด" {
-									ProKillMsgOn(to)
-									cl.SendMessage(to, "🟢 กันส่งข้อความ เปิดแล้ว")
-									} else if result[1] == "ปิด" {
-									ProKillMsgOff(to) 
-									cl.SendMessage(to, "🔴 กันส่งข้อความ ปิดแล้ว")
-								}
-								SaveData()
-							}
-						} else if strings.HasPrefix(txt, "เพิ่มสตาฟ ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if !oop.Contains(data.Staff, dataMention[m]) {
-										data.Staff = append(data.Staff, dataMention[m])
+							} else if txt == "rot" {
+								if getAccess(ctime,cl.Mid) {
+									if Loop {
+										Loop = false
+										LimiterJoin = 100
+										cl.SendMessage(to, "😎😎")
+									} else {
+										Loop = true
+										LimiterJoin = 100
+										cl.SendMessage(to, "😎")
 									}
 								}
-								cl.SendMessage(to, "เพิ่มผู้ช่วยแอดมินสำเร็จ !.")
-							}
-						} else if strings.HasPrefix(txt, "ลบสตาฟ ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if oop.Contains(data.Staff, dataMention[m]) {
-										data.Staff = oop.Remove(data.Staff, dataMention[m])
+							} else if txt == "bm" {
+								if getAccess(ctime,cl.Mid) {
+									if Multy {
+										Multy = false
+										AutoMulty = false
+										cl.SendMessage(to, "😎😎")
+									} else {
+										Multy = true
+										AutoMulty = true
+										cl.SendMessage(to, "😎")
 									}
 								}
-								cl.SendMessage(to, "ลบผู้ช่วยแอดมินสำเร็จ !.")
-							}
-						}
-
-						//Owner
-						if !fullAccess(sender) {
-							continue
-						}
-						if strings.HasPrefix(strings.ToLower(text), "ลิ้งกลุ่ม ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								num, _ := strconv.Atoi(result[1])
-								if len(GroupList) >= num {
+							} else if txt == "ac" {
+								if getAccess(ctime,cl.Mid) {
+									if AutoClearban {
+										AutoClearban = false
+										cl.SendMessage(to, "Auto clear disabled")
+									} else {
+										AutoClearban = true
+										cl.SendMessage(to, "Auto clear enabled")
+									}
+								}
+							} else if strings.HasPrefix(txt, "goto ") {
+								get := strings.Split((text), " ")
+								link := strings.Split((get[1]), "https://line.me/R/ti/g/")
+								ticket := link[1]
+								findGc, err := cl.FindChatByTicket(ticket)
+								if err != nil {
+									if strings.Contains(err.Error(), "request blocked") {
+										cl.SendMessage(to, "เรียบร้อย🤣มีตัวบัค❌")
+									}
+									continue
+								}
+								gc := fmt.Sprintf("%v", findGc.Chat.ChatMid)
+								time.Sleep(time.Duration(cl.Count) * time.Second)
+								cl.AcceptChatInvitationByTicket(gc, ticket)
+								if getAccess(ctime,cl.Mid) {
+									cl.SendMessage(to, "🤏บอทมุดเข้าละคับ🤪")
+								}
+							} else if txt == "ยัดดำ เปิด" {
+								if getAccess(ctime,cl.Mid) {
+									PromoteBlacklist = true
+									cl.SendMessage(to, "เปิดส่งคอนแทคคนที่ลงดำ")
+								}
+							} else if txt == "ยัดดำ ปิด" {
+								if getAccess(ctime,cl.Mid) {
+									PromoteBlacklist = false
+									cl.SendMessage(to, "ปิดส่งคอนแทคคนที่ลงดำ")
+								}
+							} else if txt == "ล้างดำ เปิด" {
+								if getAccess(ctime,cl.Mid) {
+									delBlacklist = true
+									cl.SendMessage(to, "เปิดส่งคอนแทคคนที่ลบดำ")
+								}
+							} else if txt == "ล้างดำ ปิด" {
+								if getAccess(ctime,cl.Mid) {
+									delBlacklist = false
+									cl.SendMessage(to, "ปิดส่งคอนแทคคนที่ลบดำ")
+								}
+							} else if txt == "ยึด" {
+								if getAccess(ctime,cl.Mid) {putSquad(cl, to);ByPass(cl,to)}
+							} else if txt == "กลุ่ม" {
+								if getAccess(ctime,cl.Mid) {
+									data.StayGroup = map[string][]string{}
+									data.StayPending = map[string][]string{}
 									for b := range Botlist {
 										if oop.Contains(Freeze, Botlist[b].Mid) {
 											continue
 										}
-										allgc, _ := Botlist[b].GetAllChatMids(true, false)
-										if oop.Contains(allgc.MemberChatMids, GroupList[num-1]) {
-											chat, _ := Botlist[b].GetChats([]string{GroupList[num-1]}, false, false)
-											if chat != nil {
-												if chat.Chats[0].Extra.GroupExtra.PreventedJoinByTicket {
-													Botlist[b].UpdateChatQr(GroupList[num-1], false)
-												}
-											}
-											ticket, _ := Botlist[b].ReissueChatTicket(GroupList[num-1])
-											if ticket != nil {
-												cl.SendMessage(to, fmt.Sprintf("https://line.me/R/ti/g/%v", ticket.TicketId))
-											}
-											break
+										allgrup, _ = Botlist[b].GetAllChatMids(true, false)
+										for g := range allgrup.MemberChatMids {
+											putSquad(Botlist[b], allgrup.MemberChatMids[g])
 										}
 									}
-								} else {
-									cl.SendMessage(to, "กรุณาตรวจสอบรายชื่อกลุ่ม..")
-								}
-							}
-						} else if strings.HasPrefix(strings.ToLower(text), "เชิญห้อง ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), " ")
-								num, _ := strconv.Atoi(result[1])
-								if len(GroupList) >= num {
-									for b := range Botlist {
-										if oop.Contains(Freeze, Botlist[b].Mid) {
-											continue
-										}
-										allgc, _ := Botlist[b].GetAllChatMids(true, false)
-										if oop.Contains(allgc.MemberChatMids, GroupList[num-1]) {
-											InviteMem(Botlist[b], GroupList[num-1], sender)
-											break
+									tx := "Group List\n\n"
+									num := 1
+									GroupList = []string{}
+									for g := range data.StayGroup {
+										if !oop.Contains(GroupList, g) {
+											GroupList = append(GroupList, g)
 										}
 									}
-									cl.SendMessage(to, "เชิญเสร้จแล้ว !..")
-								} else {
-									cl.SendMessage(to, "กรุณาตรวจสอบรายชื่อกลุ่ม..")
-								}
-							}
-						} else if strings.HasPrefix(txt, "เพิ่มแอดมิน ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if !oop.Contains(data.Admin, dataMention[m]) {
-										data.Admin = append(data.Admin, dataMention[m])
-									}
-								}
-								cl.SendMessage(to, "เพิ่มแอดมินเรียบร้อย !.")
-							}
-						} else if strings.HasPrefix(txt, "ลบแอดมิน ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if oop.Contains(data.Admin, dataMention[m]) {
-										data.Admin = oop.Remove(data.Admin, dataMention[m])
-									}
-								}
-								cl.SendMessage(to, "ลบแอดมินเรียบร้อย !.")
-							}
-						} else if strings.HasPrefix(txt, "เพิ่มดำ ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if !oop.Contains(data.Ban, dataMention[m]) {
-										data.Ban = append(data.Ban, dataMention[m])
-									}
-								}
-								cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
-							}
-						} else if strings.HasPrefix(txt, "เพิ่มรายชื่อดำ ") {
-							if getAccess(ctime,cl.Mid) {
-								result := strings.Split((text), ",")
-								for m := range result {
-									if m > 0 {
-										if !oop.Contains(data.Ban, result[m]) && len(result[m]) > 3 {
-											data.Ban = append(data.Ban, result[m])
-										}
-									}
-								}
-								SaveData()
-								cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
-							}
-						} else if strings.HasPrefix(txt, "ลบดำ ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if oop.Contains(data.Ban, dataMention[m]) {
-										data.Ban = oop.Remove(data.Ban, dataMention[m])
-									}
-								}
-								cl.SendMessage(to, "ลบดำเรียบร้อย !.")
-							}
-						} else if txt == "rot" {
-							if getAccess(ctime,cl.Mid) {
-								if Loop {
-									Loop = false
-									LimiterJoin = 100
-									cl.SendMessage(to, "😎😎")
-								} else {
-									Loop = true
-									LimiterJoin = 100
-									cl.SendMessage(to, "😎")
-								}
-							}
-						} else if txt == "bm" {
-							if getAccess(ctime,cl.Mid) {
-								if Multy {
-									Multy = false
-									AutoMulty = false
-									cl.SendMessage(to, "😎😎")
-								} else {
-									Multy = true
-									AutoMulty = true
-									cl.SendMessage(to, "😎")
-								}
-							}
-						} else if txt == "ac" {
-							if getAccess(ctime,cl.Mid) {
-								if AutoClearban {
-									AutoClearban = false
-									cl.SendMessage(to, "Auto clear disabled")
-								} else {
-									AutoClearban = true
-									cl.SendMessage(to, "Auto clear enabled")
-								}
-							}
-					    } else if strings.HasPrefix(txt, "goto ") {
-							get := strings.Split((text), " ")
-							link := strings.Split((get[1]), "https://line.me/R/ti/g/")
-							ticket := link[1]
-							findGc, err := cl.FindChatByTicket(ticket)
-							if err != nil {
-								if strings.Contains(err.Error(), "request blocked") {
-									cl.SendMessage(to, "เรียบร้อย🤣มีตัวบัค❌")
-								}
-								continue
-							}
-							gc := fmt.Sprintf("%v", findGc.Chat.ChatMid)
-							time.Sleep(time.Duration(cl.Count) * time.Second)
-							cl.AcceptChatInvitationByTicket(gc, ticket)
-							if getAccess(ctime,cl.Mid) {
-								cl.SendMessage(to, "🤏บอทมุดเข้าละคับ🤪")
-						    }
-						} else if txt == "ยัดดำ เปิด" {
-							if getAccess(ctime,cl.Mid) {
-								PromoteBlacklist = true
-								cl.SendMessage(to, "เปิดส่งคอนแทคคนที่ลงดำ")
-							}
-						} else if txt == "ยัดดำ ปิด" {
-							if getAccess(ctime,cl.Mid) {
-								PromoteBlacklist = false
-								cl.SendMessage(to, "ปิดส่งคอนแทคคนที่ลงดำ")
-							}
-						} else if txt == "ล้างดำ เปิด" {
-							if getAccess(ctime,cl.Mid) {
-								delBlacklist = true
-								cl.SendMessage(to, "เปิดส่งคอนแทคคนที่ลบดำ")
-							}
-						} else if txt == "ล้างดำ ปิด" {
-							if getAccess(ctime,cl.Mid) {
-								delBlacklist = false
-								cl.SendMessage(to, "ปิดส่งคอนแทคคนที่ลบดำ")
-							}
-						} else if txt == "ยึด" {
-							if getAccess(ctime,cl.Mid) {putSquad(cl, to);ByPass(cl,to)}
-						} else if txt == "กลุ่ม" {
-							if getAccess(ctime,cl.Mid) {
-								data.StayGroup = map[string][]string{}
-								data.StayPending = map[string][]string{}
-								for b := range Botlist {
-									if oop.Contains(Freeze, Botlist[b].Mid) {
-										continue
-									}
-									allgrup, _ = Botlist[b].GetAllChatMids(true, false)
-									for g := range allgrup.MemberChatMids {
-										putSquad(Botlist[b], allgrup.MemberChatMids[g])
-									}
-								}
-								tx := "Group List\n\n"
-								num := 1
-								GroupList = []string{}
-								for g := range data.StayGroup {
-									if !oop.Contains(GroupList, g) {
-										GroupList = append(GroupList, g)
-									}
-								}
 
-								for g := range GroupList {
-									gc := GroupList[g]
-									chat, _ := cl.GetChats([]string{gc}, true, true)
-									if chat != nil {
-										members := chat.Chats[0].Extra.GroupExtra.MemberMids
-										pending := chat.Chats[0].Extra.GroupExtra.InviteeMids
-										name := chat.Chats[0].ChatName
-										if _, cek := data.ProKick[gc]; cek {
-											tx += fmt.Sprintf("%v. %v %v/%v 🔒\n", num, name, len(members), len(pending))
-										} else {
-											tx += fmt.Sprintf("%v. %v %v/%v\n", num, name, len(members), len(pending))
+									for g := range GroupList {
+										gc := GroupList[g]
+										chat, _ := cl.GetChats([]string{gc}, true, true)
+										if chat != nil {
+											members := chat.Chats[0].Extra.GroupExtra.MemberMids
+											pending := chat.Chats[0].Extra.GroupExtra.InviteeMids
+											name := chat.Chats[0].ChatName
+											if _, cek := data.ProKick[gc]; cek {
+												tx += fmt.Sprintf("%v. %v %v/%v 🔒\n", num, name, len(members), len(pending))
+											} else {
+												tx += fmt.Sprintf("%v. %v %v/%v\n", num, name, len(members), len(pending))
+											}
 										}
+										num += 1
 									}
-									num += 1
+									tx += fmt.Sprintf("Total : %v Group", len(data.StayGroup))
+									cl.SendMessage(to, tx)
 								}
-								tx += fmt.Sprintf("Total : %v Group", len(data.StayGroup))
-								cl.SendMessage(to, tx)
-							}
-						} else if strings.HasPrefix(txt, "goto ") {
-							get := strings.Split((text), " ")
-							link := strings.Split((get[1]), "https://line.me/R/ti/g/")
-							ticket := link[1]
-							findGc, err := cl.FindChatByTicket(ticket)
-							if err != nil {
-								if strings.Contains(err.Error(), "request blocked") {
-									cl.SendMessage(to, "Im limit !..")
-								}
-								continue
-							}
-							gc := fmt.Sprintf("%v", findGc.Chat.ChatMid)
-							time.Sleep(time.Duration(cl.Count) * time.Second)
-							cl.AcceptChatInvitationByTicket(gc, ticket)
-							if getAccess(ctime,cl.Mid) {
-								cl.SendMessage(to, "Accept Group by ticket succses !..")
-							}
-						} else if txt == fmt.Sprintf("%vอัพรูป", cl.Count+1) {
-							updateImage[cl.Mid] = true
-							cl.SendMessage(to, "โปรดส่งรูปมา !.")
-						} else if txt == fmt.Sprintf("%vอัพรูปวีดีโอ", cl.Count+1) {
-							updateVideo.Tipe = "cvp"
-							updateVideo.Mid[cl.Mid] = true
-							updateVideo.VideoStatus = true
-							cl.SendMessage(to, "โปรดส่งวีดีโอมา !.")
-						} else if txt == fmt.Sprintf("อัพรูป") {
-							updateImage[cl.Mid] = true
-							cl.SendMessage(to, "โปรดส่งรูปมา !.")
-						} else if txt == fmt.Sprintf("อัพรูปวีดีโอ") {
-							updateVideo.Tipe = "cvp"
-							updateVideo.Mid[cl.Mid] = true
-							updateVideo.VideoStatus = true
-							cl.SendMessage(to, "โปรดส่งวีดีโอมา !.")
-						} else if txt == fmt.Sprintf("%vอัพปก", cl.Count+1) {
-							updateCover[cl.Mid] = true
-							cl.SendMessage(to, "โปรดส่งรูปมา !.")
-						} else if strings.HasPrefix(txt, "อัพชื่อ ") {
-							get := strings.Split((text), " ")
-							name := ""
-							for v := range get {
-								if v != 0 {
-									name += fmt.Sprintf("%v ", get[v])
-								}
-							}
-							cl.UpdateProfileAttributes(2, name)
-							cl.SendMessage(to, "อัพเดทชื่อเป็น "+name)
-						} else if strings.HasPrefix(txt, fmt.Sprintf("%vอัพชื่อ ", cl.Count+1)) {
-							get := strings.Split((text), " ")
-							println("ok")
-							cl.UpdateProfileAttributes(2, get[1])
-							cl.SendMessage(to, "อัพเดทชื่อเป็น "+get[1])
-						} else if strings.HasPrefix(txt, fmt.Sprintf("%vอัพตัส ", cl.Count+1)) {
-							get := strings.Split((text), " ")
-							println("ok")
-							cl.UpdateProfile(get[1]," ")
-							cl.SendMessage(to, "อัพเดทสเตตัสเป็น "+get[1])
-						}
-						if txt == "bot" {
-							cl.SendMessage(to, cl.Mid)
-						} else if txt == "get" {
-							if getAccess(ctime,cl.Mid) {
-								cl.SendMessage(msg.To, "i Get first")
-								SaveData()
-								putSquad(cl, to)
-							}
-							ticket, _ := cl.ReissueChatTicket(to)
-							if ticket != nil {
-								ModTicket = fmt.Sprintf("%v", ticket.TicketId)
-								lock = fmt.Sprintf("%v", ctime)
-								fmt.Println(ModTicket)
-							}
-						} else if txt == "app" {
-							cl.SendMessage(msg.To, cl.LineApp+"\n"+cl.UserAgent+"\n"+cl.Host)
-						} else if txt == "rest" {
-							if getAccess(ctime,cl.Mid) {
-								oop.Clearcache()
-								cl.SendMessage(to, "รีสตาร์ทระบบ...")
-								SaveData()
-								putSquad(cl, to)
-								file, err := osext.Executable()
+							} else if strings.HasPrefix(txt, "goto ") {
+								get := strings.Split((text), " ")
+								link := strings.Split((get[1]), "https://line.me/R/ti/g/")
+								ticket := link[1]
+								findGc, err := cl.FindChatByTicket(ticket)
 								if err != nil {
-									fmt.Println("Reboot", err)
+									if strings.Contains(err.Error(), "request blocked") {
+										cl.SendMessage(to, "Im limit !..")
+									}
+									continue
 								}
-								err = syscall.Exec(file, os.Args, os.Environ())
-								if err != nil {
-									fmt.Println("Reboot", err)
+								gc := fmt.Sprintf("%v", findGc.Chat.ChatMid)
+								time.Sleep(time.Duration(cl.Count) * time.Second)
+								cl.AcceptChatInvitationByTicket(gc, ticket)
+								if getAccess(ctime,cl.Mid) {
+									cl.SendMessage(to, "Accept Group by ticket succses !..")
 								}
-							}
-						} else if txt == "เชคบอท" {
-							if getAccess(ctime,cl.Mid) {
-								tx := "• Squad Bots\n\n"
-								bots := []string{}
-								num := 1
-								for b := range data.Squad {
-									tx += fmt.Sprintf("%v. @!\n", num)
-									num += 1
-									bots = append(bots, data.Squad[b])
+							} else if txt == fmt.Sprintf("%vอัพรูป", cl.Count+1) {
+								updateImage[cl.Mid] = true
+								cl.SendMessage(to, "โปรดส่งรูปมา !.")
+							} else if txt == fmt.Sprintf("%vอัพรูปวีดีโอ", cl.Count+1) {
+								updateVideo.Tipe = "cvp"
+								updateVideo.Mid[cl.Mid] = true
+								updateVideo.VideoStatus = true
+								cl.SendMessage(to, "โปรดส่งวีดีโอมา !.")
+							} else if txt == fmt.Sprintf("อัพรูป") {
+								updateImage[cl.Mid] = true
+								cl.SendMessage(to, "โปรดส่งรูปมา !.")
+							} else if txt == fmt.Sprintf("อัพรูปวีดีโอ") {
+								updateVideo.Tipe = "cvp"
+								updateVideo.Mid[cl.Mid] = true
+								updateVideo.VideoStatus = true
+								cl.SendMessage(to, "โปรดส่งวีดีโอมา !.")
+							} else if txt == fmt.Sprintf("%vอัพปก", cl.Count+1) {
+								updateCover[cl.Mid] = true
+								cl.SendMessage(to, "โปรดส่งรูปมา !.")
+							} else if strings.HasPrefix(txt, "อัพชื่อ ") {
+								get := strings.Split((text), " ")
+								name := ""
+								for v := range get {
+									if v != 0 {
+										name += fmt.Sprintf("%v ", get[v])
+									}
 								}
-								cl.SendMention(to, tx, bots)
+								cl.UpdateProfileAttributes(2, name)
+								cl.SendMessage(to, "อัพเดทชื่อเป็น "+name)
+							} else if strings.HasPrefix(txt, fmt.Sprintf("%vอัพชื่อ ", cl.Count+1)) {
+								get := strings.Split((text), " ")
+								println("ok")
+								cl.UpdateProfileAttributes(2, get[1])
+								cl.SendMessage(to, "อัพเดทชื่อเป็น "+get[1])
+							} else if strings.HasPrefix(txt, fmt.Sprintf("%vอัพตัส ", cl.Count+1)) {
+								get := strings.Split((text), " ")
+								println("ok")
+								cl.UpdateProfile(get[1]," ")
+								cl.SendMessage(to, "อัพเดทสเตตัสเป็น "+get[1])
 							}
-						} else if txt == "เชคเพื่อน"{
-							nm := []string{}
-							teman,_ := cl.GetAllContactIds()
-							for c, v := range teman {
-								res,_ := cl.GetContact(v)
-								name := res.DisplayName
-								c += 1
-								name = fmt.Sprintf("%v. %s",c , name)
-								nm = append(nm, name)
-						    }
-							stf := "• 𝐟𝐫𝐢𝐞𝐧𝐝𝐥𝐢𝐬𝐭 •\n\n"
-							str := strings.Join(nm, "\n")
-							cl.SendMessage(to, stf+str)
-						} else if txt == "นับบอท" {
-							res, _ := cl.GetAllContactIds()
-							tx := "Contact\n\n"
-							for x := range res {
-								get, _ := cl.GetContact(res[x])
-								tx += fmt.Sprintf("%v. "+get.DisplayName+" : %v\n", x, res[x])
-							}
-							cl.SendMessage(to, tx)
-						} else if txt == "เพิ่มบอท" {
-
-							cl.SendMessage(to, "เพิ่มบอทok")
-							res, _ := cl.GetAllContactIds()
-							num := 1
-							for m := range data.Squad {
-								if !oop.Contains(res, data.Squad[m]) && data.Squad[m] != cl.Mid {
-									time.Sleep(time.Duration(cl.Count) * time.Second)
-									time.Sleep(1000 * time.Second)
-									_, err := cl.FindAndAddContactsByMid(data.Squad[m])
+							if txt == "bot" {
+								cl.SendMessage(to, cl.Mid)
+							} else if txt == "get" {
+								if getAccess(ctime,cl.Mid) {
+									cl.SendMessage(msg.To, "i Get first")
+									SaveData()
+									putSquad(cl, to)
+								}
+								ticket, _ := cl.ReissueChatTicket(to)
+								if ticket != nil {
+									ModTicket = fmt.Sprintf("%v", ticket.TicketId)
+									lock = fmt.Sprintf("%v", ctime)
+									fmt.Println(ModTicket)
+								}
+							} else if txt == "app" {
+								cl.SendMessage(msg.To, cl.LineApp+"\n"+cl.UserAgent+"\n"+cl.Host)
+							} else if txt == "rest" {
+								if getAccess(ctime,cl.Mid) {
+									oop.Clearcache()
+									cl.SendMessage(to, "รีสตาร์ทระบบ...")
+									SaveData()
+									putSquad(cl, to)
+									file, err := osext.Executable()
 									if err != nil {
-										cl.SendMessage(to, "Limit add")
-										break
+										fmt.Println("Reboot", err)
+									}
+									err = syscall.Exec(file, os.Args, os.Environ())
+									if err != nil {
+										fmt.Println("Reboot", err)
+									}
+								}
+							} else if txt == "เชคบอท" {
+								if getAccess(ctime,cl.Mid) {
+									tx := "• Squad Bots\n\n"
+									bots := []string{}
+									num := 1
+									for b := range data.Squad {
+										tx += fmt.Sprintf("%v. @!\n", num)
+										num += 1
+										bots = append(bots, data.Squad[b])
+									}
+									cl.SendMention(to, tx, bots)
+								}
+							} else if txt == "เชคเพื่อน"{
+								nm := []string{}
+								teman,_ := cl.GetAllContactIds()
+								for c, v := range teman {
+									res,_ := cl.GetContact(v)
+									name := res.DisplayName
+									c += 1
+									name = fmt.Sprintf("%v. %s",c , name)
+									nm = append(nm, name)
+								}
+								stf := "• 𝐟𝐫𝐢𝐞𝐧𝐝𝐥𝐢𝐬𝐭 •\n\n"
+								str := strings.Join(nm, "\n")
+								cl.SendMessage(to, stf+str)
+							} else if txt == "นับบอท" {
+								res, _ := cl.GetAllContactIds()
+								tx := "Contact\n\n"
+								for x := range res {
+									get, _ := cl.GetContact(res[x])
+									tx += fmt.Sprintf("%v. "+get.DisplayName+" : %v\n", x, res[x])
+								}
+								cl.SendMessage(to, tx)
+							} else if txt == "เพิ่มบอท" {
+
+								cl.SendMessage(to, "เพิ่มบอทok")
+								res, _ := cl.GetAllContactIds()
+								num := 1
+								for m := range data.Squad {
+									if !oop.Contains(res, data.Squad[m]) && data.Squad[m] != cl.Mid {
+										time.Sleep(time.Duration(cl.Count) * time.Second)
+										time.Sleep(1000 * time.Second)
+										_, err := cl.FindAndAddContactsByMid(data.Squad[m])
+										if err != nil {
+											cl.SendMessage(to, "Limit add")
+											break
+										} else if num == len(data.Squad)-1 {
+											cl.SendMessage(to, "Add all success..!")
+										}
 									} else if num == len(data.Squad)-1 {
-										cl.SendMessage(to, "Add all success..!")
+										cl.SendMessage(to, "Already in contact..!")
 									}
-								} else if num == len(data.Squad)-1 {
-									cl.SendMessage(to, "Already in contact..!")
+									num += 1
 								}
-								num += 1
-							}
-						} else if strings.HasPrefix(txt, "เพิ่มแอดใหญ่ ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if !oop.Contains(data.Owner, dataMention[m]) {
-										data.Owner = append(data.Owner, dataMention[m])
+							} else if strings.HasPrefix(txt, "เพิ่มแอดใหญ่ ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if !oop.Contains(data.Owner, dataMention[m]) {
+											data.Owner = append(data.Owner, dataMention[m])
+										}
+									}
+									cl.SendMessage(to, "Promote Owners succes !.")
+								}
+							} else if strings.HasPrefix(txt, "ลบแอดใหญ่ ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										if oop.Contains(data.Owner, dataMention[m]) {
+											data.Owner = oop.Remove(data.Owner, dataMention[m])
+										}
+									}
+									cl.SendMessage(to, "Demote Owners succes !.")
+								}
+							} else if strings.HasPrefix(txt, "mid ") {
+								if getAccess(ctime,cl.Mid) {
+									for m := range dataMention {
+										cl.SendMessage(to, dataMention[m])
 									}
 								}
-								cl.SendMessage(to, "Promote Owners succes !.")
-							}
-						} else if strings.HasPrefix(txt, "ลบแอดใหญ่ ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									if oop.Contains(data.Owner, dataMention[m]) {
-										data.Owner = oop.Remove(data.Owner, dataMention[m])
-									}
-								}
-								cl.SendMessage(to, "Demote Owners succes !.")
-							}
-						} else if strings.HasPrefix(txt, "mid ") {
-							if getAccess(ctime,cl.Mid) {
-								for m := range dataMention {
-									cl.SendMessage(to, dataMention[m])
-								}
-							}
-						} else if txt == "ออกทุกกลุ่ม" {
-							allgrup, _ := cl.GetAllChatMids(true, false)
-							proGroup := 0
-							leaveTo := 0
-							for g := range allgrup.MemberChatMids {
-								if _, cek := data.ProKick[allgrup.MemberChatMids[g]]; !cek && allgrup.MemberChatMids[g] != to {
-									cl.DeleteSelfFromChat(allgrup.MemberChatMids[g])
-									leaveTo += 1
-								} else if allgrup.MemberChatMids[g] != to {
-									proGroup += 1
-								}
-							}
-							data.StayGroup = map[string][]string{}
-							tx := fmt.Sprintf("ออกจาก %v ความสำเร็จของกลุ่ม !.\nและอยู่ใน %v กลุ่มในการป้องกัน", leaveTo, proGroup)
-							allgrup, _ = cl.GetAllChatMids(true, false)
-							time.Sleep(time.Duration(cl.Count) * time.Second)
-							for g := range allgrup.MemberChatMids {
-								putSquad(cl, allgrup.MemberChatMids[g])
-							}
-							SaveData()
-							if getAccess(ctime,cl.Mid) {
-								GroupList = []string{}
-								cl.SendMessage(to, tx)
-							}
-						} else if txt == "fix" {
-							if getAccess(ctime,cl.Mid) {
-								oop.Clearcache()
-								data.StayGroup = map[string][]string{}
-								data.StayPending = map[string][]string{}
-								data.Squad = []string{}
-								data.LimitStatus = map[string]bool{}
-								data.LimitTime = map[string]time.Time{}
-								for x := range Botlist {
-									if oop.Contains(Freeze, Botlist[x].Mid) {
-										continue
-									}
-									_, err := Botlist[x].GetProfile()
-									if err != nil {
-										fmt.Println(err)
-										continue
-									}
-									data.Squad = append(data.Squad, Botlist[x].Mid)
-								}
+							} else if txt == "ออกทุกกลุ่ม" {
 								allgrup, _ := cl.GetAllChatMids(true, false)
+								proGroup := 0
+								leaveTo := 0
+								for g := range allgrup.MemberChatMids {
+									if _, cek := data.ProKick[allgrup.MemberChatMids[g]]; !cek && allgrup.MemberChatMids[g] != to {
+										cl.DeleteSelfFromChat(allgrup.MemberChatMids[g])
+										leaveTo += 1
+									} else if allgrup.MemberChatMids[g] != to {
+										proGroup += 1
+									}
+								}
+								data.StayGroup = map[string][]string{}
+								tx := fmt.Sprintf("ออกจาก %v ความสำเร็จของกลุ่ม !.\nและอยู่ใน %v กลุ่มในการป้องกัน", leaveTo, proGroup)
+								allgrup, _ = cl.GetAllChatMids(true, false)
+								time.Sleep(time.Duration(cl.Count) * time.Second)
 								for g := range allgrup.MemberChatMids {
 									putSquad(cl, allgrup.MemberChatMids[g])
 								}
-
 								SaveData()
-								cl.SendMessage(to, "แจ๋วจ้า")
-								time.Sleep(1 * time.Second)
-								cl.SendMessage(to, "ok")
-								file, err := osext.Executable()
-								if err != nil {
-									fmt.Println("Reboot", err)
+								if getAccess(ctime,cl.Mid) {
+									GroupList = []string{}
+									cl.SendMessage(to, tx)
 								}
-								err = syscall.Exec(file, os.Args, os.Environ())
-								if err != nil {
-									fmt.Println("Reboot", err)
+							} else if txt == "fix" {
+								if getAccess(ctime,cl.Mid) {
+									oop.Clearcache()
+									data.StayGroup = map[string][]string{}
+									data.StayPending = map[string][]string{}
+									data.Squad = []string{}
+									data.LimitStatus = map[string]bool{}
+									data.LimitTime = map[string]time.Time{}
+									for x := range Botlist {
+										if oop.Contains(Freeze, Botlist[x].Mid) {
+											continue
+										}
+										_, err := Botlist[x].GetProfile()
+										if err != nil {
+											fmt.Println(err)
+											continue
+										}
+										data.Squad = append(data.Squad, Botlist[x].Mid)
+									}
+									allgrup, _ := cl.GetAllChatMids(true, false)
+									for g := range allgrup.MemberChatMids {
+										putSquad(cl, allgrup.MemberChatMids[g])
+									}
+
+									SaveData()
+									cl.SendMessage(to, "แจ๋วจ้า")
+									time.Sleep(1 * time.Second)
+									cl.SendMessage(to, "ok")
+									file, err := osext.Executable()
+									if err != nil {
+										fmt.Println("Reboot", err)
+									}
+									err = syscall.Exec(file, os.Args, os.Environ())
+									if err != nil {
+										fmt.Println("Reboot", err)
+									}
+									/*
+									*/
 								}
-								/*
-								*/
-							}
-						}}
-					} else if (op.Message.ContentType).String() == "FLEX" {
-						if _, cek := data.ProFLEX[to]; cek {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "❌💫ห้าม💫โฆษณาflex❌")
-								}
-							}
-						}
-					} else if (op.Message.ContentType).String() == "CHATEVENT" {
-						if _, cek := data.ProDelAlbum[to]; cek && op.Message.ContentMetadata["LOC_KEY"] == "BD" {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫ลบอัลบั้ม🪶")
-								}
-							}
-						}
-					} else if (op.Message.ContentType).String() == "STICKER" {
-						if _, cek := data.ProSTICKER[to]; cek {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫ส่งสติ้กเกอร์🪶")
-								}
-							}
-						}
-					} else if (op.Message.ContentType).String() == "CALL" {
-						if _, cek := data.ProCALL[to]; cek && op.Message.ContentMetadata["GC_MEDIA_TYPE"] == "AUDIO" {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫โทรกลุ่ม🪶")
-								}
-							}
-						}
-					} else if (op.Message.ContentType).String() == "FILE" {
-						if _, cek := data.ProFILE[to]; cek {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫ส่งไฟล์🪶")
+							}}
+						} else if (op.Message.ContentType).String() == "FLEX" {
+							if _, cek := data.ProFLEX[to]; cek {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "❌💫ห้าม💫โฆษณาflex❌")
+									}
 								}
 							}
-						}
-					} else if (op.Message.ContentType).String() == "POSTNOTIFICATION" {
-						if _, cek := data.ProPOSTNOTIFICATION[to]; cek {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫สมาชิกโน้ต&&แชร์โพส🪶")
+						} else if (op.Message.ContentType).String() == "CHATEVENT" {
+							if _, cek := data.ProDelAlbum[to]; cek && op.Message.ContentMetadata["LOC_KEY"] == "BD" {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫ลบอัลบั้ม🪶")
+									}
 								}
 							}
-						}
-					} else if (op.Message.ContentType).String() == "AUDIO" {
-						if _, cek := data.ProAUDIO[to]; cek {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫ส่งคลิปเสียง🪶")
+						} else if (op.Message.ContentType).String() == "STICKER" {
+							if _, cek := data.ProSTICKER[to]; cek {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫ส่งสติ้กเกอร์🪶")
+									}
 								}
 							}
-						}
-					} else if (op.Message.ContentType).String() == "CONTACT" {
-						name := op.Message.ContentMetadata["displayName"]
-						mid := op.Message.ContentMetadata["mid"]
-						if Scont == true && PromoteStaff == true {
-							if fullAccess(sender) {
-								if !oop.Contains(data.Staff, mid) {
-									data.Staff = append(data.Staff, mid)
-									cl.SendMessage(to, "Contact Added to list Staff success !..")
-								} else {
-									cl.SendMessage(to, "Contact Already in Staff list !..")
+						} else if (op.Message.ContentType).String() == "CALL" {
+							if _, cek := data.ProCALL[to]; cek && op.Message.ContentMetadata["GC_MEDIA_TYPE"] == "AUDIO" {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫โทรกลุ่ม🪶")
+									}
 								}
 							}
-						} else if Scont == true && PromoteAdmin == true {
-							if fullAccess(sender) {
-								if !oop.Contains(data.Admin, mid) {
-									data.Admin = append(data.Admin, mid)
-									cl.SendMessage(to, "Contact Added to list Admin success !..")
-								} else {
-									cl.SendMessage(to, "Contact Already in Admin list !..")
+						} else if (op.Message.ContentType).String() == "FILE" {
+							if _, cek := data.ProFILE[to]; cek {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫ส่งไฟล์🪶")
+									}
 								}
 							}
-						} else if Scont == true && PromoteOwner == true {
-							if fullAccess(sender) {
-								if !oop.Contains(data.Owner, mid) {
-									data.Owner = append(data.Owner, mid)
-									cl.SendMessage(to, "Contact Added to list Owner success !..")
-								} else {
-									cl.SendMessage(to, "Contact Already in Owner list !..")
+						} else if (op.Message.ContentType).String() == "POSTNOTIFICATION" {
+							if _, cek := data.ProPOSTNOTIFICATION[to]; cek {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫สมาชิกโน้ต&&แชร์โพส🪶")
+									}
 								}
 							}
-						} else if Scont == true && DemoteStaff == true {
-							if fullAccess(sender) {
-								if oop.Contains(data.Staff, mid) {
-									data.Staff = oop.Remove(data.Staff, mid)
-									cl.SendMessage(to, "Contact Remove from list  Staff success !..")
-								} else {
-									cl.SendMessage(to, "Contact Not have in Staff list !..")
+						} else if (op.Message.ContentType).String() == "AUDIO" {
+							if _, cek := data.ProAUDIO[to]; cek {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫ส่งคลิปเสียง🪶")
+									}
 								}
 							}
-						} else if Scont == true && DemoteAdmin == true {
-							if fullAccess(sender) {
-								if oop.Contains(data.Admin, mid) {
-									data.Admin = oop.Remove(data.Admin, mid)
-									cl.SendMessage(to, "Contact Remove from list  Admin success !..")
-								} else {
-									cl.SendMessage(to, "Contact Not have in Admin list !..")
-								}
-							}
-						} else if Scont == true && DemoteOwner == true {
-							if fullAccess(sender) {
-								if oop.Contains(data.Owner, mid) {
-									data.Owner = oop.Remove(data.Owner, mid)
-									cl.SendMessage(to, "Contact Remove from list Owner success !..")
-								} else {
-									cl.SendMessage(to, "Contact Not have in Owner list !..")
-								}
-							}
-						} else if PromoteBlacklist == true {
-							if getAccess(ctime,cl.Mid) {
+						} else if (op.Message.ContentType).String() == "CONTACT" {
+							name := op.Message.ContentMetadata["displayName"]
+							mid := op.Message.ContentMetadata["mid"]
+							if Scont == true && PromoteStaff == true {
 								if fullAccess(sender) {
-									if !oop.Contains(data.Ban, mid) {
-										data.Ban = append(data.Ban, mid)
-										cl.SendMessage(to, "เพิ่ม "+name+" เข้าบัญชีดำเรียบร้อย")
+									if !oop.Contains(data.Staff, mid) {
+										data.Staff = append(data.Staff, mid)
+										cl.SendMessage(to, "Contact Added to list Staff success !..")
+									} else {
+										cl.SendMessage(to, "Contact Already in Staff list !..")
+									}
+								}
+							} else if Scont == true && PromoteAdmin == true {
+								if fullAccess(sender) {
+									if !oop.Contains(data.Admin, mid) {
+										data.Admin = append(data.Admin, mid)
+										cl.SendMessage(to, "Contact Added to list Admin success !..")
+									} else {
+										cl.SendMessage(to, "Contact Already in Admin list !..")
+									}
+								}
+							} else if Scont == true && PromoteOwner == true {
+								if fullAccess(sender) {
+									if !oop.Contains(data.Owner, mid) {
+										data.Owner = append(data.Owner, mid)
+										cl.SendMessage(to, "Contact Added to list Owner success !..")
+									} else {
+										cl.SendMessage(to, "Contact Already in Owner list !..")
+									}
+								}
+							} else if Scont == true && DemoteStaff == true {
+								if fullAccess(sender) {
+									if oop.Contains(data.Staff, mid) {
+										data.Staff = oop.Remove(data.Staff, mid)
+										cl.SendMessage(to, "Contact Remove from list  Staff success !..")
+									} else {
+										cl.SendMessage(to, "Contact Not have in Staff list !..")
+									}
+								}
+							} else if Scont == true && DemoteAdmin == true {
+								if fullAccess(sender) {
+									if oop.Contains(data.Admin, mid) {
+										data.Admin = oop.Remove(data.Admin, mid)
+										cl.SendMessage(to, "Contact Remove from list  Admin success !..")
+									} else {
+										cl.SendMessage(to, "Contact Not have in Admin list !..")
+									}
+								}
+							} else if Scont == true && DemoteOwner == true {
+								if fullAccess(sender) {
+									if oop.Contains(data.Owner, mid) {
+										data.Owner = oop.Remove(data.Owner, mid)
+										cl.SendMessage(to, "Contact Remove from list Owner success !..")
+									} else {
+										cl.SendMessage(to, "Contact Not have in Owner list !..")
+									}
+								}
+							} else if PromoteBlacklist == true {
+								if getAccess(ctime,cl.Mid) {
+									if fullAccess(sender) {
+										if !oop.Contains(data.Ban, mid) {
+											data.Ban = append(data.Ban, mid)
+											cl.SendMessage(to, "เพิ่ม "+name+" เข้าบัญชีดำเรียบร้อย")
+											}
+										}
+									}						
+							} else if delBlacklist == true {
+								if getAccess(ctime,cl.Mid) {
+									if fullAccess(sender) {
+										if getAccess(ctime,cl.Mid) {
+											data.Ban = oop.Remove(data.Ban, mid)
+											cl.SendMessage(to, "ลบ "+name+" ออกจากบัญชีดำเรียบร้อย")
 										}
 									}
-								}						
-						} else if delBlacklist == true {
-							if getAccess(ctime,cl.Mid) {
-								if fullAccess(sender) {
+								}
+							}
+						} else if (op.Message.ContentType).String() == "IMAGE" {
+							if fullAccess(sender) {
+								if _, cek := data.ProIMAGE[to]; cek {
 									if getAccess(ctime,cl.Mid) {
-										data.Ban = oop.Remove(data.Ban, mid)
-										cl.SendMessage(to, "ลบ "+name+" ออกจากบัญชีดำเรียบร้อย")
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫ส่งรูปภาพ🪶")
 									}
 								}
-							}
-						}
-					} else if (op.Message.ContentType).String() == "IMAGE" {
-						if fullAccess(sender) {
-							if _, cek := data.ProIMAGE[to]; cek {
-								if getAccess(ctime,cl.Mid) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫ส่งรูปภาพ🪶")
-								}
-							}
-							if _, cek := updateImage[cl.Mid]; cek {
-								time.Sleep(10 * time.Second)
-								path, err := cl.DownloadObjectMsg(msg.ID, "bin")
-								if err != nil {
-									cl.SendMessage(to, "Error download pict.")
-									return
-								}
-								cl.UpdateProfilePicture(path, "p")
-								delete(updateImage, cl.Mid)
-								cl.SendMessage(to, "Picture updated")
-							} else if _, cek := updateCover[cl.Mid]; cek {
-								time.Sleep(10 * time.Second)
-								delete(updateCover, cl.Mid)
-								cl.SendMessage(to, "Cover updated")
-							} else if _, cek := updateVideo.Mid[cl.Mid]; cek {
-								if updateVideo.PictStatus {
+								if _, cek := updateImage[cl.Mid]; cek {
 									time.Sleep(10 * time.Second)
 									path, err := cl.DownloadObjectMsg(msg.ID, "bin")
 									if err != nil {
 										cl.SendMessage(to, "Error download pict.")
 										return
 									}
-									updateVideo.PictPath = path
-									if updateVideo.Tipe == "cvp" {
-										cl.UpdateProfilePictureVideo(updateVideo.PictPath, updateVideo.VideoPath)
-										delete(updateVideo.Mid, cl.Mid)
-										cl.SendMessage(to, "Picture video updated")
-									}
-									updateVideo.Tipe = ""
-									updateVideo.PictStatus = false
-									updateVideo.PictPath = ""
-									updateVideo.VideoPath = ""
-								}
-							}
-						}
-					} else if (op.Message.ContentType).String() == "VIDEO" {
-						if _, cek := data.ProVIDEO[to]; cek {
-							if getAccess(ctime,cl.Mid) {
-								if !fullAccess(sender) {
-									cl.DeleteOtherFromChat(to, []string{sender})
-									appendBl(sender)
-									cl.SendMessage(to, "🪶💫ห้าม💫ส่งวีดีโอ🪶")
-								}
-							}
-							if _, cek := updateVideo.Mid[cl.Mid]; cek {
-								if updateVideo.VideoStatus {
+									cl.UpdateProfilePicture(path, "p")
+									delete(updateImage, cl.Mid)
+									cl.SendMessage(to, "Picture updated")
+								} else if _, cek := updateCover[cl.Mid]; cek {
 									time.Sleep(10 * time.Second)
-									path, err := cl.DownloadObjectMsg(msg.ID, "bin")
-									if err != nil {
-										cl.SendMessage(to, "Error download video.")
-										return
+									delete(updateCover, cl.Mid)
+									cl.SendMessage(to, "Cover updated")
+								} else if _, cek := updateVideo.Mid[cl.Mid]; cek {
+									if updateVideo.PictStatus {
+										time.Sleep(10 * time.Second)
+										path, err := cl.DownloadObjectMsg(msg.ID, "bin")
+										if err != nil {
+											cl.SendMessage(to, "Error download pict.")
+											return
+										}
+										updateVideo.PictPath = path
+										if updateVideo.Tipe == "cvp" {
+											cl.UpdateProfilePictureVideo(updateVideo.PictPath, updateVideo.VideoPath)
+											delete(updateVideo.Mid, cl.Mid)
+											cl.SendMessage(to, "Picture video updated")
+										}
+										updateVideo.Tipe = ""
+										updateVideo.PictStatus = false
+										updateVideo.PictPath = ""
+										updateVideo.VideoPath = ""
 									}
-									updateVideo.VideoPath = path
-									updateVideo.VideoStatus = false
-									updateVideo.PictStatus = true
-									cl.SendMessage(to, "Please send image !.")
+								}
+							}
+						} else if (op.Message.ContentType).String() == "VIDEO" {
+							if _, cek := data.ProVIDEO[to]; cek {
+								if getAccess(ctime,cl.Mid) {
+									if !fullAccess(sender) {
+										cl.DeleteOtherFromChat(to, []string{sender})
+										appendBl(sender)
+										cl.SendMessage(to, "🪶💫ห้าม💫ส่งวีดีโอ🪶")
+									}
+								}
+								if _, cek := updateVideo.Mid[cl.Mid]; cek {
+									if updateVideo.VideoStatus {
+										time.Sleep(10 * time.Second)
+										path, err := cl.DownloadObjectMsg(msg.ID, "bin")
+										if err != nil {
+											cl.SendMessage(to, "Error download video.")
+											return
+										}
+										updateVideo.VideoPath = path
+										updateVideo.VideoStatus = false
+										updateVideo.PictStatus = true
+										cl.SendMessage(to, "Please send image !.")
+									}
 								}
 							}
 						}
 					}
+					}
+					cl.CorrectRevision(op, true, false, false)
 				}
-			    }
-				cl.CorrectRevision(op, true, false, false)
-			}
 		}
 		}(ops)
 		cl.Rev = -1
@@ -3682,9 +3750,7 @@ func main() {
 	SaveData()
 	ch := make(chan int, len(Token))
 	for v := range ch {
-		
-		if v == 51 {
-			
+		if v == 10 {
 			break
 		}
 	}
