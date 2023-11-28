@@ -13,9 +13,10 @@ cd ~
 cp test-bot/update.sh update.sh
 chmod +x update.sh
 cp test-bot/bot.sh bot.sh
-cp botService.service /etc/systemd/system/botService.service
+# cp botService.service /etc/systemd/system/botService.service
 chmod +x bot.sh
-systemctl enamble botService.service
-systemctl start botService.service
-systemctl status botService.service
+# systemctl enamble botService.service
+# systemctl disable botService.service
+# systemctl start botService.service
+# systemctl status botService.service
 reboot

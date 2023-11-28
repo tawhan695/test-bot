@@ -6,7 +6,7 @@ cd ~
 
 "
 
-nano /etc/systemd/system/botService.service
+nano /etc/systemd/system/botrunner.service
 "
 [Unit]
 Description=botline
@@ -26,6 +26,6 @@ WantedBy=multi-user.target
 
 cp botService.service /etc/systemd/system/botService.service
 chmod +x bot.sh
-systemctl enamble botService.service
-systemctl start botService.service
-systemctl status botService.service
+systemctl enamble botrunner.service
+systemctl start botrunner.service
+systemctl status botrunner.service
