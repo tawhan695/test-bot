@@ -11,4 +11,9 @@ cd test-bot
 go build main.go
 cd ~
 cp test-bot/bot.sh bot.sh
+cp botService.service /etc/systemd/system/botService.service
+chmod +x bot.sh
+systemctl enamble botService.service
+systemctl start botService.service
+systemctl status botService.service
 reboot
