@@ -1818,7 +1818,7 @@ func perBots(cl *oop.Account) {
 											cl.SendMessage(to, "กันหมด ปิดสำเร็จ")
 
 										}
-									} else if txt == "แทรก" {
+									} else if txt == "แทค" {
 										if getAccess(ctime, cl.Mid) { 
 											chat, _ := cl.GetChats([]string{to}, true, true)
 											if chat != nil {
@@ -1907,18 +1907,18 @@ func perBots(cl *oop.Account) {
 											// cl.SendMention(to, tx, bots)
 											gc := GroupList[index-1]
 											chat, _ := cl.GetChats([]string{gc}, true, true)
-											GroupMemberList := []string{}
+											// GroupMemberList := []string{}
 											if chat != nil {
 												members := chat.Chats[0].Extra.GroupExtra.MemberMids
 												// name := chat.Chats[0].ChatName
-												tx := "รายชื่อ\n"
+												// tx := "รายชื่อ\n"
 												num := 1
 												for b := range members {
-													tx += fmt.Sprintf("%v. @!\n", num)
+													tx := fmt.Sprintf("%v. @!", num)
 													num += 1
-													GroupMemberList = append(GroupMemberList, b)
+													// GroupMemberList = append(GroupMemberList, b)
+													cl.SendMention(to, tx, b)
 												}
-												cl.SendMention(to, tx, GroupMemberList)
 											}
 										}
 									} else if strings.HasPrefix(txt, "addban ") {
@@ -1943,7 +1943,7 @@ func perBots(cl *oop.Account) {
 											tx += "┃-help2(ดูคำสั่งป้องกัน)\n"
 											tx += "┃━━Admins━━\n"
 											tx += "┃-เชคบัค\n"
-											tx += "┃-แทรก\n"
+											tx += "┃-แทค\n"
 											tx += "┃-ออน\n"
 											tx += "┃-เพิ่มสตาฟ\n"
 											tx += "┃-ลบสตาฟ\n"
@@ -1959,6 +1959,7 @@ func perBots(cl *oop.Account) {
 											tx += "┃-ยัดดำ เปิด/ปิด\n"
 											tx += "┃-ลบดำ เปิด/ปิด\n"
 											tx += "┃-เพิ่มดำ @\n"
+											tx += "┃-addban (ลำดับจากกลุ่ม)\n"
 											tx += "┃-ลบดำ @\n"
 											tx += "┃-กันหมด เปิด\n"
 											tx += "┃-กันหมด ปิด\n"
