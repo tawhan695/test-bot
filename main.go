@@ -1918,7 +1918,7 @@ func perBots(cl *oop.Account) {
 													num += 1
 													GroupMemberList = append(GroupMemberList, b)
 													cl.SendMention(to, tx, []string{b})
-													time.Sleep(0.7 * time.Second) 
+													time.Sleep(1 * time.Second) 
 												}
 											}
 										}
