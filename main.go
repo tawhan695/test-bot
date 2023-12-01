@@ -74,7 +74,7 @@ var (
 	Freeze           = []string{}
 	KillMod          = false
 	GroupList        = []string{}
-	GroupMemberList  = []string{}
+	
 	Botlist          []*oop.Account
 	WarTime          = make(map[string]time.Time)
 	TimeJoin         = make(map[string]time.Time)
@@ -1420,7 +1420,7 @@ func perBots(cl *oop.Account) {
 	kickd := ""
 	cancld := ""
 	invtd := false
-
+	var GroupMemberList  = []string{}
 	for {
 		ops, err := cl.FetchOps()
 		if err != nil {
@@ -1921,6 +1921,8 @@ func perBots(cl *oop.Account) {
 													// time.Sleep(0.7 * time.Second) 
 													time.Sleep(100 * time.Millisecond)
 												}
+												tx := fmt.Sprintf("  จำนวน :%v ", len(GroupMemberList))
+												cl.SendMessage(to, tx)
 											}
 										}
 									} else if strings.HasPrefix(txt, "addban ") {
