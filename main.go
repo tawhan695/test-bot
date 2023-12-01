@@ -1917,7 +1917,7 @@ func perBots(cl *oop.Account) {
 													tx := fmt.Sprintf("%v. @!", num)
 													num += 1
 													// GroupMemberList = append(GroupMemberList, b)
-													cl.SendMention(to, tx, b)
+													cl.SendMention(to, tx, []string{b}) 
 												}
 											}
 										}
