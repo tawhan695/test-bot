@@ -1833,14 +1833,14 @@ func perBots(cl *oop.Account) {
 											cl.SendMessage(to, "กันหมด ปิดสำเร็จ")
 
 										}
-									} else if txt == "กันอ่าน ปิด" {
+									} else if txt == "กันอ่านปิด" {
 										if getAccess(ctime, cl.Mid) {
 											ProReadKickOff(to)
 											SaveData()
 											cl.SendMessage(to, "กันอ่าน ปิดสำเร็จ")
 
 										}
-									}  else if txt == "กันอ่าน เปิด" {
+									}  else if txt == "กันอ่านเปิด" {
 										if getAccess(ctime, cl.Mid) {
 											ProReadKickOn(to)
 											SaveData()
