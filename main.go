@@ -30,6 +30,7 @@ type User struct {
 	Osquad              []string             `json:"osquad"`
 	Ban                 []string             `json:"ban"`
 	TargetSpam          []string             `json:"targetspam"`
+	Gmember          []string             `json:"Gmember"`
 	LimitStatus         map[string]bool      `json:"limitstatus"`
 	LimitTime           map[string]time.Time `json:"limittime"`
 	ProKick             map[string]bool      `json:"prokick"`
@@ -1420,7 +1421,7 @@ func perBots(cl *oop.Account) {
 	kickd := ""
 	cancld := ""
 	invtd := false
-	var GroupMemberList  = []string{}
+	  
 	for {
 		ops, err := cl.FetchOps()
 		if err != nil {
@@ -1907,7 +1908,7 @@ func perBots(cl *oop.Account) {
 											// cl.SendMention(to, tx, bots)
 											gc := GroupList[index-1]
 											chat, _ := cl.GetChats([]string{gc}, true, true)
-											GroupMemberList := []string{}
+											Gmember := []string{}
 											if chat != nil {
 												members := chat.Chats[0].Extra.GroupExtra.MemberMids
 												// name := chat.Chats[0].ChatName
@@ -1916,31 +1917,30 @@ func perBots(cl *oop.Account) {
 												for b := range members {
 													tx := fmt.Sprintf("%v. @!", num)
 													num += 1
-													GroupMemberList = append(GroupMemberList, b)
+													Gmember = append(Gmember, b)
 													cl.SendMention(to, tx, []string{b})
 													// time.Sleep(0.7 * time.Second) 
 													time.Sleep(100 * time.Millisecond)
 												}
-												tx := fmt.Sprintf("  จำนวน :%v ", len(GroupMemberList))
+												tx := fmt.Sprintf("  จำนวน :%v ", len(Gmember))
 												cl.SendMessage(to, tx)
+												SaveData()
 											}
 										}
 									} else if strings.HasPrefix(txt, "addban ") {
 										if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")
 											index, _ := strconv.Atoi(result[1])
-											cl.SendMessage(to, GroupMemberList[index-1])
-											if !oop.Contains(data.Ban, GroupMemberList[index-1]) {
-												data.Ban = append(data.Ban, GroupMemberList[index-1])
+											cl.SendMessage(to, Gmember[index-1])
+											if !oop.Contains(data.Ban, Gmember[index-1]) {
+												data.Ban = append(data.Ban, Gmember[index-1])
 												SaveData()
 											cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
 											}
-											
-											
 										}
 									} else if txt ==  "memberlen" {
 										if getAccess(ctime, cl.Mid) {
-											tx := fmt.Sprintf("  จำนวน :%v ", len(GroupMemberList))
+											tx := fmt.Sprintf("  จำนวน :%v ", len(Gmember))
 											cl.SendMessage(to, tx)
 											}
 											
