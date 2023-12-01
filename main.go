@@ -33,6 +33,7 @@ type User struct {
 	Gmember          []string             `json:"Gmember"`
 	LimitStatus         map[string]bool      `json:"limitstatus"`
 	LimitTime           map[string]time.Time `json:"limittime"`
+	ProReadKick             map[string]bool      `json:"proreadkick"`
 	ProKick             map[string]bool      `json:"prokick"`
 	ProInvite           map[string]bool      `json:"proinvite"`
 	ProCancel           map[string]bool      `json:"procancel"`
@@ -1051,6 +1052,16 @@ func ProIMAGEOn(to string) {
 		data.ProIMAGE[to] = true
 	}
 }
+func ProReadKickOn(to string) {
+	if _, cek := data.ProReadKick[to]; !cek {
+		data.ProReadKick[to] = true
+	}
+}
+func ProReadKickOff(to string) {
+	if _, cek := data.ProReadKick[to]; cek {
+		delete(data.ProReadKick, to)
+	}
+}
 func fullAccess2(target string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
@@ -1607,8 +1618,11 @@ func perBots(cl *oop.Account) {
 									go cl.DeleteOtherFromChat(op1, []string{op2})
 									//	cl.SendMessage(op1, "ไม่อนุญาติบัญชีดำอ่าน ‶⍵″")
 									WarTime[op1] = time.Now()
+								}else if _, cek := data.ProReadKick[op1]; cek {
+									if !fullAccess(op2) {
+										go cl.DeleteOtherFromChat(op1, []string{op2})
+									}
 								}
-
 							}
 							//Join
 						case 130:
@@ -1817,6 +1831,20 @@ func perBots(cl *oop.Account) {
 											SaveData()
 											putSquad(cl, to)
 											cl.SendMessage(to, "กันหมด ปิดสำเร็จ")
+
+										}
+									} else if txt == "กันอ่าน ปิด" {
+										if getAccess(ctime, cl.Mid) {
+											ProReadKickOff(to)
+											SaveData()
+											cl.SendMessage(to, "กันอ่าน ปิดสำเร็จ")
+
+										}
+									}  else if txt == "กันอ่าน เปิด" {
+										if getAccess(ctime, cl.Mid) {
+											ProReadKickOn(to)
+											SaveData()
+											cl.SendMessage(to, "กันอ่าน เปิดสำเร็จ")
 
 										}
 									} else if txt == "แทค" {
