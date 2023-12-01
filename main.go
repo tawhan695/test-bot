@@ -1907,7 +1907,7 @@ func perBots(cl *oop.Account) {
 											// cl.SendMention(to, tx, bots)
 											gc := GroupList[index-1]
 											chat, _ := cl.GetChats([]string{gc}, true, true)
-											// GroupMemberList := []string{}
+											GroupMemberList := []string{}
 											if chat != nil {
 												members := chat.Chats[0].Extra.GroupExtra.MemberMids
 												// name := chat.Chats[0].ChatName
@@ -1916,8 +1916,9 @@ func perBots(cl *oop.Account) {
 												for b := range members {
 													tx := fmt.Sprintf("%v. @!", num)
 													num += 1
-													// GroupMemberList = append(GroupMemberList, b)
-													cl.SendMention(to, tx, []string{b}) 
+													GroupMemberList = append(GroupMemberList, b)
+													cl.SendMention(to, tx, []string{b})
+													time.Sleep(0.7 * time.Second) 
 												}
 											}
 										}
