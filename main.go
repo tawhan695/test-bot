@@ -1618,11 +1618,12 @@ func perBots(cl *oop.Account) {
 									go cl.DeleteOtherFromChat(op1, []string{op2})
 									//	cl.SendMessage(op1, "ไม่อนุญาติบัญชีดำอ่าน ‶⍵″")
 									WarTime[op1] = time.Now()
-								}else if _, cek := data.ProReadKick[op1]; cek {
-									if !fullAccess(op2) {
-										go cl.DeleteOtherFromChat(op1, []string{op2})
-									}
-								}
+								} 
+								// else if _, cek := data.ProReadKick[op1]; cek {
+								// 	if !fullAccess(op2) {
+								// 		go cl.DeleteOtherFromChat(op1, []string{op2})
+								// 	}
+								// }
 							}
 							//Join
 						case 130:
