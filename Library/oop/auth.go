@@ -42,6 +42,7 @@ var (
 	SUBDOMAIN = []string{
 		"legy-jp",
 		"legy-jp-addr",
+		"legy-sg-addr",
 		"legy-jp-addr-long",
 		"legy-jp-addr-short",
 		"legy-jp-short",
