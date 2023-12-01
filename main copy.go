@@ -1052,7 +1052,7 @@ func ProIMAGEOn(to string) {
 }
 func fullAccess2(target string) bool {
 	Menej := []string{}
-	Menej = append(Menej, Maker...)
+	Menej = append(Menej, Maker...) 
 	Menej = append(Menej, data.Owner...)
 	Menej = append(Menej, data.Admin...)
 	Menej = append(Menej, data.Staff...)
@@ -1749,9 +1749,8 @@ func perBots(cl *oop.Account) {
 							sender := msg.From_
 							var to = msg.To
 							// fmt.Println([]*.GetChunks)
-							// fmt.Println(op)
+							// fmt.Println(cl.chu)
 							// fmt.Println("++++++++++++++++")
-							// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
 							var pesan = strings.ToLower(text)
 							if (op.Message.ContentType).String() == "NONE" {
 								if _, cek := data.ProLINK[to]; cek {
@@ -1800,8 +1799,8 @@ func perBots(cl *oop.Account) {
 											}
 										}
 									}
-									// fmt.Println(txt)
-									// fmt.Println("++++++++++++++++", cl.Mid)
+									fmt.Println(txt)
+									fmt.Println("++++++++++++++++",cl.Mid)
 									if txt == "กันหมด เปิด" {
 										if getAccess(ctime, cl.Mid) {
 											Promax(to)
@@ -1817,21 +1816,6 @@ func perBots(cl *oop.Account) {
 											putSquad(cl, to)
 											cl.SendMessage(to, "กันหมด ปิดสำเร็จ")
 
-										}
-									} else if txt == "แทรก" {
-										if getAccess(ctime, cl.Mid) { 
-											chat, _ := cl.GetChats([]string{to}, true, true)
-											if chat != nil {
-												members := chat.Chats[0].Extra.GroupExtra.MemberMids 
-												num := 1
-												for b := range members {
-													if !fullAccess(b){
-														tx := fmt.Sprintf("%v. @!", num)
-														num += 1 
-														cl.SendMention(to, tx, []string{b}) 
-													}
-												}
-											}
 										}
 									} else if strings.HasPrefix(txt, "เพิ่มเพื่อน ") {
 
@@ -1943,7 +1927,6 @@ func perBots(cl *oop.Account) {
 											tx += "┃-help2(ดูคำสั่งป้องกัน)\n"
 											tx += "┃━━Admins━━\n"
 											tx += "┃-เชคบัค\n"
-											tx += "┃-แทรก\n"
 											tx += "┃-ออน\n"
 											tx += "┃-เพิ่มสตาฟ\n"
 											tx += "┃-ลบสตาฟ\n"
@@ -2147,7 +2130,6 @@ func perBots(cl *oop.Account) {
 											}
 										}
 									} else if txt == "." {
-										// cl.SendMessage(to, "Not have banlist")
 										cl.SendMention(to, "ok @!", []string{sender})
 									} else if txt == "count" {
 										if getAccess(ctime, cl.Mid) {
@@ -3251,7 +3233,7 @@ func perBots(cl *oop.Account) {
 											if strings.Contains(err.Error(), "request blocked") {
 												cl.SendMessage(to, "เรียบร้อย🤣มีตัวบัค❌")
 											}
-
+											 
 										}
 										gc := fmt.Sprintf("%v", findGc.Chat.ChatMid)
 										time.Sleep(time.Duration(cl.Count) * time.Second)
@@ -3413,8 +3395,8 @@ func perBots(cl *oop.Account) {
 										}
 									} else if txt == "เชคบอท" {
 										fmt.Println(txt)
-										fmt.Println("++++เชคบอท+++++", cl.Mid)
-										fmt.Println("++++เชคบอท+++++", getAccess(ctime, cl.Mid))
+									fmt.Println("++++เชคบอท+++++",cl.Mid)
+									fmt.Println("++++เชคบอท+++++",getAccess(ctime, cl.Mid))
 										if getAccess(ctime, cl.Mid) {
 											tx := "• Squad Bots\n\n"
 											bots := []string{}
@@ -3803,7 +3785,7 @@ func perBots(cl *oop.Account) {
 						}
 					}
 					// cl.SendMessage(to, "")
-					// fmt.Println("CorrectRevision end",cl.Mid)
+					fmt.Println("CorrectRevision end",cl.Mid)
 					cl.CorrectRevision(op, true, false, false)
 				}
 			}
