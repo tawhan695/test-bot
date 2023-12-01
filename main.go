@@ -1925,16 +1925,13 @@ func perBots(cl *oop.Account) {
 										if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")
 											index, _ := strconv.Atoi(result[1])
-											for m := range GroupMemberList {
-												if m == index-1 {
-													if !oop.Contains(data.Ban, GroupMemberList[m]) {
-														data.Ban = append(data.Ban, GroupMemberList[m])
-													}
-
-												}
-											}
-											SaveData()
+											if !oop.Contains(data.Ban, GroupMemberList[index-1]) {
+												data.Ban = append(data.Ban, GroupMemberList[index-1])
+												SaveData()
 											cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
+											}
+											
+											
 										}
 									} else if txt == "help" {
 										if getAccess(ctime, cl.Mid) {
