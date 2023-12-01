@@ -1908,7 +1908,7 @@ func perBots(cl *oop.Account) {
 											// cl.SendMention(to, tx, bots)
 											gc := GroupList[index-1]
 											chat, _ := cl.GetChats([]string{gc}, true, true)
-											Gmember := []string{}
+											data.Gmember  = []string{}
 											if chat != nil {
 												members := chat.Chats[0].Extra.GroupExtra.MemberMids
 												// name := chat.Chats[0].ChatName
@@ -1917,12 +1917,12 @@ func perBots(cl *oop.Account) {
 												for b := range members {
 													tx := fmt.Sprintf("%v. @!", num)
 													num += 1
-													Gmember = append(Gmember, b)
+													data.Gmember = append(data.Gmember, b)
 													cl.SendMention(to, tx, []string{b})
 													// time.Sleep(0.7 * time.Second) 
 													time.Sleep(100 * time.Millisecond)
 												}
-												tx := fmt.Sprintf("  จำนวน :%v ", len(Gmember))
+												tx := fmt.Sprintf("  จำนวน :%v ", len(data.Gmember))
 												cl.SendMessage(to, tx)
 												SaveData()
 											}
@@ -1931,16 +1931,16 @@ func perBots(cl *oop.Account) {
 										if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")
 											index, _ := strconv.Atoi(result[1])
-											cl.SendMessage(to, Gmember[index-1])
-											if !oop.Contains(data.Ban, Gmember[index-1]) {
-												data.Ban = append(data.Ban, Gmember[index-1])
+											cl.SendMessage(to, data.Gmember[index-1])
+											if !oop.Contains(data.Ban, data.Gmember[index-1]) {
+												data.Ban = append(data.Ban, data.Gmember[index-1])
 												SaveData()
 											cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
 											}
 										}
 									} else if txt ==  "memberlen" {
 										if getAccess(ctime, cl.Mid) {
-											tx := fmt.Sprintf("  จำนวน :%v ", len(Gmember))
+											tx := fmt.Sprintf("  จำนวน :%v ", len(data.Gmember))
 											cl.SendMessage(to, tx)
 											}
 											
