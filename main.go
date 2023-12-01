@@ -13,12 +13,12 @@ import (
 	"syscall"
 	"time"
 
-	"./Library/linethrift"
-	"./Library/oop"
+	// "./Library/linethrift"
+	// "./Library/oop"
 	"github.com/kardianos/osext"
 
-	// "botline/Library-mac/oop"
-	// "botline/Library-mac/linethrift"
+	"botline/Library-mac/oop"
+	"botline/Library-mac/linethrift"
 
 )
 
@@ -1918,7 +1918,8 @@ func perBots(cl *oop.Account) {
 													num += 1
 													GroupMemberList = append(GroupMemberList, b)
 													cl.SendMention(to, tx, []string{b})
-													time.Sleep(1 * time.Second) 
+													// time.Sleep(0.7 * time.Second) 
+													time.Sleep(100 * time.Millisecond)
 												}
 											}
 										}
@@ -1926,6 +1927,7 @@ func perBots(cl *oop.Account) {
 										if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")
 											index, _ := strconv.Atoi(result[1])
+											cl.SendMessage(to, GroupMemberList[index-1])
 											if !oop.Contains(data.Ban, GroupMemberList[index-1]) {
 												data.Ban = append(data.Ban, GroupMemberList[index-1])
 												SaveData()
@@ -1934,6 +1936,13 @@ func perBots(cl *oop.Account) {
 											
 											
 										}
+									} else if txt ==  "memberlen" {
+										if getAccess(ctime, cl.Mid) {
+											tx := fmt.Sprintf("  จำนวน :%v ", len(GroupMemberList))
+											cl.SendMessage(to, tx)
+											}
+											
+											
 									} else if txt == "help" {
 										if getAccess(ctime, cl.Mid) {
 											tx := "┏เมนูคำสั่งบอท━━\n"
