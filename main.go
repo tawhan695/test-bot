@@ -827,6 +827,7 @@ func Promax(to string) {
 	// 	data.ProKillMsg[to] = true
 	// }
 	if _, cek := data.ProKick[to]; !cek {
+		// fmt.Println("error _", _)
 		data.ProKick[to] = true
 	}
 	if _, cek := data.ProInvite[to]; !cek {
@@ -1820,7 +1821,7 @@ func perBots(cl *oop.Account) {
 							sender := msg.From_
 							var to = msg.To
 							// fmt.Println([]*.GetChunks)
-							fmt.Println(op)
+							// fmt.Println(op)
 							// fmt.Println("++++++++++++++++")
 							// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
 							var pesan = strings.ToLower(text)
@@ -2294,15 +2295,20 @@ func perBots(cl *oop.Account) {
 										}
 									} else if txt == "เชคดำ" {
 										if getAccess(ctime, cl.Mid) {
+											cl.SendMention(to, "ok @!", []string{cl.Mid})
 											if len(data.Ban) != 0 {
+												// fmt.Println(len(data.Ban) != 0)
+												// fmt.Println(len(data.Ban))
 												tx := "• Banlist\n\n"
 												target := []string{}
 												for x := range data.Ban {
 													if data.Ban[x] != "" {
 														tx += fmt.Sprintf("	%v. @!\n", x+1)
+														
 														target = append(target, data.Ban[x])
 													}
 												}
+												fmt.Println(target)
 												cl.SendMention(to, tx, target)
 											} else {
 												cl.SendMessage(to, "Not have banlist")
@@ -3582,6 +3588,14 @@ func perBots(cl *oop.Account) {
 										stf := "• 𝐟𝐫𝐢𝐞𝐧𝐝𝐥𝐢𝐬𝐭 •\n\n"
 										str := strings.Join(nm, "\n")
 										cl.SendMessage(to, stf+str)
+									} else if txt == "เชิญเพื่อน" {
+										// nm := []string{}
+										teman, _ := cl.GetAllContactIds()
+										for  v := range teman {
+											go cl.InviteIntoChat(to, []string{teman[v]})
+											time.Sleep(4 * time.Second)
+										}
+										cl.SendMessage(to, "สวัสดีจ้า")
 									} else if txt == "นับบอท" {
 										res, _ := cl.GetAllContactIds()
 										tx := "Contact\n\n"

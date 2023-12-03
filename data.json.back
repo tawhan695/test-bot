@@ -1,7 +1,5 @@
 {
-    "squad": [
-        "ude81df589a3e293b2dad89acc8be9732"
-    ],
+    "squad": [],
     "owner": [],
     "admin": [],
     "staff": null,
@@ -9,12 +7,8 @@
     "ban": [],
     "targetspam": null,
     "Gmember": [],
-    "limitstatus": {
-        "ude81df589a3e293b2dad89acc8be9732": false
-    },
-    "limittime": {
-        "ude81df589a3e293b2dad89acc8be9732": "2023-12-04T01:09:58.068795+07:00"
-    },
+    "limitstatus": {},
+    "limittime": {},
     "proreadkick": {},
     "prorenamegroup": {},
     "prokick": {},
@@ -26,17 +20,13 @@
     "ProFLEX": {},
     "ProDelAlbum": {},
     "ProSTICKER": {},
-    "ProCALL": {},
+    "ProCALL": { },
     "ProFILE": {},
     "ProPOSTNOTIFICATION": {},
     "ProVIDEO": {},
     "ProAUDIO": {},
     "ProIMAGE": {},
     "ProKillMsg": {},
-    "staygroup": {
-        "cc1c7568e878a91229a427336345c77c6": [
-            "ude81df589a3e293b2dad89acc8be9732"
-        ]
-    },
+    "staygroup": {},
     "staypending": {}
 }
