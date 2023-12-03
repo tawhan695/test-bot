@@ -13,12 +13,12 @@ import (
 	"syscall"
 	"time"
 
-	"./Library/linethrift"
-	"./Library/oop"
+	// "./Library/linethrift"
+	// "./Library/oop"
 	"github.com/kardianos/osext"
 
-	// "botline/Library-mac/oop"
-	// "botline/Library-mac/linethrift"
+	"botline/Library-mac/linethrift"
+	"botline/Library-mac/oop"
 
 )
 
@@ -30,10 +30,11 @@ type User struct {
 	Osquad              []string             `json:"osquad"`
 	Ban                 []string             `json:"ban"`
 	TargetSpam          []string             `json:"targetspam"`
-	Gmember          []string             `json:"Gmember"`
+	Gmember             []string             `json:"Gmember"`
 	LimitStatus         map[string]bool      `json:"limitstatus"`
 	LimitTime           map[string]time.Time `json:"limittime"`
-	ProReadKick             map[string]bool      `json:"proreadkick"`
+	ProReadKick         map[string]bool      `json:"proreadkick"`
+	ProRenameGroup      map[string]bool      `json:"prorenamegroup"`
 	ProKick             map[string]bool      `json:"prokick"`
 	ProInvite           map[string]bool      `json:"proinvite"`
 	ProCancel           map[string]bool      `json:"procancel"`
@@ -73,10 +74,10 @@ var (
 	Maker     = []string{
 		"u53ab6fa03c2838678a07a10fd142eb81",
 	}
-	Freeze           = []string{}
-	KillMod          = false
-	GroupList        = []string{}
-	
+	Freeze    = []string{}
+	KillMod   = false
+	GroupList = []string{}
+
 	Botlist          []*oop.Account
 	WarTime          = make(map[string]time.Time)
 	TimeJoin         = make(map[string]time.Time)
@@ -111,7 +112,7 @@ var (
 	DemoteOwner      = false
 	notiFadd         = false
 	kickban          = false
-	sleepmode        = true
+	sleepmode        = false
 	Spamlimit        int
 	LimiterJoin      int
 	LimiterKick      int
@@ -296,6 +297,7 @@ func Ban(usr string) {
 	if !oop.Contains(data.Ban, usr) {
 		data.Ban = append(data.Ban, usr)
 	}
+	SaveData()
 }
 
 func BanAll(usr string, sq []string) {
@@ -314,6 +316,7 @@ func appendBl(target string) {
 	if !oop.Contains(data.Ban, target) {
 		data.Ban = append(data.Ban, target)
 	}
+	SaveData()
 }
 func BanWithList(sq []string) {
 	for x := range sq {
@@ -636,7 +639,21 @@ func closeQr(cl *oop.Account, to string) {
 	}
 }
 
+func CclList_kick(cl *oop.Account, to string, target []string) {
+	fmt.Println("CclList CancelChatInvitation")
+	runtime.GOMAXPROCS(1)
+	var wg sync.WaitGroup
+	wg.Add(len(target))
+	for i := 0; i < len(target); i++ {
+		go func(i int) {
+			defer wg.Done()
+			go cl.DeleteOtherFromChat(to, []string{target[i]})
+		}(i)
+	}
+	wg.Wait()
+}
 func CclList(cl *oop.Account, to string, target []string) {
+	fmt.Println("CclList CancelChatInvitation")
 	runtime.GOMAXPROCS(1)
 	var wg sync.WaitGroup
 	wg.Add(len(target))
@@ -1062,6 +1079,16 @@ func ProReadKickOff(to string) {
 		delete(data.ProReadKick, to)
 	}
 }
+func ProRenameGroupOn(to string) {
+	if _, cek := data.ProRenameGroup[to]; !cek {
+		data.ProRenameGroup[to] = true
+	}
+}
+func ProRenameGroupOff(to string) {
+	if _, cek := data.ProRenameGroup[to]; cek {
+		delete(data.ProRenameGroup, to)
+	}
+}
 func fullAccess2(target string) bool {
 	Menej := []string{}
 	Menej = append(Menej, Maker...)
@@ -1432,7 +1459,7 @@ func perBots(cl *oop.Account) {
 	kickd := ""
 	cancld := ""
 	invtd := false
-	  
+
 	for {
 		ops, err := cl.FetchOps()
 		if err != nil {
@@ -1478,12 +1505,12 @@ func perBots(cl *oop.Account) {
 
 						switch op.Type {
 						case 124:
+							fmt.Println("124")
 							if !sleepmode {
 								// fmt.Println("เชิญเข้าสู่การแชท 124")
 								op1, op2, op3, ctime := op.Param1, op.Param2, strings.Split(op.Param3, "\x1e"), op.CreatedTime
 								if getAccessForCancel(cl, op2, op3) {
 									CclList(cl, op1, op3)
-									fmt.Println("getAccessForCancel")
 									//go cl.CancelChatInvitation(cl, op1, op2)
 								} else if oop.Contains(op3, cl.Mid) && !oop.Contains(data.StayPending[op1], cl.Mid) {
 									var wg sync.WaitGroup
@@ -1496,23 +1523,37 @@ func perBots(cl *oop.Account) {
 									}(op1)
 									wg.Wait()
 								} else if fullAccess(op2) {
+									fmt.Println("123 fullAccess")
 									continue
 								} else if oop.Contains(data.Ban, op2) || oop.CheckEqual(data.Ban, op3) {
 									if getWarAccess(cl, ctime, op1, "", cl.Mid, true) {
+										go cl.DeleteOtherFromChat(op1, []string{op2})
+										go func() { CclList_kick(cl, op1, op3) }()
+										go func() { CclList(cl, op1, op3) }()
 										BanAll(op2, op3)
 									}
 								} else if _, cek := data.ProInvite[op1]; cek {
+									fmt.Println("123 ProInvite")
 									if getWarAccess(cl, ctime, op1, "", cl.Mid, false) {
 										go cl.DeleteOtherFromChat(op1, []string{op2})
+										go func() { CclList_kick(cl, op1, op3) }()
+										go func() { CclList(cl, op1, op3) }()
+										go BanAll(op2, op3)
+										WarTime[op1] = time.Now()
+									}
+								} else if kickban == true {
+									fmt.Println("123 เตะและเพิ่มดำ")
+									if getWarAccess(cl, ctime, op1, "", cl.Mid, false) {
+										go cl.DeleteOtherFromChat(op1, []string{op2})
+										go func() { CclList_kick(cl, op1, op3) }()
 										go func() { CclList(cl, op1, op3) }()
 										go BanAll(op2, op3)
 									}
-								} else if kickban == true {
-									go Ban(op2)
 									WarTime[op1] = time.Now()
 								}
 							}
 						case 123:
+							fmt.Println("123")
 							if !sleepmode {
 								// ÷continue
 								op1 := op.Param1
@@ -1522,21 +1563,21 @@ func perBots(cl *oop.Account) {
 									go InviteMem(cl, op1, op3)
 								}
 							}
-							//Kicked
-						case 133:
+
+						case 133: //Kicked
+							fmt.Println("133")
 							if !sleepmode {
 								// continue
 								op1, op2, op3, ctime := op.Param1, op.Param2, op.Param3, op.CreatedTime
 								if fullAccess(op2) {
+									fmt.Println("133 fullAccess")
 									continue
 								} else if op3 == cl.Mid {
 									WarTime[op1] = time.Now()
 									Ban(op2)
 									if Multy {
 										ModJoin(cl, op1, op2)
-
 									}
-									continue
 								} else if oop.Contains(data.StayPending[op1], cl.Mid) {
 									if getAccessAjs(ctime) {
 										go SmartAjs(cl, op)
@@ -1583,6 +1624,7 @@ func perBots(cl *oop.Account) {
 										WarTime[op1] = time.Now()
 									}
 								} else if _, cek := data.ProKick[op1]; cek || fullAccess(op3) {
+									fmt.Println("133 fullAccess", op3)
 									if getWarAccess(cl, ctime, op1, op3, cl.Mid, false) {
 										res := KillMode(cl, op1, op2)
 										go KickAndCancelByList(cl, op1, res["targetMember"], res["targetInvitee"])
@@ -1594,8 +1636,9 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							}
-							//    client kicked
-						case 132:
+
+						case 132: //    client kicked
+							fmt.Println("132")
 							if !sleepmode {
 								op1 := op.Param1
 								if invtd {
@@ -1612,28 +1655,33 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						case 55:
+							fmt.Println("55")
 							if !sleepmode {
 								op1, op2 := op.Param1, op.Param2
 								if oop.Contains(data.Ban, op2) {
 									go cl.DeleteOtherFromChat(op1, []string{op2})
 									//	cl.SendMessage(op1, "ไม่อนุญาติบัญชีดำอ่าน ‶⍵″")
 									WarTime[op1] = time.Now()
-								} 
-								// else if _, cek := data.ProReadKick[op1]; cek {
-								// 	if !fullAccess(op2) {
-								// 		go cl.DeleteOtherFromChat(op1, []string{op2})
-								// 	}
-								// }
+								} else if _, cek := data.ProReadKick[op1]; cek {
+									if !fullAccess(op2) {
+										go cl.DeleteOtherFromChat(op1, []string{op2})
+										go Ban(op2)
+										WarTime[op1] = time.Now()
+									}
+								}
 							}
-							//Join
-						case 130:
+
+						case 130: //Join
+							fmt.Println("130")
 							if !sleepmode {
 								// continue
 								op1, op2, op3 := op.Param1, op.Param2, op.Param3
 								if fullAccess(op2) {
+									fmt.Println("130 admin Access")
 									continue
 								} else if kickban == true {
 									go Ban(op2)
+									go cl.DeleteOtherFromChat(op1, []string{op2})
 									WarTime[op1] = time.Now()
 								} else if _, cek := data.ProJoin[op1]; cek {
 									go Ban(op2)
@@ -1646,6 +1694,7 @@ func perBots(cl *oop.Account) {
 							}
 							//Cancel
 						case 126:
+							fmt.Println("126")
 							if !sleepmode {
 								// continue
 								op1, op2, op3, ctime := op.Param1, op.Param2, op.Param3, op.CreatedTime
@@ -1722,10 +1771,14 @@ func perBots(cl *oop.Account) {
 											}
 										}
 									}
+								} else if kickban == true {	
+									go cl.DeleteOtherFromChat(op1, []string{op2})
+									go Ban(op2)
 								}
 							}
 
 						case 129:
+							fmt.Println("129")
 							if !sleepmode {
 								// continue
 								op1 := op.Param1
@@ -1736,6 +1789,7 @@ func perBots(cl *oop.Account) {
 
 						//Notif Add
 						case 5:
+							fmt.Println("5")
 							if !sleepmode {
 								// continue
 								adders := op.Param1
@@ -1758,6 +1812,7 @@ func perBots(cl *oop.Account) {
 								}
 							}
 						case 26:
+							fmt.Println("26")
 							cl.Rev = -1
 							ctime := op.CreatedTime
 							msg := op.Message
@@ -1765,7 +1820,7 @@ func perBots(cl *oop.Account) {
 							sender := msg.From_
 							var to = msg.To
 							// fmt.Println([]*.GetChunks)
-							// fmt.Println(op)
+							fmt.Println(op)
 							// fmt.Println("++++++++++++++++")
 							// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
 							var pesan = strings.ToLower(text)
@@ -1841,7 +1896,7 @@ func perBots(cl *oop.Account) {
 											cl.SendMessage(to, "กันอ่าน ปิดสำเร็จ")
 
 										}
-									}  else if txt == "กันอ่านเปิด" {
+									} else if txt == "กันอ่านเปิด" {
 										if getAccess(ctime, cl.Mid) {
 											ProReadKickOn(to)
 											SaveData()
@@ -1849,16 +1904,16 @@ func perBots(cl *oop.Account) {
 
 										}
 									} else if txt == "แทค" {
-										if getAccess(ctime, cl.Mid) { 
+										if getAccess(ctime, cl.Mid) {
 											chat, _ := cl.GetChats([]string{to}, true, true)
 											if chat != nil {
-												members := chat.Chats[0].Extra.GroupExtra.MemberMids 
+												members := chat.Chats[0].Extra.GroupExtra.MemberMids
 												num := 1
 												for b := range members {
-													if !fullAccess(b){
+													if !fullAccess(b) {
 														tx := fmt.Sprintf("%v. @!", num)
-														num += 1 
-														cl.SendMention(to, tx, []string{b}) 
+														num += 1
+														cl.SendMention(to, tx, []string{b})
 													}
 												}
 											}
@@ -1937,7 +1992,7 @@ func perBots(cl *oop.Account) {
 											// cl.SendMention(to, tx, bots)
 											gc := GroupList[index-1]
 											chat, _ := cl.GetChats([]string{gc}, true, true)
-											data.Gmember  = []string{}
+											data.Gmember = []string{}
 											if chat != nil {
 												members := chat.Chats[0].Extra.GroupExtra.MemberMids
 												// name := chat.Chats[0].ChatName
@@ -1948,7 +2003,7 @@ func perBots(cl *oop.Account) {
 													num += 1
 													cl.SendMention(to, tx, []string{b})
 													data.Gmember = append(data.Gmember, b)
-													// time.Sleep(0.7 * time.Second) 
+													// time.Sleep(0.7 * time.Second)
 													time.Sleep(100 * time.Millisecond)
 												}
 												tx := fmt.Sprintf("  จำนวน :%v ", len(data.Gmember))
@@ -1964,16 +2019,48 @@ func perBots(cl *oop.Account) {
 											if !oop.Contains(data.Ban, data.Gmember[index-1]) {
 												data.Ban = append(data.Ban, data.Gmember[index-1])
 												SaveData()
-											cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
+												cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
 											}
 										}
-									} else if txt ==  "memberlen" {
+									} else if strings.HasPrefix(txt, "กันเปลี่ยนชื่อกลุ่ม ") {
+										if getAccess(ctime, cl.Mid) {
+											result := strings.Split((text), " ")
+											putSquad(cl, to)
+											if result[1] == "เปิด" {
+												ProRenameGroupOn(to)
+												cl.SendMessage(to, "เปิดป้องกันกันเปลี่ยนชื่อกลุ่ม")
+											} else if result[1] == "ปิด" {
+												ProRenameGroupOff(to)
+												cl.SendMessage(to, "ปิดป้องกันกันเปลี่ยนชื่อกลุ่ม")
+											}
+											SaveData()
+										}
+									} else if strings.HasPrefix(txt, "โหมดยึดกลุ่ม ") {
+										if getAccess(ctime, cl.Mid) {
+											result := strings.Split((text), " ")
+											putSquad(cl, to)
+											if result[1] == "เปิด" {
+												KillMod = true
+												kickban = true
+												notiFadd = true
+												Loop = true
+												sleepmode = false
+												cl.SendMessage(to, "เปิดโหมดยึดกลุ่ม")
+											} else if result[1] == "ปิด" {
+												KillMod = false
+												kickban = false
+												notiFadd = false
+												Loop = false
+												cl.SendMessage(to, "ปิดโหมดยึดกลุ่ม")
+											}
+											SaveData()
+										}
+									} else if txt == "memberlen" {
 										if getAccess(ctime, cl.Mid) {
 											tx := fmt.Sprintf("  จำนวน :%v ", len(data.Gmember))
 											cl.SendMessage(to, tx)
-											}
-											
-											
+										}
+
 									} else if txt == "help" {
 										if getAccess(ctime, cl.Mid) {
 											tx := "┏เมนูคำสั่งบอท━━\n"
@@ -2057,6 +2144,7 @@ func perBots(cl *oop.Account) {
 											tx += "┃-กันหมด เปิด/ปิด\n"
 											tx += "┃-กันแอด เปิด/ปิด\n"
 											tx += "┃-กันส่งข้อความ เปิด/ปิด\n"
+											tx += "┃-กันเปลี่ยนชื่อกลุ่ม เปิด/ปิด\n"
 											tx += "┃-เตะดำ เปิด/ปิด\n"
 											tx += "┃-กันวางลิ้ง เปิด/ปิด\n"
 											tx += "┃-กันเฟค เปิด/ปิด\n"
@@ -2071,7 +2159,7 @@ func perBots(cl *oop.Account) {
 											tx += "┃-กันเตะ เปิด/ปิด\n"
 											tx += "┃-กันเชิญ เปิด/ปิด\n"
 											tx += "┃-กันคนเข้า เปิด/ปิด\n"
-											tx += "┃-กันลิ้ง เปิด/ปิด\n"
+											tx += "┃-กันเปิดลิ้ง เปิด/ปิด\n"
 											tx += "┃-sleepmode on/off\n"
 											tx += "┃-killmode on/off\n"
 											tx += "┃-ajs\n"
@@ -2417,8 +2505,14 @@ func perBots(cl *oop.Account) {
 											tx += "┃-นักพัฒนา : tanongsak695 @!\n"
 											tx += fmt.Sprintf("┃-กลุ่มทั้งหมด : %v\n", len(data.StayGroup))
 											tx += "┃━━การตั้งค่าการป้องกัน━━\n"
-											tx += "┃-ป้องส่งข้อความ : "
+											tx += "┃-ป้องกันส่งข้อความ : "
 											if _, cek := data.ProKillMsg[to]; cek {
+												tx += "	🟢\n"
+											} else {
+												tx += "	🔴\n"
+											}
+											tx += "┃-ป้องกันเปลี่ยนชื่อกลุ่ม : "
+											if _, cek := data.ProRenameGroup[to]; cek {
 												tx += "	🟢\n"
 											} else {
 												tx += "	🔴\n"
@@ -2501,6 +2595,12 @@ func perBots(cl *oop.Account) {
 											} else {
 												tx += "	🔴\n"
 											}
+											tx += "┃-ป้องกันอ่านข้อความ :  "
+											if _, cek := data.ProReadKick[to]; cek {
+												tx += "	🟢\n"
+											} else {
+												tx += "	🔴\n"
+											}
 											tx += "┃-ป้องกันเปิดลิ้ง : "
 											if _, cek := data.ProQr[to]; cek {
 												tx += "	🟢\n"
@@ -2513,14 +2613,14 @@ func perBots(cl *oop.Account) {
 											} else {
 												tx += "	🔴\n"
 											}
-											tx += "┃━━โหมดการตั้งค่า━━━\n"
+											tx += "┃━━โหมดการตั้งค่า ยึดกลุ่ม━━━\n"
 											tx += "┃-ป้องกันคนแอดบอท : "
 											if notiFadd == true {
 												tx += "	🟢\n"
 											} else {
 												tx += "	🔴\n"
 											}
-											tx += "┃-ᴋɪᴄᴋʙᴀɴ : "
+											tx += "┃-เตะดำ : "
 											if kickban == true {
 												tx += "	🟢\n"
 											} else {
@@ -3054,7 +3154,7 @@ func perBots(cl *oop.Account) {
 											}
 											SaveData()
 										}
-									} else if strings.HasPrefix(strings.ToLower(text), "กันลิ้ง ") {
+									} else if strings.HasPrefix(strings.ToLower(text), "กันเปิดลิ้ง ") {
 										if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")
 											putSquad(cl, to)
@@ -3205,6 +3305,7 @@ func perBots(cl *oop.Account) {
 													data.Admin = append(data.Admin, dataMention[m])
 												}
 											}
+											SaveData()
 											cl.SendMessage(to, "เพิ่มแอดมินเรียบร้อย !.")
 										}
 									} else if strings.HasPrefix(txt, "ลบแอดมิน ") {
@@ -3214,6 +3315,7 @@ func perBots(cl *oop.Account) {
 													data.Admin = oop.Remove(data.Admin, dataMention[m])
 												}
 											}
+											SaveData()
 											cl.SendMessage(to, "ลบแอดมินเรียบร้อย !.")
 										}
 									} else if strings.HasPrefix(txt, "เพิ่มดำ ") {
@@ -3223,6 +3325,7 @@ func perBots(cl *oop.Account) {
 													data.Ban = append(data.Ban, dataMention[m])
 												}
 											}
+											SaveData()
 											cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
 										}
 									} else if strings.HasPrefix(txt, "เพิ่มรายชื่อดำ ") {
@@ -3611,6 +3714,7 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							} else if (op.Message.ContentType).String() == "CHATEVENT" {
+								// cl.SendMessage(to, "CHATEVENT")
 								if _, cek := data.ProDelAlbum[to]; cek && op.Message.ContentMetadata["LOC_KEY"] == "BD" {
 									if getAccess(ctime, cl.Mid) {
 										if !sleepmode {
@@ -3618,6 +3722,29 @@ func perBots(cl *oop.Account) {
 												cl.DeleteOtherFromChat(to, []string{sender})
 												appendBl(sender)
 												cl.SendMessage(to, "🪶💫ห้าม💫ลบอัลบั้ม🪶")
+											}
+
+										}
+									}
+								} else if _, cek := data.ProRenameGroup[to]; cek && op.Message.ContentMetadata["LOC_KEY"] == "C_PN" { /* ห้ามเปลี่ยนชื่อกลุ่ม */
+									if getAccess(ctime, cl.Mid) {
+										if !sleepmode {
+											if !fullAccess(sender) {
+												cl.DeleteOtherFromChat(to, []string{sender})
+												appendBl(sender)
+												cl.SendMessage(to, "💫ห้าม💫เปลี่ยนชื่อกลุ่ม")
+											}
+
+										}
+									}
+								} else if _, cek := data.ProQr[to]; cek && op.Message.ContentMetadata["LOC_KEY"] == "C_SN" { /* 💫ห้ามสมาชิกเปิดลิ้งกลุ่ม */
+									if getAccess(ctime, cl.Mid) {
+										if !sleepmode {
+											if !fullAccess(sender) {
+												cl.DeleteOtherFromChat(to, []string{sender})
+												go func() { cl.UpdateChatQr(to, true) }()
+												appendBl(sender)
+												cl.SendMessage(to, "💫ห้ามสมาชิกเปิดลิ้งกลุ่ม")
 											}
 
 										}
