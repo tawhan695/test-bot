@@ -2862,12 +2862,16 @@ func perBots(cl *oop.Account) {
 											gc := GroupList[index-1]
 											chat, _ := cl.GetChats([]string{gc}, true, true)
 											if chat != nil {
-												for c := range data.Squad {
-													data.StayGroup[gc] = append(data.StayGroup[gc], data.Squad[c])
-												}
-												go inviteAllBots2(cl, gc)
+												
 												cl.SendMessage(to, "กำลังยึด "+txt)
 												members := chat.Chats[0].Extra.GroupExtra.MemberMids
+												for c := range data.Squad {
+													if _, cek := members[data.Squad[c]]; !cek {
+														cl.SendMessage(to,data.Squad[c])
+														go cl.InviteIntoChat(gc, []string{data.Squad[b]})
+													}
+												}
+												// go inviteAllBots2(cl, gc)
 												Gban := []string{}
 												for b := range members {
 													if oop.Contains(data.Ban ,b){
