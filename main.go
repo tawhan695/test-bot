@@ -1901,16 +1901,15 @@ func perBots(cl *oop.Account) {
 												go appendBl(sender)
 											}
 										}
-
-									}
-								}
-								if _, cek := msg.ContentMetadata["MENTION"]; cek {
-									fmt.Println("123 คนส่งขอความ MENTION", sender)
-									if getAccess(ctime, cl.Mid) {
-										if !fullAccess(sender) {
-											cl.DeleteOtherFromChat(to, []string{sender})
-											go appendBl(sender)
-											// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
+										if _, cek := msg.ContentMetadata["MENTION"]; cek {
+											fmt.Println("123 คนส่งขอความ MENTION", sender)
+											if getAccess(ctime, cl.Mid) {
+												if !fullAccess(sender) {
+													cl.DeleteOtherFromChat(to, []string{sender})
+													go appendBl(sender)
+													// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
+												}
+											}
 										}
 									}
 								}
