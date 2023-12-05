@@ -2871,10 +2871,10 @@ func perBots(cl *oop.Account) {
 										index, _ := strconv.Atoi(result[1])
 
 										gc := GroupList[index-1]
-										if getWarAccess(cl, ctime, gc, "", cl.Mid, false) {
-											go kickAndInvite(cl, gc)
-											WarTime[gc] = time.Now()
-										}
+										// if getWarAccess(cl, ctime, gc, "", cl.Mid, false) {
+										// }
+										go kickAndInvite(cl, gc)
+										WarTime[gc] = time.Now()
 										// chat, _ := cl.GetChats([]string{gc}, true, true)
 										// if chat != nil {
 
