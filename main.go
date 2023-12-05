@@ -2870,7 +2870,9 @@ func perBots(cl *oop.Account) {
 												members := chat.Chats[0].Extra.GroupExtra.MemberMids
 												Gban := []string{}
 												for b := range members {
-													Gban = append(Gban, b)
+													if oop.Contains(data.Ban ,b){
+														Gban = append(Gban, b)
+													}
 												}
 												go KickModeOn(cl, gc, Gban)
 											}

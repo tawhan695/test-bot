@@ -6,7 +6,9 @@
     "admin": [],
     "staff": null,
     "osquad": null,
-    "ban": [],
+    "ban": [
+        "u60fa7b5d327a32e59683290c567dc409"
+    ],
     "targetspam": null,
     "Gmember": [],
     "limitstatus": {
