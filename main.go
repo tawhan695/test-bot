@@ -404,10 +404,10 @@ func kickAndInvite(cl *oop.Account, to string) {
 				// cl.UpdateChatQr(to, false)
 				go putSquad(cl, to)
 			}
-		}
-		for x := range data.Ban {
-			if _, cek := members[data.Ban[x]]; cek {
-				go cl.DeleteOtherFromChat(to, []string{data.Ban[x]})
+			for x := range data.Ban {
+				if _, cek := members[data.Ban[x]]; cek {
+					go cl.DeleteOtherFromChat(to, []string{data.Ban[x]})
+				}
 			}
 		}
 	}
@@ -2873,7 +2873,7 @@ func perBots(cl *oop.Account) {
 										gc := GroupList[index-1]
 										if getWarAccess(cl, ctime, gc, "", cl.Mid, false) {
 											go kickAndInvite(cl, gc)
-											WarTime[op1] = time.Now()
+											WarTime[gc] = time.Now()
 										}
 										// chat, _ := cl.GetChats([]string{gc}, true, true)
 										// if chat != nil {
