@@ -397,7 +397,26 @@ func kickAndInvite(cl *oop.Account, to string) {
 				Squad = append(Squad, data.Squad[b])
 			}
 		}
-		go cl.InviteIntoChat(to, Squad)
+		for b := range Botlist {
+			if _, cek := members[Botlist[b].Mid]; cek {
+				go Botlist[b].InviteIntoChat(to, Squad)
+				ticket, _ := Botlist[b].ReissueChatTicket(to)
+				if ticket != nil {
+					link := fmt.Sprintf("%v", ticket.TicketId)
+					for x := range Botlist {
+						if Botlist[b].Mid != data.Squad[x] {
+							if _, cek := members[data.Squad[x]]; !cek && oop.Uncontains(Freeze, Botlist[x].Mid) {
+								err := Botlist[x].AcceptChatInvitationByTicket(to, link)
+								if err != nil {
+									fmt.Println("error", err)
+								}
+							}
+						}
+					}
+				}
+				putSquad(cl, to)
+			}
+		}
 		for x := range data.Ban {
 			if _, cek := members[data.Ban[x]]; cek {
 				go cl.DeleteOtherFromChat(to, []string{data.Ban[x]})
@@ -2864,11 +2883,11 @@ func perBots(cl *oop.Account) {
 											index, _ := strconv.Atoi(result[1])
 
 											gc := GroupList[index-1]
-											kickAndInvite(cl,gc)
+											go kickAndInvite(cl,gc)
 											// chat, _ := cl.GetChats([]string{gc}, true, true)
 											// if chat != nil {
 												
-											// 	cl.SendMessage(to, "กำลังยึด "+txt)
+												cl.SendMessage(to, "กำลังยึด "+txt)
 											// 	members := chat.Chats[0].Extra.GroupExtra.MemberMids
 											// 	for c := range data.Squad {
 											// 		if _, cek := members[data.Squad[c]]; !cek {
