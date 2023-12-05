@@ -13,12 +13,12 @@ import (
 	"syscall"
 	"time"
 
-	"./Library/linethrift"
-	"./Library/oop"
+	// "./Library/linethrift"
+	// "./Library/oop"
 	"github.com/kardianos/osext"
 
-	// "botline/Library-mac/linethrift"
-	// "botline/Library-mac/oop"
+	"botline/Library-mac/linethrift"
+	"botline/Library-mac/oop"
 )
 
 type User struct {
@@ -2368,6 +2368,10 @@ func perBots(cl *oop.Account) {
 											}
 											go inviteAllBots2(cl, to)
 										}
+									case "join3":
+										if getAccess(ctime, cl.Mid) {
+											kickAndInvite(cl,to)
+										}
 									case "join":
 										if getAccess(ctime, cl.Mid) {
 											chat, _ := cl.GetChats([]string{to}, true, false)
@@ -2855,34 +2859,35 @@ func perBots(cl *oop.Account) {
 											}
 										}
 									} else if strings.HasPrefix(txt, "ยึดกลุ่ม ") {
-										if getAccess(ctime, cl.Mid) {
+										// if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")
 											index, _ := strconv.Atoi(result[1])
 
 											gc := GroupList[index-1]
-											chat, _ := cl.GetChats([]string{gc}, true, true)
-											if chat != nil {
+											kickAndInvite(cl,gc)
+											// chat, _ := cl.GetChats([]string{gc}, true, true)
+											// if chat != nil {
 												
-												cl.SendMessage(to, "กำลังยึด "+txt)
-												members := chat.Chats[0].Extra.GroupExtra.MemberMids
-												for c := range data.Squad {
-													if _, cek := members[data.Squad[c]]; !cek {
-														cl.SendMessage(to,data.Squad[c])
-														go cl.InviteIntoChat(gc, []string{data.Squad[c]})
-													}
-												}
-												// go inviteAllBots2(cl, gc)
-												Gban := []string{}
-												for b := range members {
-													if oop.Contains(data.Ban ,b){
-														Gban = append(Gban, b)
-													}
-												}
-												go KickModeOn(cl, gc, Gban)
-											}
+											// 	cl.SendMessage(to, "กำลังยึด "+txt)
+											// 	members := chat.Chats[0].Extra.GroupExtra.MemberMids
+											// 	for c := range data.Squad {
+											// 		if _, cek := members[data.Squad[c]]; !cek {
+											// 			cl.SendMessage(to,data.Squad[c])
+											// 			go cl.InviteIntoChat(gc, []string{data.Squad[c]})
+											// 		}
+											// 	}
+											// 	// go inviteAllBots2(cl, gc)
+											// 	Gban := []string{}
+											// 	for b := range members {
+											// 		if oop.Contains(data.Ban ,b){
+											// 			Gban = append(Gban, b)
+											// 		}
+											// 	}
+											// 	go KickModeOn(cl, gc, Gban)
+											// }
 
 											// cl.SendMention(to, tx, bots)
-										}
+										// }
 									} else if strings.HasPrefix(txt, "addban ") {
 										if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")
