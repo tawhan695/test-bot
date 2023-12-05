@@ -13,12 +13,12 @@ import (
 	"syscall"
 	"time"
 
-	// "./Library/linethrift"
-	// "./Library/oop"
+	"./Library/linethrift"
+	"./Library/oop"
 	"github.com/kardianos/osext"
 
-	"botline/Library-mac/linethrift"
-	"botline/Library-mac/oop"
+	// "botline/Library-mac/linethrift"
+	// "botline/Library-mac/oop"
 )
 
 type User struct {
