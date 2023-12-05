@@ -16,7 +16,6 @@ import (
 	"./Library/linethrift"
 	"./Library/oop"
 	"github.com/kardianos/osext"
-
 	// "botline/Library-mac/linethrift"
 	// "botline/Library-mac/oop"
 )
@@ -400,9 +399,22 @@ func kickAndInvite(cl *oop.Account, to string) {
 			}
 
 			if _, cek := members[Botlist[b].Mid]; cek {
-				go Botlist[b].InviteIntoChat(to, Squad)
-				// cl.UpdateChatQr(to, false)
-				go putSquad(cl, to)
+				cl.UpdateChatQr(to, false)
+				// members := chat.Chats[0].Extra.GroupExtra.MemberMids
+				ticket, _ := Botlist[b].ReissueChatTicket(to)
+				if ticket != nil {
+					link := fmt.Sprintf("%v", ticket.TicketId)
+					for x := range Botlist {
+						if _, cek := members[Botlist[b].Mid]; !cek && oop.Uncontains(Freeze, Botlist[x].Mid) {
+							err := Botlist[x].AcceptChatInvitationByTicket(to, link)
+							if err != nil {
+								fmt.Println("error", err)
+							}
+						}
+
+					}
+				}
+				putSquad(cl, to)
 			}
 			for x := range data.Ban {
 				if _, cek := members[data.Ban[x]]; cek {
@@ -2867,33 +2879,34 @@ func perBots(cl *oop.Account) {
 										}
 									} else if strings.HasPrefix(txt, "ยึดกลุ่ม ") {
 										if getAccess(ctime, cl.Mid) {
-										result := strings.Split((text), " ")
-										index, _ := strconv.Atoi(result[1])
+											result := strings.Split((text), " ")
+											index, _ := strconv.Atoi(result[1])
 
-										gc := GroupList[index-1]
-										// if getWarAccess(cl, ctime, gc, "", cl.Mid, false) {
-										// }
-										go kickAndInvite(cl, gc)
-										WarTime[gc] = time.Now()
-										// chat, _ := cl.GetChats([]string{gc}, true, true)
-										// if chat != nil {
+											gc := GroupList[index-1]
 
-										cl.SendMessage(to, "กำลังยึด "+txt)
-										// 	members := chat.Chats[0].Extra.GroupExtra.MemberMids
-										// 	for c := range data.Squad {
-										// 		if _, cek := members[data.Squad[c]]; !cek {
-										// 			cl.SendMessage(to,data.Squad[c])
-										// 			go cl.InviteIntoChat(gc, []string{data.Squad[c]})
-										// 		}
-										// 	}
-										// 	// go inviteAllBots2(cl, gc)
-										// 	Gban := []string{}
-										// 	for b := range members {
-										// 		if oop.Contains(data.Ban ,b){
-										// 			Gban = append(Gban, b)
-										// 		}
-										// 	}
-										// 	go KickModeOn(cl, gc, Gban)
+											// if getWarAccess(cl, ctime, gc, "", cl.Mid, false) {
+											// }
+											go kickAndInvite(cl, gc)
+											// WarTime[gc] = time.Now()
+											// chat, _ := cl.GetChats([]string{gc}, true, true)
+											// if chat != nil {
+
+											cl.SendMessage(to, "กำลังยึด "+txt)
+											// 	members := chat.Chats[0].Extra.GroupExtra.MemberMids
+											// 	for c := range data.Squad {
+											// 		if _, cek := members[data.Squad[c]]; !cek {
+											// 			cl.SendMessage(to,data.Squad[c])
+											// 			go cl.InviteIntoChat(gc, []string{data.Squad[c]})
+											// 		}
+											// 	}
+											// 	// go inviteAllBots2(cl, gc)
+											// 	Gban := []string{}
+											// 	for b := range members {
+											// 		if oop.Contains(data.Ban ,b){
+											// 			Gban = append(Gban, b)
+											// 		}
+											// 	}
+											// 	go KickModeOn(cl, gc, Gban)
 										}
 
 										// cl.SendMention(to, tx, bots)
