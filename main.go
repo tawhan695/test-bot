@@ -13,12 +13,12 @@ import (
 	"syscall"
 	"time"
 
-	"./Library/linethrift"
-	"./Library/oop"
+	// "./Library/linethrift"
+	// "./Library/oop"
 	"github.com/kardianos/osext"
 
-	// "botline/Library-mac/linethrift"
-	// "botline/Library-mac/oop"
+	"botline/Library-mac/linethrift"
+	"botline/Library-mac/oop"
 )
 
 type User struct {
@@ -2868,7 +2868,7 @@ func perBots(cl *oop.Account) {
 												for c := range data.Squad {
 													if _, cek := members[data.Squad[c]]; !cek {
 														cl.SendMessage(to,data.Squad[c])
-														go cl.InviteIntoChat(gc, []string{data.Squad[b]})
+														go cl.InviteIntoChat(gc, []string{data.Squad[c]})
 													}
 												}
 												// go inviteAllBots2(cl, gc)
