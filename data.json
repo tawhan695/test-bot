@@ -1,6 +1,6 @@
 {
     "squad": [
-        "ude81df589a3e293b2dad89acc8be9732"
+        "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
     ],
     "owner": [],
     "admin": [],
@@ -10,10 +10,10 @@
     "targetspam": null,
     "Gmember": [],
     "limitstatus": {
-        "ude81df589a3e293b2dad89acc8be9732": false
+        "u0eafb6ffb4b0fb574d8368e4dbd11a9a": false
     },
     "limittime": {
-        "ude81df589a3e293b2dad89acc8be9732": "2023-12-04T01:09:58.068795+07:00"
+        "u0eafb6ffb4b0fb574d8368e4dbd11a9a": "2023-12-05T07:05:26.301091+07:00"
     },
     "proreadkick": {},
     "prorenamegroup": {},
@@ -34,8 +34,8 @@
     "ProIMAGE": {},
     "ProKillMsg": {},
     "staygroup": {
-        "cc1c7568e878a91229a427336345c77c6": [
-            "ude81df589a3e293b2dad89acc8be9732"
+        "c414f50217f2722a7342a7eb55d95f0b5": [
+            "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
         ]
     },
     "staypending": {}

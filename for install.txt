@@ -25,3 +25,10 @@ go run main.go (token.txt)
 for clear chache : 
 echo 3 > /proc/sys/vm/drop_caches
 free -m
+
+
+# cp botService.service /etc/systemd/system/botService.service
+# systemctl enamble botService.service
+# systemctl disable botService.service
+# systemctl start botService.service
+# systemctl status botService.service

@@ -67,7 +67,7 @@ func Connect(num int, authToken string) *Account {
 	Clients := new(Account)
 	Clients.Mid = Splitter[0]
 	Clients.Authtoken = authToken
-	Clients.Host = "https://" + SUBDOMAIN[2] + ".line.naver.jp"
+	Clients.Host = "https://" + SUBDOMAIN[0] + ".line.naver.jp"
 	Clients.UserAgent = fmt.Sprintf("Line/%v", a[1])
 	Clients.LineApp = fmt.Sprintf("%v", ListApp[n])
 	Clients.LineApp2 = fmt.Sprintf("%v", ListApp2[n])
