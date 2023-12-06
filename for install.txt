@@ -1,7 +1,7 @@
 sudo apt-get update
 sudo apt-get upgrade -y
 
-wget https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz
+wget https://dl.google.com/go/go1.21.4.linux-amd64.tar.gz
 sudo tar -xvf go1.13.1.linux-amd64.tar.gz
 sudo mv go /usr/local
 
@@ -18,6 +18,7 @@ go get github.com/valyala/fasthttp
 go get github.com/leekchan/timeutil
 go get github.com/shirou/gopsutil/mem
 go get github.com/kardianos/osext
+go get github.com/utahta/go-linenotify
 
 go run main.go (token.txt)
 

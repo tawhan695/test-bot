@@ -31,3 +31,9 @@ chmod +x update.sh
 systemctl enable botService.service
 systemctl start botService.service
 systemctl status botService.service
+
+cp botService.service /etc/systemd/system/Guidelines.service
+systemctl enable Guidelines.service
+systemctl status Guidelines.service
+systemctl stop Guidelines.service
+systemctl start Guidelines.service
