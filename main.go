@@ -2147,7 +2147,7 @@ func perBots(cl *oop.Account) {
 												tx := ""
 												for x := range data.Ban {
 													if data.Ban[x] != "" {
-														tx += fmt.Sprintf("%v,", data.Ban[x])
+														tx += fmt.Sprintf("%v.NO.", data.Ban[x])
 													}
 												}
 												cl.SendMessage(to, tx)
@@ -3640,16 +3640,27 @@ func perBots(cl *oop.Account) {
 										}
 									} else if strings.HasPrefix(txt, "เพิ่มรายชื่อดำ ") {
 										if getAccess(ctime, cl.Mid) {
-											result := strings.Split((text), ",")
-											for m := range result {
-												if m > 0 {
-													if !oop.Contains(data.Ban, result[m]) && len(result[m]) > 3 {
-														data.Ban = append(data.Ban, result[m])
+											result := strings.Split(text, " ")
+
+											result_mid := strings.Split(result[1]+"", ".NO.")
+											// fmt.Println(result_mid)
+											if len(result_mid) > 0 {
+												for m := range result_mid {
+													// fmt.Println("result_mid")
+													// fmt.Println(result_mid[m])
+
+													if !oop.Contains(data.Ban, result_mid[m]) && len(result_mid[m]) > 5 {
+														// fmt.Println(result_mid[m])
+														data.Ban = append(data.Ban, result_mid[m])
 													}
+
 												}
+												SaveData()
+												cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
+											} else {
+												cl.SendMessage(to, "เพิ่มดำไม่สำเร็จ !.")
 											}
-											SaveData()
-											cl.SendMessage(to, "เพิ่มดำเรียบร้อย !.")
+
 										}
 									} else if strings.HasPrefix(txt, "ลบดำ ") {
 										if getAccess(ctime, cl.Mid) {
@@ -3970,6 +3981,7 @@ func perBots(cl *oop.Account) {
 											cl.SendMessage(to, "Error download pict.")
 											return
 										}
+										// cl.SendMessage(to, path)
 										cl.UpdateProfilePicture(path, "p")
 										delete(updateImage, cl.Mid)
 										cl.SendMessage(to, "Picture updated")
