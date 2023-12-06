@@ -9,11 +9,14 @@
     "ban": [],
     "targetspam": null,
     "Gmember": [],
+    "TOKENNOTIFY": [
+        "0c2GPqjefUb79sVFaDXVHlomMB2ZzjtbAqM7X70bw4t"
+    ],
     "limitstatus": {
         "u0eafb6ffb4b0fb574d8368e4dbd11a9a": false
     },
     "limittime": {
-        "u0eafb6ffb4b0fb574d8368e4dbd11a9a": "2023-12-05T07:05:26.301091+07:00"
+        "u0eafb6ffb4b0fb574d8368e4dbd11a9a": "2023-12-06T18:22:02.170055+07:00"
     },
     "proreadkick": {},
     "prorenamegroup": {},
@@ -34,9 +37,18 @@
     "ProIMAGE": {},
     "ProKillMsg": {},
     "staygroup": {
+        "c0c1d1a032ccb64dbc51084f87bb50d5d": [
+            "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
+        ],
+        "c37fca4e7c9a48fea7cd24b825e908a4f": [
+            "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
+        ],
         "c414f50217f2722a7342a7eb55d95f0b5": [
             "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
         ]
     },
-    "staypending": {}
+    "staypending": {},
+    "Guidelines": {
+        "c37fca4e7c9a48fea7cd24b825e908a4f": true
+    }
 }

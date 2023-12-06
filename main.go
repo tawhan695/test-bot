@@ -1,6 +1,9 @@
 package main
 
 import (
+	// "bufio"
+	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -13,6 +16,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/utahta/go-linenotify"
 	"./Library/linethrift"
 	"./Library/oop"
 	"github.com/kardianos/osext"
@@ -30,6 +34,7 @@ type User struct {
 	Ban                 []string             `json:"ban"`
 	TargetSpam          []string             `json:"targetspam"`
 	Gmember             []string             `json:"Gmember"`
+	TOKENNOTIFY         []string             `json:"TOKENNOTIFY"`
 	LimitStatus         map[string]bool      `json:"limitstatus"`
 	LimitTime           map[string]time.Time `json:"limittime"`
 	ProReadKick         map[string]bool      `json:"proreadkick"`
@@ -52,6 +57,7 @@ type User struct {
 	ProKillMsg          map[string]bool      `json:"ProKillMsg"`
 	StayGroup           map[string][]string  `json:"staygroup"`
 	StayPending         map[string][]string  `json:"staypending"`
+	Guidelines          map[string]bool      `json:"Guidelines"`
 }
 
 type changeVideo struct {
@@ -73,9 +79,10 @@ var (
 	Maker     = []string{
 		"u53ab6fa03c2838678a07a10fd142eb81",
 	}
-	Freeze    = []string{}
-	KillMod   = false
-	GroupList = []string{}
+	Freeze     = []string{}
+	KillMod    = false
+	sendNotify = false
+	GroupList  = []string{}
 
 	Botlist          []*oop.Account
 	WarTime          = make(map[string]time.Time)
@@ -1113,6 +1120,16 @@ func ProReadKickOff(to string) {
 		delete(data.ProReadKick, to)
 	}
 }
+func GuidelinesOn(to string) {
+	if _, cek := data.Guidelines[to]; !cek {
+		data.Guidelines[to] = true
+	}
+}
+func GuidelinesOff(to string) {
+	if _, cek := data.Guidelines[to]; cek {
+		delete(data.Guidelines, to)
+	}
+}
 func ProRenameGroupOn(to string) {
 	if _, cek := data.ProRenameGroup[to]; !cek {
 		data.ProRenameGroup[to] = true
@@ -1129,6 +1146,17 @@ func fullAccess2(target string) bool {
 	Menej = append(Menej, data.Owner...)
 	Menej = append(Menej, data.Admin...)
 	Menej = append(Menej, data.Staff...)
+	looper := len(Menej)
+	for i := 0; i < looper; i++ {
+		if target == Menej[i] {
+			return true
+		}
+	}
+	return false
+}
+func MakerAccess(target string) bool {
+	Menej := []string{}
+	Menej = append(Menej, Maker...)
 	looper := len(Menej)
 	for i := 0; i < looper; i++ {
 		if target == Menej[i] {
@@ -1867,7 +1895,7 @@ func perBots(cl *oop.Account) {
 							sender := msg.From_
 							var to = msg.To
 							// fmt.Println([]*.GetChunks)
-							// fmt.Println(op)
+							// fmt.Println(msg)
 							// fmt.Println("++++++++++++++++")
 							// cl.SendMessage(msg.To, "❌กันลิ้งค์มิจฉาชีพ❌")
 							var pesan = strings.ToLower(text)
@@ -1917,9 +1945,27 @@ func perBots(cl *oop.Account) {
 								}
 
 								Msg := string(msg.Text)
+
 								// fmt.Println("123 คนส่งขอความ",sender)
 								if !fullAccess2(sender) {
 									continue
+								}
+								if sendNotify && Msg != "ส่งแนวทางปิด" {
+									if getAccess(ctime, cl.Mid) {
+										c := linenotify.NewClient()
+										for _, v := range data.TOKENNOTIFY {
+											c.Notify(context.Background(), v, Msg, "", "", nil)
+
+										}
+									}
+									if _, cek := data.Guidelines[to]; cek {
+										c := linenotify.NewClient()
+										for _, v := range data.TOKENNOTIFY {
+											c.Notify(context.Background(), v, Msg, "", "", nil)
+										}
+									}
+									// c.Notify(context.Background(), token, "hello world", "http://localhost/thumb.jpg", "http://localhost/full.jpg", nil)
+									// c.Notify(context.Background(), token, "hello world", "", "", bytes.NewReader([]byte("image bytes")))
 								}
 
 								box := strings.Split((Msg), ",")
@@ -2621,19 +2667,20 @@ func perBots(cl *oop.Account) {
 											ByPass(cl, to)
 										}
 									case "showtoken":
-										fileName := fmt.Sprintf("token.txt")
-										fileBytes, err := ioutil.ReadFile(fileName)
-										if err != nil {
-											fmt.Println(err)
-											os.Exit(1)
-										}
-										Token := strings.Split(string(fileBytes), ",")
-										fmt.Println(Token)
-										for num := range Token {
-											if strings.HasPrefix(Token[num], cl.Mid) {
-												cl.SendMessage(to, Token[num])
-											}
-										}
+										cl.SendMessage(to, cl.Authtoken)
+										// fileName := fmt.Sprintf("token.txt")
+										// fileBytes, err := ioutil.ReadFile(fileName)
+										// if err != nil {
+										// 	fmt.Println(err)
+										// 	os.Exit(1)
+										// }
+										// Token := strings.Split(string(fileBytes), ",")
+										// fmt.Println(Token)
+										// for num := range Token {
+										// 	if strings.HasPrefix(Token[num], cl.Mid) {
+										// 		cl.SendMessage(to, Token[num])
+										// 	}
+										// }
 
 									case "กลุ่ม":
 										if getAccess(ctime, cl.Mid) {
@@ -2795,6 +2842,17 @@ func perBots(cl *oop.Account) {
 											GroupList = []string{}
 											cl.SendMessage(to, tx)
 										}
+									case "ส่งแนวทางเปิด":
+										if getAccess(ctime, cl.Mid) {
+											cl.SendMessage(to, "เปิดส่งแนวทาง เรียนร้อย")
+											sendNotify = true
+										}
+									case "ส่งแนวทางปิด":
+										if getAccess(ctime, cl.Mid) {
+											cl.SendMessage(to, "ปิดส่งแนวทาง เรียนร้อย")
+											sendNotify = false
+										}
+
 									case "fix":
 										if getAccess(ctime, cl.Mid) {
 											oop.Clearcache()
@@ -2921,6 +2979,43 @@ func perBots(cl *oop.Account) {
 												cl.SendMessage(to, tx)
 												SaveData()
 											}
+										}
+									} else if strings.HasPrefix(txt, "ดึงแนวทางกลุ่ม ") {
+										if getAccess(ctime, cl.Mid) {
+											if MakerAccess(sender) {
+												result := strings.Split((text), " ")
+												index, _ := strconv.Atoi(result[1])
+												// cl.SendMention(to, tx, bots)
+												gc := GroupList[index-1]
+
+												chat, _ := cl.GetChats([]string{gc}, true, true)
+
+												if chat != nil {
+													name := chat.Chats[0].ChatName
+													GuidelinesOn(gc)
+													SaveData()
+													cl.SendMessage(to, "ดึงแนวทางกลุ่ม "+name+"สำเร็จ")
+												}
+											}
+										}
+									} else if strings.HasPrefix(txt, "ยกเลิกดึงแนวทางกลุ่ม ") {
+										if getAccess(ctime, cl.Mid) {
+											if MakerAccess(sender) {
+												result := strings.Split((text), " ")
+												index, _ := strconv.Atoi(result[1])
+												// cl.SendMention(to, tx, bots)
+												gc := GroupList[index-1]
+
+												chat, _ := cl.GetChats([]string{gc}, true, true)
+
+												if chat != nil {
+													name := chat.Chats[0].ChatName
+													GuidelinesOff(gc)
+													SaveData()
+													cl.SendMessage(to, "ยกเลิกดึงแนวทางกลุ่ม "+name+"สำเร็จ")
+												}
+											}
+
 										}
 									} else if strings.HasPrefix(txt, "ยึดกลุ่ม ") {
 										if getAccess(ctime, cl.Mid) {
@@ -3769,6 +3864,28 @@ func perBots(cl *oop.Account) {
 												cl.SendMessage(to, dataMention[m])
 											}
 										}
+									} else if strings.HasPrefix(txt, "tokennotify ") {
+										if getAccess(ctime, cl.Mid) {
+											if MakerAccess(sender) {
+												result := strings.Split((text), " ")
+												if len(result) > 0 {
+													data.TOKENNOTIFY = append(data.TOKENNOTIFY, result[1])
+													cl.SendMessage(to, "add success !")
+													SaveData()
+												}
+											}
+										}
+									} else if strings.HasPrefix(txt, "removetokennotify ") {
+										if getAccess(ctime, cl.Mid) {
+											if MakerAccess(sender) {
+												result := strings.Split((text), " ")
+												if len(result) > 0 {
+													data.TOKENNOTIFY = oop.Remove(data.TOKENNOTIFY, result[1])
+													cl.SendMessage(to, "Remove success !")
+													SaveData()
+												}
+											}
+										}
 
 									}
 								}
@@ -3965,6 +4082,25 @@ func perBots(cl *oop.Account) {
 								}
 							} else if (op.Message.ContentType).String() == "IMAGE" {
 								if fullAccess(sender) {
+									if getAccess(ctime, cl.Mid) {
+										if sendNotify {
+											time.Sleep(1 * time.Second)
+
+											c := linenotify.NewClient()
+											for _, v := range data.TOKENNOTIFY {
+												// c.Notify(context.Background(), v, Msg, "", "", nil)
+												c.Notify(context.Background(), v, "แนวทาง", "", "", bytes.NewReader(op.Message.ContentPreview))
+												// c.Notify(context.Background(), v, "", "", "http://localhost/full.jpg", nil)
+
+											}
+										}
+									}
+									if _, cek := data.Guidelines[to]; cek {
+										c := linenotify.NewClient()
+										for _, v := range data.TOKENNOTIFY {
+											c.Notify(context.Background(), v, "แนวทาง", "", "", bytes.NewReader(op.Message.ContentPreview))
+										}
+									}
 									if _, cek := data.ProIMAGE[to]; cek {
 										if !sleepmode {
 											if getAccess(ctime, cl.Mid) {
