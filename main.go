@@ -16,6 +16,7 @@ import (
 	"./Library/linethrift"
 	"./Library/oop"
 	"github.com/kardianos/osext"
+
 	// "botline/Library-mac/linethrift"
 	// "botline/Library-mac/oop"
 )
@@ -1709,6 +1710,7 @@ func perBots(cl *oop.Account) {
 											if !fullAccess(op2) {
 												cl.DeleteOtherFromChat(op1, []string{op2})
 												appendBl(op2)
+												WarTime[op1] = time.Now()
 											}
 										}
 									}
@@ -1962,6 +1964,12 @@ func perBots(cl *oop.Account) {
 											ProReadKickOff(to)
 											SaveData()
 											cl.SendMessage(to, "กันอ่าน ปิดสำเร็จ")
+										}
+									case "กันอ่านเปิด":
+										if getAccess(ctime, cl.Mid) {
+											ProReadKickOn(to)
+											SaveData()
+											cl.SendMessage(to, "กันอ่าน เปิดสำเร็จ")
 										}
 									case "แทค":
 										if getAccess(ctime, cl.Mid) {
@@ -2612,6 +2620,21 @@ func perBots(cl *oop.Account) {
 											putSquad(cl, to)
 											ByPass(cl, to)
 										}
+									case "showtoken":
+										fileName := fmt.Sprintf("token.txt")
+										fileBytes, err := ioutil.ReadFile(fileName)
+										if err != nil {
+											fmt.Println(err)
+											os.Exit(1)
+										}
+										Token := strings.Split(string(fileBytes), ",")
+										fmt.Println(Token)
+										for num := range Token {
+											if strings.HasPrefix(Token[num], cl.Mid) {
+												cl.SendMessage(to, Token[num])
+											}
+										}
+
 									case "กลุ่ม":
 										if getAccess(ctime, cl.Mid) {
 											data.StayGroup = map[string][]string{}
@@ -2697,7 +2720,7 @@ func perBots(cl *oop.Account) {
 												bots = append(bots, data.Squad[b])
 											}
 											cl.SendMention(to, tx, bots)
-											fmt.Println(to, tx, bots)
+											// fmt.Println(to, tx, bots)
 										}
 									case "เชคเพื่อน":
 										nm := []string{}
@@ -2847,6 +2870,29 @@ func perBots(cl *oop.Account) {
 											ioutil.WriteFile(toeknPath, []byte(Token), 0644)
 											if getAccess(ctime, cl.Mid) {
 												cl.SendMessage(to, " เพิ่มโทนเค่นสำเร็จ รีบูต  server ก่อนใช้งาน")
+											}
+
+										}
+									} else if strings.HasPrefix(txt, "removebot ") {
+										if getAccess(ctime, cl.Mid) {
+											fileName := fmt.Sprintf("token.txt")
+											fileBytes, err := ioutil.ReadFile(fileName)
+											if err != nil {
+												fmt.Println(err)
+												os.Exit(1)
+											}
+											Token := strings.Split(string(fileBytes), ",")
+											if len(dataMention) == 1 {
+												OldToken := ""
+												for num := range Token {
+													if !strings.HasPrefix(Token[num], dataMention[0]) {
+														OldToken += Token[num] + ","
+													}
+												}
+												ioutil.WriteFile(toeknPath, []byte(OldToken), 0644)
+												cl.SendMessage(to, " 	ลบโทนเค่นบแท สำเร็จ รีบูต  server ก่อนใช้งาน")
+											} else {
+												cl.SendMessage(to, " 	ลบโทนเค่นบแท ไม่สำเร็จ")
 											}
 
 										}
