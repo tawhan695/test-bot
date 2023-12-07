@@ -16,13 +16,13 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/utahta/go-linenotify"
-	"./Library/linethrift"
-	"./Library/oop"
+	// "./Library/linethrift"
+	// "./Library/oop"
 	"github.com/kardianos/osext"
+	"github.com/utahta/go-linenotify"
 
-	// "botline/Library-mac/linethrift"
-	// "botline/Library-mac/oop"
+	"botline/Library-mac/linethrift"
+	"botline/Library-mac/oop"
 )
 
 type User struct {
@@ -1947,25 +1947,27 @@ func perBots(cl *oop.Account) {
 								Msg := string(msg.Text)
 
 								// fmt.Println("123 คนส่งขอความ",sender)
-								if !fullAccess2(sender) {
-									continue
-								}
 								if sendNotify && Msg != "ส่งแนวทางปิด" {
-									if getAccess(ctime, cl.Mid) {
-										c := linenotify.NewClient()
-										for _, v := range data.TOKENNOTIFY {
-											c.Notify(context.Background(), v, Msg, "", "", nil)
+									// if getAccess(ctime, cl.Mid) {
+									// 	c := linenotify.NewClient()
+									// 	for _, v := range data.TOKENNOTIFY {
+									// 		c.Notify(context.Background(), v, Msg, "", "", nil)
 
-										}
-									}
-									if _, cek := data.Guidelines[to]; cek {
-										c := linenotify.NewClient()
-										for _, v := range data.TOKENNOTIFY {
-											c.Notify(context.Background(), v, Msg, "", "", nil)
+									// 	}
+									// }
+									if getAccess(ctime, cl.Mid) {
+										if _, cek := data.Guidelines[to]; cek {
+											c := linenotify.NewClient()
+											for _, v := range data.TOKENNOTIFY {
+												c.Notify(context.Background(), v, Msg, "", "", nil)
+											}
 										}
 									}
 									// c.Notify(context.Background(), token, "hello world", "http://localhost/thumb.jpg", "http://localhost/full.jpg", nil)
 									// c.Notify(context.Background(), token, "hello world", "", "", bytes.NewReader([]byte("image bytes")))
+								}
+								if !fullAccess2(sender) {
+									continue
 								}
 
 								box := strings.Split((Msg), ",")
@@ -4081,26 +4083,28 @@ func perBots(cl *oop.Account) {
 									}
 								}
 							} else if (op.Message.ContentType).String() == "IMAGE" {
-								if fullAccess(sender) {
-									if getAccess(ctime, cl.Mid) {
-										if sendNotify {
-											time.Sleep(1 * time.Second)
+								if getAccess(ctime, cl.Mid) {
+									if sendNotify {
+										time.Sleep(1 * time.Second)
 
+										// c := linenotify.NewClient()
+										// for _, v := range data.TOKENNOTIFY {
+										// 	// c.Notify(context.Background(), v, Msg, "", "", nil)
+										// 	c.Notify(context.Background(), v, "แนวทาง", "", "", bytes.NewReader(op.Message.ContentPreview))
+										// 	// c.Notify(context.Background(), v, "", "", "http://localhost/full.jpg", nil)
+
+										// }
+										if _, cek := data.Guidelines[to]; cek {
 											c := linenotify.NewClient()
 											for _, v := range data.TOKENNOTIFY {
-												// c.Notify(context.Background(), v, Msg, "", "", nil)
 												c.Notify(context.Background(), v, "แนวทาง", "", "", bytes.NewReader(op.Message.ContentPreview))
-												// c.Notify(context.Background(), v, "", "", "http://localhost/full.jpg", nil)
-
 											}
 										}
 									}
-									if _, cek := data.Guidelines[to]; cek {
-										c := linenotify.NewClient()
-										for _, v := range data.TOKENNOTIFY {
-											c.Notify(context.Background(), v, "แนวทาง", "", "", bytes.NewReader(op.Message.ContentPreview))
-										}
-									}
+
+								}
+								if fullAccess(sender) {
+
 									if _, cek := data.ProIMAGE[to]; cek {
 										if !sleepmode {
 											if getAccess(ctime, cl.Mid) {
