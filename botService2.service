@@ -1,0 +1,12 @@
+[Unit]
+Description=botline
+After=network.target
+
+[Service]
+ExecStart=/root/bot2.sh
+Restart=always
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target

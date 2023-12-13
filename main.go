@@ -2274,7 +2274,7 @@ func perBots(cl *oop.Account) {
 												}
 											}
 										}
-									case "เชคกัน":
+									case "เชคโหมด":
 										if getAccess(ctime, cl.Mid) {
 											tx := "┏━━ข้อมูลบอท━━━━━━━━\n"
 											tx += "┃-นักพัฒนา : tanongsak695 @!\n"
@@ -2821,40 +2821,13 @@ func perBots(cl *oop.Account) {
 											num += 1
 										}
 									case "ออกทุกกลุ่ม":
-										allgrup, _ := cl.GetAllChatMids(true, false)
-										proGroup := 0
-										leaveTo := 0
+										allgrup, _ = cl.GetAllChatMids(true, false)
 										for g := range allgrup.MemberChatMids {
-											if _, cek := data.ProKick[allgrup.MemberChatMids[g]]; !cek && allgrup.MemberChatMids[g] != to {
+											if allgrup.MemberChatMids[g] != to {
 												cl.DeleteSelfFromChat(allgrup.MemberChatMids[g])
-												leaveTo += 1
-											} else if allgrup.MemberChatMids[g] != to {
-												proGroup += 1
 											}
 										}
-										data.StayGroup = map[string][]string{}
-										tx := fmt.Sprintf("ออกจาก %v ความสำเร็จของกลุ่ม !.\nและอยู่ใน %v กลุ่มในการป้องกัน", leaveTo, proGroup)
-										allgrup, _ = cl.GetAllChatMids(true, false)
-										time.Sleep(time.Duration(cl.Count) * time.Second)
-										for g := range allgrup.MemberChatMids {
-											putSquad(cl, allgrup.MemberChatMids[g])
-										}
 										SaveData()
-										if getAccess(ctime, cl.Mid) {
-											GroupList = []string{}
-											cl.SendMessage(to, tx)
-										}
-									case "ส่งแนวทางเปิด":
-										if getAccess(ctime, cl.Mid) {
-											cl.SendMessage(to, "เปิดส่งแนวทาง เรียนร้อย")
-											sendNotify = true
-										}
-									case "ส่งแนวทางปิด":
-										if getAccess(ctime, cl.Mid) {
-											cl.SendMessage(to, "ปิดส่งแนวทาง เรียนร้อย")
-											sendNotify = false
-										}
-
 									case "fix":
 										if getAccess(ctime, cl.Mid) {
 											oop.Clearcache()
@@ -2943,19 +2916,25 @@ func perBots(cl *oop.Account) {
 											}
 											Token := strings.Split(string(fileBytes), ",")
 											if len(dataMention) == 1 {
-												OldToken := ""
-												for num := range Token {
-													if !strings.HasPrefix(Token[num], dataMention[0]) {
-														OldToken += Token[num] + ","
+												//new
+												for b := range Botlist {
+													if Botlist[b].Mid == dataMention[0] {
+														OldToken := ""
+														for num := range Token {
+															if Token[num] != Botlist[b].Authtoken {
+																OldToken += Token[num] + ","
+															}
+														}
+														ioutil.WriteFile(toeknPath, []byte(OldToken), 0644)
+														cl.SendMessage(to, " 	ลบโทนเค่นบแท สำเร็จ รีบูต  server ก่อนใช้งาน")
 													}
 												}
-												ioutil.WriteFile(toeknPath, []byte(OldToken), 0644)
-												cl.SendMessage(to, " 	ลบโทนเค่นบแท สำเร็จ รีบูต  server ก่อนใช้งาน")
+
 											} else {
 												cl.SendMessage(to, " 	ลบโทนเค่นบแท ไม่สำเร็จ")
 											}
-
 										}
+
 									} else if strings.HasPrefix(txt, "สมาชิกกลุ่ม ") {
 										if getAccess(ctime, cl.Mid) {
 											result := strings.Split((text), " ")

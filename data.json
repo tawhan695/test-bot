@@ -1,54 +1,106 @@
 {
     "squad": [
-        "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
+        "u904697f744742d6a75ab3aa1590866db",
+        "u60fa7b5d327a32e59683290c567dc409",
+        "ucf2fc76b179e09a61024da8b42e820ef",
+        "ubbe426693a9e278de8fb4c9a982b2979"
     ],
     "owner": [],
     "admin": [],
     "staff": null,
     "osquad": null,
-    "ban": [],
+    "ban": [
+        "ufaf9099919a56e0a694dc073bd7e5ed8",
+        "u69f16bc6b2c5e316ddd6f99e921cbc80",
+        "ua024479ffbc21dfcbd87d8e2259b002b"
+    ],
     "targetspam": null,
     "Gmember": [],
-    "TOKENNOTIFY": [
-        "0c2GPqjefUb79sVFaDXVHlomMB2ZzjtbAqM7X70bw4t"
-    ],
     "limitstatus": {
-        "u0eafb6ffb4b0fb574d8368e4dbd11a9a": false
+        "u60fa7b5d327a32e59683290c567dc409": false,
+        "u904697f744742d6a75ab3aa1590866db": false,
+        "ubbe426693a9e278de8fb4c9a982b2979": false,
+        "ucf2fc76b179e09a61024da8b42e820ef": false
     },
     "limittime": {
-        "u0eafb6ffb4b0fb574d8368e4dbd11a9a": "2023-12-06T18:22:02.170055+07:00"
+        "u60fa7b5d327a32e59683290c567dc409": "2023-12-10T17:17:54.262727+07:00",
+        "u904697f744742d6a75ab3aa1590866db": "2023-12-10T17:17:52.796145+07:00",
+        "ubbe426693a9e278de8fb4c9a982b2979": "2023-12-10T17:17:57.18302+07:00",
+        "ucf2fc76b179e09a61024da8b42e820ef": "2023-12-10T17:17:55.710816+07:00"
     },
     "proreadkick": {},
     "prorenamegroup": {},
-    "prokick": {},
-    "proinvite": {},
-    "procancel": {},
-    "projoin": {},
-    "proqr": {},
+    "prokick": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "proinvite": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "procancel": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "projoin": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "proqr": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
     "ProLINK": {},
-    "ProFLEX": {},
-    "ProDelAlbum": {},
+    "ProFLEX": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "ProDelAlbum": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
     "ProSTICKER": {},
-    "ProCALL": {},
-    "ProFILE": {},
-    "ProPOSTNOTIFICATION": {},
-    "ProVIDEO": {},
-    "ProAUDIO": {},
+    "ProCALL": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "ProFILE": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "ProPOSTNOTIFICATION": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "ProVIDEO": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
+    "ProAUDIO": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true,
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
+    },
     "ProIMAGE": {},
     "ProKillMsg": {},
     "staygroup": {
-        "c0c1d1a032ccb64dbc51084f87bb50d5d": [
-            "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
+        "c71272cd9b165cf0f9f874ea606c067c6": [
+            "u904697f744742d6a75ab3aa1590866db",
+            "u60fa7b5d327a32e59683290c567dc409",
+            "ucf2fc76b179e09a61024da8b42e820ef",
+            "ubbe426693a9e278de8fb4c9a982b2979"
         ],
-        "c37fca4e7c9a48fea7cd24b825e908a4f": [
-            "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
-        ],
-        "c414f50217f2722a7342a7eb55d95f0b5": [
-            "u0eafb6ffb4b0fb574d8368e4dbd11a9a"
+        "cf20c870f0e8fa07ba8884accb540d5ab": [
+            "u904697f744742d6a75ab3aa1590866db",
+            "u60fa7b5d327a32e59683290c567dc409",
+            "ucf2fc76b179e09a61024da8b42e820ef",
+            "ubbe426693a9e278de8fb4c9a982b2979"
         ]
     },
     "staypending": {},
-    "Guidelines": {
-        "c37fca4e7c9a48fea7cd24b825e908a4f": true
+    "MsgCancel": {
+        "c71272cd9b165cf0f9f874ea606c067c6": true
+    },
+    "ProTag": {
+        "cf20c870f0e8fa07ba8884accb540d5ab": true
     }
 }
